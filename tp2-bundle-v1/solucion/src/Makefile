@@ -1,13 +1,17 @@
+UNAME:=$(shell uname)
 CC = gcc
 ASM = nasm
 DBG = gdb
-CFLAGS64 = -ggdb -Wall -std=c99 -pedantic -m64
+CFLAGS64 = -ggdb -Wall -std=c99 -pedantic -m64 -D__OS__=$(UNAME)
 ASMFLAGS64 = -felf64 -g -F dwarf
 CFLAGS   = $(CFLAGS64)
 ASMFLAGS = $(ASMFLAGS64)
 
-
-UBUNTU = $(shell lsb_release -sd)
+ifeq ($(UNAME),Linux)
+	UBUNTU = $(shell lsb_release -sd)
+else
+	UBUNTU:=no
+endif
 
 OPENCV_LIB = `pkg-config --cflags --libs opencv`
 
