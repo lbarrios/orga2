@@ -1,32 +1,43 @@
 
 #include "tp2.h"
 
+#define MAX_SUM 755
+#define _STEP 153
 
-rgb_t colores[] = { {255,   0,   0},
-                    {127,   0, 127},
-                    {255,   0, 255},
-                    {  0,   0, 255},
-                    {  0, 255, 255} };
-
-void popart_c    (
-	unsigned char *src,
-	unsigned char *dst,
-	int cols,
-	int filas,
-	int src_row_size,
-	int dst_row_size)
+rgb_t colors[] =
 {
-	unsigned char (*src_matrix)[src_row_size] = (unsigned char (*)[src_row_size]) src;
-	unsigned char (*dst_matrix)[dst_row_size] = (unsigned char (*)[dst_row_size]) dst;
+  {255,   0,   0},
+  {127,   0, 127},
+  {255,   0, 255},
+  {  0,   0, 255},
+  {  0, 255, 255}
+};
 
-	for (int i_d = 0, i_s = 0; i_d < filas; i_d++, i_s++) {
-		for (int j_d = 0, j_s = 0; j_d < cols; j_d++, j_s++) {
-			rgb_t *p_d = (rgb_t*)&dst_matrix[i_d][j_d*3];
-			rgb_t *p_s = (rgb_t*)&src_matrix[i_s][j_s*3];
-			*p_d = *p_s;
-		}
-	}
+void popart_c ( unsigned char* src, unsigned char* dst, int cols, int filas, int src_row_size, int dst_row_size )
+{
+  int x, y;
+  long i_src, i_dst;
 
+  for ( y = 0; y < filas; y++ )
+  {
+    for ( x = 0; x < cols; x++ )
+    {
+      // Obtengo el índice para src
+      i_src = ( 3 * x ) + ( y * src_row_size );
+      // Obtengo la suma de los tres colores
+      short sum = src[i_src + 0] + src[i_src + 1] + src[i_src + 2];
+      // Calculo el índice correspondiente a la matriz colors dividiendo la suma por _STEP
+      short i_color = sum / _STEP;
+      // Usando el índice i_color, obtengo de la matriz colors el color que voy a guardar en dst
+      rgb_t color = colors[i_color];
+      // Calculo el índice para dst
+      i_dst = ( 3 * x ) + ( y * dst_row_size );
+      // Guardo los valores en las posiciones correspondientes de dst
+      dst[i_dst + 0] = color.r;
+      dst[i_dst + 1] = color.g;
+      dst[i_dst + 2] = color.b;
+    }
+  }
 }
 
 

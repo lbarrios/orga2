@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 DIFF=../bin/tp2diff
 DIFFFLAGS=""

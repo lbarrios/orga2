@@ -7,7 +7,9 @@
 #include "opencv_wrapper.h"
 #include "utils.h"
 
+#if __OS__!=FreeBSD
 typedef struct CvVideoWriter CvVideoWriter;
+#endif
 
 
 

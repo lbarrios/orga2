@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Este script crea las multiples imagenes de prueba a partir de unas
 # pocas imagenes base.
