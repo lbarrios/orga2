@@ -48,10 +48,12 @@ echo -e $mensaje
 
 
 archivo_out1=$($TP2ALU $filtro -n -i $implementacion     -o $ALUMNOSDIR/ $INPUTDIR/$archivo_in $PARAMS)
+echo "$TP2ALU $filtro -i $implementacion -o $ALUMNOSDIR/ $INPUTDIR/$archivo_in $PARAMS"
 $TP2ALU $filtro -i $implementacion -o $ALUMNOSDIR/ $INPUTDIR/$archivo_in $PARAMS
 
 
 archivo_out2=$($otro   $filtro -n -i $otroimplementacion -o $otrodir/    $INPUTDIR/$archivo_in $PARAMS)
+echo "$otro   $filtro -i $otroimplementacion -o $otrodir/    $INPUTDIR/$archivo_in $PARAMS"
 $otro   $filtro -i $otroimplementacion -o $otrodir/    $INPUTDIR/$archivo_in $PARAMS
 
 ALUFILE=$ALUMNOSDIR/$archivo_out1
