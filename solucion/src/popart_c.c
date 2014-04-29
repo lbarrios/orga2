@@ -1,7 +1,7 @@
 
 #include "tp2.h"
 
-#define MAX_SUM 755
+#define MAX_SUM 765
 #define _STEP 153
 
 rgb_t colors[] =
@@ -10,7 +10,8 @@ rgb_t colors[] =
   {127,   0, 127},
   {255,   0, 255},
   {  0,   0, 255},
-  {  0, 255, 255}
+  {  0, 255, 255},
+  {  0, 255, 255} // Cuando pixel = {255,255,255} la división da 5.
 };
 
 void popart_c ( unsigned char* src, unsigned char* dst, int cols, int filas, int src_row_size, int dst_row_size )
@@ -33,11 +34,12 @@ void popart_c ( unsigned char* src, unsigned char* dst, int cols, int filas, int
       // Calculo el índice para dst
       i_dst = ( 3 * x ) + ( y * dst_row_size );
       // Guardo los valores en las posiciones correspondientes de dst
-      dst[i_dst + 0] = color.r;
+      dst[i_dst + 0] = color.b;
       dst[i_dst + 1] = color.g;
-      dst[i_dst + 2] = color.b;
+      dst[i_dst + 2] = color.r;
     }
   }
 }
 
 
+// pixel 2,84: 255,255,255 da problemas
