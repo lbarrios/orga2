@@ -25,8 +25,8 @@ int_format: DB "%d", 10, 0
 section .text
 ;void tiles_asm(unsigned char *src,
 ;              unsigned char *dst,
-;              int filas,
 ;              int cols,
+;              int filas,
 ;              int src_row_size,
 ;              int dst_row_size );
 
@@ -39,8 +39,8 @@ tiles_asm:
     ; tomo parametros
     mov [src], rdi
     mov [dst], rsi
-    mov [filas], edx
-    mov [cols], ecx
+    mov [cols], edx
+    mov [filas], ecx
     mov [src_row_size], r8d
     mov [dst_row_size], r9d
     mov eax, [rbp + 16]
@@ -95,14 +95,13 @@ tiles_asm:
 
 
 
-
 .toma16: 
     lea rdi, [c_d + 16]
     cmp rdi, ancho
-    jg .conRetroceso
+    ja .conRetroceso
     lea rdi, [c_t + 16]
     cmp rdi, ancho_tile
-    jg .conRetrocesoTile
+    ja .conRetrocesoTile
     movdqu xmm1, [tile_it]
     movdqu [dst_it], xmm1
     add c_d, 16
@@ -122,7 +121,12 @@ tiles_asm:
     ;call printf
     ;pop rdi
     ;pop rsi
-
+    
+    ;veamos si esto resuelve algo, no, hace bien los dibujitos.
+    ; lea rdi, [c_t + 16]
+    ; cmp rdi, ancho_tile
+    ; ja .conRetrocesoTile
+    
 
     cmp c_d, ancho
     je .nuevaFila
@@ -134,7 +138,23 @@ tiles_asm:
     sub c_t, rdi
     sub tile_it, rdi
     sub dst_it, rdi
-    jmp .toma16
+    jmp .toma16_copiando_una_vez
+
+.toma16_copiando_una_vez:
+    mov rdi, dst_it
+    sub rdi, ancho_tile
+    push tile_it
+    mov tile_it, rdi
+    movdqu xmm1, [tile_it]
+    movdqu [dst_it], xmm1
+    pop tile_it
+    add c_d, 16
+    add c_t, 16
+    add tile_it, 16
+    add dst_it, 16
+    jmp .nuevaFila 
+     
+
     
 .conRetrocesoTile: ;chequea ADEMAS que no te pases de ancho
     cmp c_t, ancho_tile
@@ -154,13 +174,77 @@ tiles_asm:
     sub tile_it, ancho_tile
     jmp .toma16
 
+.toma16_v2:
+    ; observacion
+    ; lea tile_it, [dst_it - ancho_tile]
+    mov rdi, dst_it
+    sub rdi, ancho_tile
+    mov tile_it, rdi
+
+.ciclo_v2
+    lea rdi, [c_d + 16]
+    cmp rdi, ancho
+    ja .conRetroceso_v2
+    movdqu xmm1, [tile_it]
+    movdqu [dst_it], xmm1
+    add c_d, 16
+    add c_t, 16 ;esto ya no se usa
+    add tile_it, 16
+    add dst_it, 16
+    jmp .ciclo_v2
+
+.conRetroceso_v2:
+    cmp c_d, ancho
+    je .nuevaFila_v2
+    ; sea rdi lo que tengo que retroceder
+    mov rdi, c_d
+    add rdi, 16
+    sub rdi, ancho
+    sub c_d, rdi
+    sub c_t, rdi
+    sub tile_it, rdi
+    sub dst_it, rdi
+    jmp .ciclo_v2
+
+.nuevaFila_v2:
+    inc f_d
+    inc f_t
+    ;cmp f_d, [cols] jajaj de nuevo lo de los 32
+    xor rax, rax
+    mov eax, [filas]
+    cmp f_d, rax
+    je .fin
+    ;cmp f_t, [tamy]
+    xor rax, rax
+    mov eax, [tamy]
+    cmp f_t, rax
+    je .vamosArribaTile
+    ; actualizo dst_it
+    sub dst_it, ancho
+    ; add dst_it, [dst_row_size] aca estaba accediendo a 64 envezd 32
+    xor rax, rax
+    mov eax, [dst_row_size]
+    add dst_it, rax
+    ; actualizo tile_it
+    ;sub tile_it, c_t        ya no hago esto
+    sub tile_it, ancho
+    ;add tile_it, [src_row_size]
+    xor rax, rax
+    mov eax, [src_row_size]
+    add tile_it, rax
+    xor c_d, c_d
+    xor c_t, c_t
+    jmp .toma16
+    
+
+
 .nuevaFila:
     ;jmp .fin
     inc f_d
     inc f_t
     ;cmp f_d, [cols] jajaj de nuevo lo de los 32
     xor rax, rax
-    mov eax, [cols]
+    mov eax, [filas]
     cmp f_d, rax
     je .fin
     ;cmp f_t, [tamy]
