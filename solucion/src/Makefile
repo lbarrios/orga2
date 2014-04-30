@@ -20,9 +20,11 @@ BIN_DIR = ../bin
 
 
 
+#popart_c.o popart.o \
+
 COBJS = tp2.o cli.o utils.o opencv_wrapper.o \
 	tiles_c.o tiles.o \
-	popart_c.o popart.o \
+	popart_c2.o popart.o \
 	ldr_c.o ldr.o \
 	temperature_c.o temperature.o
 	
