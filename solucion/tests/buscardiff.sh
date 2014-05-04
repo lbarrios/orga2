@@ -59,10 +59,11 @@ $otro   $filtro -i $otroimplementacion -o $otrodir/    $INPUTDIR/$archivo_in $PA
 ALUFILE=$ALUMNOSDIR/$archivo_out1
 OTROFILE=$otrodir/$archivo_out2
 
+echo "$DIFF $DIFFFLAGS $OTROFILE $ALUFILE $tolerancia"
 $DIFF $DIFFFLAGS $OTROFILE $ALUFILE $tolerancia
 
 if [ $? != "0" ]; then
-    echo -e "${ROJO}error en $FILENAME"
+    echo -e "${ROJO}error en $ALUFILE" 1>&2
     exit -1
 else
 	echo -e "${VERDE}iguales!"
