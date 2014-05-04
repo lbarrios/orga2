@@ -105,6 +105,66 @@ db 0x80, 0x80, 0x80, 0x80
 db 0x80, 0x80, 0x80, 0x80
 db 0x80, 0x80, 0x80, 0x80
 
+result_mask:
+db 0x00, 0x01, 0x02
+db 0x04, 0x05, 0x06
+db 0x08, 0x09, 0x0A
+db 0x0C, 0x0D, 0x0E
+db 0x80, 0x80, 0x80, 0x80
+
+ffffffffffffffffffffffffffffffff:
+db 0xff, 0xff, 0xff, 0xff
+db 0xff, 0xff, 0xff, 0xff
+db 0xff, 0xff, 0xff, 0xff
+db 0xff, 0xff, 0xff, 0xff
+
+p152d:
+db 0x00, 0x00, 0x00, 0x00
+db 0x00, 0x00, 0x00, 0x00
+db 0x00, 0x00, 0x00, 0x00
+db 0x00, 0x00, 0x00, 0x00
+p305d:
+db 0x00, 0x00, 0x00, 0x00
+db 0x00, 0x00, 0x00, 0x00
+db 0x00, 0x00, 0x00, 0x00
+db 0x00, 0x00, 0x00, 0x00
+p458d:
+db 0x00, 0x00, 0x00, 0x00
+db 0x00, 0x00, 0x00, 0x00
+db 0x00, 0x00, 0x00, 0x00
+db 0x00, 0x00, 0x00, 0x00
+p611d:
+db 0x00, 0x00, 0x00, 0x00
+db 0x00, 0x00, 0x00, 0x00
+db 0x00, 0x00, 0x00, 0x00
+db 0x00, 0x00, 0x00, 0x00
+
+pcolors_a:
+db 0x00, 0x00, 0x00, 0x00
+db 0x00, 0x00, 0x00, 0x00
+db 0x00, 0x00, 0x00, 0x00
+db 0x00, 0x00, 0x00, 0x00
+pcolors_b:
+db 0x00, 0x00, 0x00, 0x00
+db 0x00, 0x00, 0x00, 0x00
+db 0x00, 0x00, 0x00, 0x00
+db 0x00, 0x00, 0x00, 0x00
+pcolors_c:
+db 0x00, 0x00, 0x00, 0x00
+db 0x00, 0x00, 0x00, 0x00
+db 0x00, 0x00, 0x00, 0x00
+db 0x00, 0x00, 0x00, 0x00
+pcolors_d:
+db 0x00, 0x00, 0x00, 0x00
+db 0x00, 0x00, 0x00, 0x00
+db 0x00, 0x00, 0x00, 0x00
+db 0x00, 0x00, 0x00, 0x00
+pcolors_e:
+db 0x00, 0x00, 0x00, 0x00
+db 0x00, 0x00, 0x00, 0x00
+db 0x00, 0x00, 0x00, 0x00
+db 0x00, 0x00, 0x00, 0x00
+
 popart_asm:
 %define m_r xmm15
 %define m_r_back xmm14
@@ -148,22 +208,105 @@ mov i_dst, dst
     %define r xmm0
     %define g xmm1
     %define b xmm2
+    
+    ; traigo los 4 pixeles fuente y los replico en r, g y b
     movdqu r, [i_src+x]
     movdqa g, r
     movdqa b, r
     
+    ; r=[r4,r3,r2,r1], g=[g4,g3,g2,g1], b=[b4,b3,b2,b1]
     pshufb r, [mascara_r]
     pshufb g, [mascara_g]
     pshufb b, [mascara_b]
 
-    %define rgbsum r
-    paddw rgbsum, g
-    paddw rgbsum, b
+    ; rgbsum=[(r+g+b)4,(r+g+b)3,(r+g+b)2,(r+g+b)1]
+    %define  rgbsum r
+    paddw    rgbsum, g
+    paddw    rgbsum, b
 
-    ;;código
-    pshufb xmm0, xmm15
+    ; voy a generar sucesivas máscaras de bits 
+    ; en donde el registro va a valer "ffff" en los dwords 
+    ; que cumplan las condiciones que le pido
 
-    movdqu [i_dst+x], xmm0
+    ;; veo cuales son < 153
+    %define   lw153d xmm1
+    movdqa    lw153d, rgbsum; traigo una copia del registro original
+      ;lw153d = rgbsum
+    pcmpgtd   lw153d, [p152d]; veo cuales son mayores a 152
+      ;lw153d = {x: x>152}
+    pxor      lw153d, [ffffffffffffffffffffffffffffffff]; invierto el resultado
+      ;lw153d = {x: x<=152}
+      ;lw153d = {x: x<153}
+    
+    ;; veo cuales son >=153 y <306
+    %define   gte153_lw306d xmm2
+    movdqa    gte153_lw306d, rgbsum; traigo una copia del registro original
+      ;gte153_lw306d = rgbsum
+    pcmpgtd   gte153_lw306d, [p305d]; veo cuales son mayores a 305
+      ;gte153_lw306d = {x: x>305}
+    por       gte153_lw306d, lw153d; agrego los menores a 153
+      ;gte153_lw306d = {x: x<153 v x>305}
+    pxor      gte153_lw306d, [ffffffffffffffffffffffffffffffff]; invierto el resultado
+      ;gte153_lw306d = {x: x>=153 ^ x<=305}
+      ;gte153_lw306d = {x: x>=153 ^ x<306}
+
+    ;; veo cuales son >=306 y <459
+    %define   gte306_lw459d xmm3
+    movdqa    gte306_lw459d, rgbsum; traigo una copia del registro original
+      ;gte306_lw459d = rgbsum
+    pcmpgtd   gte306_lw459d, [p458d]; veo cuales son mayores a 458
+      ;gte306_lw459d = {x: x>458}
+    por       gte306_lw459d, lw153d; agrego los menores a 153
+      ;gte306_lw459d = {x: x<153 v x>458}
+    por       gte306_lw459d, gte153_lw306d; agrego los >=153 y <306
+      ;gte306_lw459d = {x: x<153 v (x>=153 ^ x<306) v x>458}
+      ;gte306_lw459d = {x: x<306 v x>458}
+    pxor      gte306_lw459d, [ffffffffffffffffffffffffffffffff]; invierto el resultado
+      ;gte306_lw459d = {x: x>=306 ^ x<=458}
+      ;gte306_lw459d = {x: x>=306 ^ x<459}
+
+    ;; veo cuales son >=459 y <612
+    %define   gte459_lw612d rgbsum
+      ;gte459_lw612d = rgbsum
+    pcmpgtd   gte459_lw612d, [p611d]; veo cuales son mayores a 611
+      ;gte459_lw612d = {x: x>611}
+    por       gte306_lw459d, lw153d; agrego los menores a 153
+    por       gte459_lw612d, gte153_lw306d; agrego los >=153 y <306
+    por       gte459_lw612d, gte306_lw459d; agrego los >=306 y <459
+      ;gte459_lw612d = {x: x<459 v x>611}
+    pxor      gte459_lw612d, [ffffffffffffffffffffffffffffffff]; invierto el resultado
+      ;gte459_lw612d = {x: x>=459 ^ x<=611}
+      ;gte459_lw612d = {x: x>=459 ^ x<612}
+    
+    ;; veo los otros casos
+    %define   otherwise xmm4
+    ; mezclo todas las condiciones en un mismo registro
+    movdqa    otherwise, lw153d
+    por       otherwise, gte153_lw306d
+    por       otherwise, gte306_lw459d
+    por       otherwise, gte459_lw612d
+    pxor      otherwise, [ffffffffffffffffffffffffffffffff]; luego invierto el resultado
+
+    ; ahora, utilizando las máscaras de bits, voy a hacer "and"
+    ; contra los valores que deberían tener los registros para cada situación
+
+    pand      lw153d,        [pcolors_a]
+    pand      gte153_lw306d, [pcolors_b]
+    pand      gte306_lw459d, [pcolors_c]
+    pand      gte459_lw612d, [pcolors_d]
+    pand      otherwise,     [pcolors_e]
+
+    ; ahora fusiono todos los resultados
+    %define result_d gte459_lw612d
+    por       result_d, lw153d
+    por       result_d, gte153_lw306d
+    por       result_d, otherwise
+
+    ; ahora reacomodo el resultado porque lo tengo en dwords
+    %define result result_d
+    pshufb  result, [result_mask]
+
+    movdqu [i_dst+x], result
     add x,12; incremento x en 1
     cmp x, cols; comparo x con la cantidad de columnas
     jl .ciclo_columnas; si es menor o igual, sigo iterando
