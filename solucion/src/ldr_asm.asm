@@ -11,6 +11,11 @@ mask_borrar_last_byte: DB 0xFF, 0xFF, 0xFF, 0xFF,
 todosUnos:             DW 0x01, 0x01, 0x01, 0x01,
                        DW 0x01, 0x01, 0x01, 0x01,
 
+
+
+
+max: DQ 4876875.0
+
 section .text
 ;void ldr_asm    (
 	;unsigned char *src,
@@ -47,6 +52,7 @@ ldr_asm:
     mov src_it, src
     mov dst_it, dst
 
+    ;voy a guardar el valor de max.
 
     ;esto es provisiorio, me pongo en una posicion del medio para poder probar la funcion
     add src_it, 6
@@ -89,10 +95,11 @@ ldr_asm:
     paddw xmm0, xmm2
 
 
-    ;agarro la tercer fila
+    ;agarro la tercer fila ;aca especialmente me la tengo que guardar
     add r13, src_row_size
     movdqu xmm2, [r13]
     pand xmm2, xmm14
+    movdqu xmm4, xmm2 ;despues la voy a tener que usar
     movdqu xmm3, xmm2
     punpcklbw xmm3, xmm15
     punpckhbw xmm2, xmm15
@@ -133,6 +140,7 @@ ldr_asm:
     phaddw xmm0, xmm15
     phaddw xmm0, xmm15
 
+    
 
 .fin:
     pop rbp

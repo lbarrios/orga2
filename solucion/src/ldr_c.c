@@ -19,7 +19,8 @@ void ldr_c    (
     unsigned char (*src_matrix)[src_row_size] = (unsigned char (*)[src_row_size]) src;
     unsigned char (*dst_matrix)[dst_row_size] = (unsigned char (*)[dst_row_size]) dst;
 
-    double max = 4876875;
+    int max = 4876875;
+
 
     for (int i = 0; i < filas; i++)
     {
