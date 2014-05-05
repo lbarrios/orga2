@@ -46,10 +46,11 @@ void ldr_c    (
                 dst_matrix[i][j * 3 + 1] = MIN(255, MAX(0, src_matrix[i][j * 3 + 1] + (src_matrix[i][j * 3 + 1] * alfa * suma_vecinos) / max));
                 dst_matrix[i][j * 3 + 2] = MIN(255, MAX(0, src_matrix[i][j * 3 + 2] + (src_matrix[i][j * 3 + 2] * alfa * suma_vecinos) / max));
 
+                /*
                 if (primeraVez) {
                     primeraVez = false;
                     printf("b: %d, g: %d, r: %d\n", dst_matrix[i][j * 3], dst_matrix[i][j * 3 + 1], dst_matrix[i][j * 3 + 2]);
-                }
+                }*/
             }
         }
     }
