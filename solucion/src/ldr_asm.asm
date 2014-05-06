@@ -1,4 +1,6 @@
 
+;podes asumir que tiene por lo menos 5 pixeles de alto, dijo David
+
 global ldr_asm
 
 section .data

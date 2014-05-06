@@ -42,6 +42,9 @@ void procesar_opciones(int argc, char **argv, configuracion_t *config)
 	config->archivo_entrada = NULL;
 	config->carpeta_salida = ".";
 	config->extra_archivo_salida = "";
+        // esto lo agregue yo
+        config->tiempo = false;
+        config->cant_iteraciones = 1;
 
 	// extraemos opciones de la linea de comandos
 	const char* const op_cortas = "hi:vt:fo:wn";
@@ -59,6 +62,7 @@ void procesar_opciones(int argc, char **argv, configuracion_t *config)
 	};
 
 
+        // no se para que el while
 	while (1) {
 		siguiente_opcion = getopt_long ( argc, argv, op_cortas, op_largas, NULL);
 
@@ -151,6 +155,11 @@ void procesar_opciones(int argc, char **argv, configuracion_t *config)
             exit (EXIT_FAILURE) ;
         }
 	}
+        // esto lo agregue yo
+        if (tiempo) {
+            config->tiempo = true;
+            config->cant_iteraciones = cant_iteraciones;
+        }
 }
 
 
