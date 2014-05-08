@@ -42,6 +42,10 @@ $(BIN): $(OBJS)
 	$(CC) $(CFLAGS) $(OBJS) -o $@ $(OPENCV_LIB) -lm
 	cp $(BIN) $(BIN_DIR)/$(BIN)
 
+$(BIN).O2: $(OBJS)
+	$(CC) $(CFLAGS) -O2 $(OBJS) -o $@ $(OPENCV_LIB) -lm
+	cp $(BIN).O2 $(BIN_DIR)/$(BIN).O2
+
 opencv_wrapper.o: opencv_wrapper.c
 	$(CC) $(CFLAGS) -c -o $@ $< $(OPENCV_LIB)
 
@@ -51,12 +55,12 @@ opencv_wrapper.o: opencv_wrapper.c
 %.o: %.asm
 	$(ASM) $(ASMFLAGS) -o $@ $<
 
-all: $(BIN)
+all: $(BIN) $(BIN).O2
 
 clean:
 	rm -f $(OBJS)
-	rm -f ./$(BIN)
-	rm -f $(BIN_DIR)/$(BIN)
+	rm -f ./$(BIN) ./$(BIN).O2
+	rm -f $(BIN_DIR)/$(BIN) $(BIN_DIR)/$(BIN).O2
 
 
 installopencv:
