@@ -51,6 +51,12 @@ ldr_asm:
     push rbp
     mov rbp, rsp
     
+    push rbx
+    push r12
+    push r13
+    push r14
+    push r15
+
     ;extiendo parametros para que sean todos quadword
     mov edx, edx ;esto supuestamente limpia la parte alta
     mov ecx, ecx
@@ -502,5 +508,11 @@ ldr_asm:
     jmp .copio16segundaFila_final
 
 .fin:
+    pop r15
+    pop r14
+    pop r13
+    pop r12
+    pop rbx
+
     pop rbp
     ret
