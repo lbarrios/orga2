@@ -58,7 +58,7 @@ ldr_asm:
     push r15
 
     ;extiendo parametros para que sean todos quadword
-    mov edx, edx ;esto supuestamente limpia la parte alta
+    mov edx, edx
     mov ecx, ecx
     mov r8d, r8d
     mov r9d, r9d
@@ -109,11 +109,6 @@ ldr_asm:
     %define src_ij_r xmm4
     
 
-    ;esto es provisorio, me pongo en una posicion del medio para poder probar la funcion
-    ;add src_it, 6
-    ;add src_it, src_row_size 
-    ;add src_it, src_row_size
-
     xor col_byte, col_byte
     
     lea r10, [rdx * 3]
@@ -123,8 +118,7 @@ ldr_asm:
     sub rcx, 1 ;pensa, tenes que avanzar 'filas - 1' filas
     mov rax, rcx
     mul src_row_size
-    add rsi, rax ; esperemos que haya funcionado el mul
-    ;esto rompe rdx
+    add rsi, rax
     add rsi, ancho_total_byte
     sub rsi, 15
 
@@ -145,6 +139,7 @@ ldr_asm:
     add dst_it, 16
     jmp .copio16
 
+
 .conRetrocesoPrimeraFila:
     cmp col_byte, ancho_total_byte
     je .segundaFila
@@ -157,6 +152,7 @@ ldr_asm:
     sub dst_it, rax
     jmp .copio16
 
+
 .segundaFila:
     ;me posiciono bien
     xor col_byte, col_byte
@@ -164,6 +160,7 @@ ldr_asm:
     add src_it, src_row_size
     sub dst_it, ancho_total_byte
     add dst_it, dst_row_size
+
 
 .copio16segundaFila:
     lea r15, [col_byte + 16]
@@ -176,7 +173,6 @@ ldr_asm:
     add dst_it, 16
     jmp .copio16segundaFila
 
-;esperemos que tenga por lo menos 3 filas, jaja
 
 .conRetrocesoSegundaFila:
     cmp col_byte, ancho_total_byte
@@ -189,6 +185,7 @@ ldr_asm:
     sub src_it, rax
     sub dst_it, rax
     jmp .copio16segundaFila
+
 
 .terceraFila:
     ;me posiciono bien
@@ -205,13 +202,13 @@ ldr_asm:
     add src_it, 6
     add dst_it, 6
 
+
 .procesaPixel:
     ;primero COMPARA si llegaste al final de la fila
     cmp col_byte, yaEstoyEnBorde
     je .copiaDosBordes
 
     ;primero obtengo sumargb
-    ;primero te fijas si no estas en los bordes
     
     ; obtengo la fila de arriba. en r13 me voy a guardar la direccion de memoria
     mov r13, src_it
@@ -226,7 +223,7 @@ ldr_asm:
     pxor xmm15, xmm15
     movdqu xmm1, xmm0
     punpcklbw xmm1, xmm15 ;xmm1: g3 b3 | r2 g2 b2 | r1 g1 b1
-    punpckhbw xmm0, xmm15 ;xmm0: 0 | r5 g5 b5 | r4 g4 b4 | r23
+    punpckhbw xmm0, xmm15 ;xmm0: 0 | r5 g5 b5 | r4 g4 b4 | r3
 
 
     ;agarro la segunda fila
@@ -298,7 +295,7 @@ ldr_asm:
     ; ahora tengo max, alfa, sumargb en xmm6, xmm7, xmm8 repetido como double precision
 
     ;en xmm5 tengo la fila que me interesa
-    movdqa xmm4, xmm5 ;notar el aligned, esto se puede hacer con registros
+    movdqa xmm4, xmm5
     movdqa xmm3, xmm5
     pshufb xmm5, mask_solo_g_y_b
     pshufb xmm4, mask_solo_r
@@ -323,7 +320,7 @@ ldr_asm:
     movd eax, src_ij_r
     pinsrd src_ij_gb, eax, 2
 
-    ;paso de signed int a signed double
+    ;paso de signed int a signed word
     packssdw src_ij_gb, src_ij_gb
 
     ;sumo con el original
@@ -332,7 +329,7 @@ ldr_asm:
     ;ahora debo volver a byte, saturando
     packuswb src_ij_gb, src_ij_gb
 
-    ;escribo a memoria, escribo un byte de mas al pedo
+    ;escribo a memoria, escribo un byte de mas que no importa
     movd [dst_it], src_ij_gb
 
     ;no te olvides de actualizar iteradores
@@ -340,6 +337,7 @@ ldr_asm:
     add src_it, 3
     add dst_it, 3
     jmp .procesaPixel
+
 
 .copiaDosBordes:
     ;aca estoy leyendo y escribiendo sobre el padding/siguiente fila
@@ -360,6 +358,7 @@ ldr_asm:
     add src_it, 6
     add dst_it, 6
     jmp .procesaPixel
+
 
 .esElUltimoPixelAProcesar:
     ; me corro uno a la izquierda
@@ -462,6 +461,7 @@ ldr_asm:
     add dst_it, 16
     jmp .copio16_final
 
+
 .conRetrocesoPrimeraFila_final:
     cmp col_byte, ancho_total_byte
     je .segundaFila_final
@@ -474,6 +474,7 @@ ldr_asm:
     sub dst_it, rax
     jmp .copio16_final
 
+
 .segundaFila_final:
     ;me posiciono bien
     xor col_byte, col_byte
@@ -481,6 +482,7 @@ ldr_asm:
     add src_it, src_row_size
     sub dst_it, ancho_total_byte
     add dst_it, dst_row_size
+
 
 .copio16segundaFila_final:
     lea r15, [col_byte + 16]
@@ -493,7 +495,6 @@ ldr_asm:
     add dst_it, 16
     jmp .copio16segundaFila_final
 
-;esperemos que tenga por lo menos 3 filas, jaja
 
 .conRetrocesoSegundaFila_final:
     cmp col_byte, ancho_total_byte
@@ -506,6 +507,7 @@ ldr_asm:
     sub src_it, rax
     sub dst_it, rax
     jmp .copio16segundaFila_final
+
 
 .fin:
     pop r15
