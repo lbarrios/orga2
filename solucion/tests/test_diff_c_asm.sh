@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 DATADIR=./data
 INPUTDIR=$DATADIR/imagenes_a_testear
