@@ -17,14 +17,15 @@ except:
   print( "Debe ingresar el nombre de la imagen que desea testear como primer parámetro, o * para todas las imágenes." )
   print( "Debe el filtro como segundo parámetro." )
   print( "\nEjemplos: " )
-  print( "\tpython3 correrTest.py lena tiles" )
-  print( "\tpython3 correrTest.py * tiles" )
+  print( "\tpython3 correrTest.py lena tiles\t\t\t para graficar una en especial" )
+  print( "\tpython3 correrTest.py TODAS tiles\t\t\t para correr todas juntas" )
   quit()
 
-if(imagen=='*'):
+if imagen=="TODAS":
   inputFiles = glob( "{}/*.{}.*.txt".format(inputDir,filtro) )
 else:
   inputFiles = glob( "{}/{}.*.{}.*.txt".format(inputDir,imagen,filtro) )
+  print imagen
 
 # Parseo inputFile
 if len(inputFiles)==0:
@@ -74,12 +75,18 @@ subplot.yaxis.set_major_formatter(formatter)
 
 # Aplico formato
 plt.grid(True)
-plt.title("Ejercicio 2 (cuartiles)")
-plt.ylabel('Tiempo (segundos)')
-plt.xlabel(u'Tamaño de entrada (sapos)')
+plt.title("{}".format(filtro))
+plt.ylabel('Ciclos del procesador')
+plt.xlabel(u'Tamaño de entrada (pixeles)')
 
 plt.plot(np.array( x_c ), np.array( y_c ), linestyle='-',  color='red', linewidth=2, label='C', alpha=1) 
 plt.plot(np.array( x_asm ), np.array( y_asm ), linestyle='-',  color='blue', linewidth=2, label='ASM', alpha=1) 
 plt.legend(loc=2)
 
-plt.show()
+#plt.show()
+
+import time
+
+if not os.path.exists(outputDir) or not os.path.isdir(outputDir):
+  os.makedirs(outputDir)
+plt.savefig(outputDir+"/{}.{}.pdf".format(filtro,time.strftime('%Y-%m-%d-%H-%M-%S', time.localtime())))
