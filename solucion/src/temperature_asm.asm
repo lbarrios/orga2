@@ -139,6 +139,10 @@ db 0x80, 0x80, 0x80, 0x80
 section .text
 
 temperature_asm:
+push r12
+push r13
+push r14
+push r15
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ; Defino macros para parámetros que me vinieron de entrada; limpio las partes altas de ser necesario
@@ -742,6 +746,9 @@ sub cols, 16
 
 
 
-
+pop r15
+pop r14
+pop r13
+pop r12
 
 ret

@@ -121,6 +121,11 @@ db 255, 255, 0, 0
 section .text
 
 popart_asm:
+push r12
+push r13
+push r14
+push r15
+
 %define m_r xmm15
 %define m_r_back xmm14
 %define m_g xmm13
@@ -511,5 +516,10 @@ mov i_dst, dst
   inc y; incremento y en 1
   cmp y, filas
   jb .ciclo_filas
+
+pop r15
+pop r14
+pop r13
+pop r12
 
 ret
