@@ -66,12 +66,16 @@ import matplotlib.pyplot as plt
 import matplotlib.ticker as tck
 from time import strftime
 # - Arreglo la columna tiempo
-formatter = tck.EngFormatter(unit='s', places=1) # Formato "segundos"
+formatter = tck.EngFormatter(unit='.', places=1) # Formato "segundos"
 formatter.ENG_PREFIXES[-6] = 'u' # Arreglo el símbolo "mu"
+# - Arreglo la columna x
+formatter_x = tck.EngFormatter(unit='px', places=1) # Formato "segundos"
+formatter_x.ENG_PREFIXES[-6] = 'u' # Arreglo el símbolo "mu"
 # - Creo los subplot
 #fig, subplot = plt.subplots(nrows=t_types, ncols=1, sharex=True, sharey=False)
 fig,subplot = plt.subplots()
 subplot.yaxis.set_major_formatter(formatter)
+subplot.xaxis.set_major_formatter(formatter_x)
 
 # Aplico formato
 plt.grid(True)
