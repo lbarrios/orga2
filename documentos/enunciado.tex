@@ -1,6 +1,14 @@
 \subsection*{Filtro \textit{tiles}}
 
- Programar el filtro \textit{tiles} en lenguaje C y luego en ASM haciendo uso de las instrucciones vectoriales (\textbf{SSE}).
+Programar el filtro \textit{tiles} en lenguaje C y luego en ASM haciendo uso de las instrucciones vectoriales (\textbf{SSE}).
+    
+
+\vspace*{0.3cm} \noindent
+\textbf{Descripción}
+
+En esta función, el procesamiento de los pixeles es muy sencillo. Se debe copiar un fragmento de la imagen repetidas veces. Se copian de a 5 
+pixeles, que es la máxima cantidad que entra en un registro xmm. Lo complejo de esta función fue llevar control de la parte a copiar, mediante
+varias comparaciones en el ciclo principal.
 
 
 \vspace*{0.3cm} \noindent
@@ -127,6 +135,36 @@ Compile el código de C con optimizaciones del compilador, por ejemplo, pasando 
 \subsection*{Filtro \textit{LDR}}
   Programar el filtro \textit{LDR} en lenguaje C y en
   ASM haciendo uso de las instrucciones \textbf{SSE}.
+
+\vspace*{0.3cm} \noindent
+\textbf{Descripción}
+
+En este filtro se procesa de a un solo pixel en cada iteración del ciclo principal. Esto se debe a que para cada pixel no alcanza una lectura a
+memoria; se deben leer los 24 pixeles a su alrededor, lo que insume 5 lecturas a memoria.
+Primero se calcula la suma de las componentes r, g, y b de los pixeles circundantes. El valor máximo de esta suma es 5 * 5 * 255 * 3 = 19125 que 
+ocupa 15 bits. Ésto nos obliga a extender cada componente r, g, b a word antes de sumar, para prevenir un overflow.
+
+El valor máximo de una componente r, g, o b, es 255. El módulo de alfa tiene como valor máximo 255. Luego el dividendo tiene como valor máximo
+absoluto 1243603125, que ocupa 31 bits. Como la mantisa de un float es de 24 bits, debemos guardarlo en un double, cuya mantisa es de 53 bits.
+Debemos realizar tres divisiones, una para cada componente del pixel procesado. Como estamos trabajando con doubles, vamos a poder hacer dos
+divisiones en una sola instrucción, y la tercera en otra instrucción. Para podr hacer las dos divisiones, vamos a replicar ciertos valores 
+que nos interesan. 
+En registros xmm, como double, vamos a tener:
+
+$alfa | alfa$
+
+$max | max$
+
+$sumargb | sumargb$
+
+$- | src_r$
+
+$src_g | src_b$
+
+Luego procedemos a hacer las respectivas multiplicaciones y divisiones. Ahora, para sumar $src_{(i,j)}$ y $var_{(i,j)}$, los voy a tener que
+considerar como $signed$. Entonces, los voy a querer tener como signed word. $src_{(i,j)}$ lo voy a extender con ceros, y $var_{(i,j)}$, que era
+de punto flotante, lo voy a truncar con signo. Se efectua una suma con signo, ahora podemos trabajar con r, g, y b al mismo tiempo. El resultado
+se empaqueta de vuelta a byte, con saturación sin signo. Ahora se escribe el pixel procesado a memoria.
 
 \vspace*{0.3cm} \noindent
 \textbf{Experimento 1}
