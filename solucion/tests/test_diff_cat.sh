@@ -15,7 +15,7 @@ while read params_filtro; do
 	    ./buscardiff.sh catedra $imagen c 0 $params_filtro
 		if [ $? != 0 ]; then
 			OKDIFF=0
-#			exit # para que pare en el primer error descomentar esta linea
+			exit # para que pare en el primer error descomentar esta linea
 		fi
 	done
 done < corridas.txt

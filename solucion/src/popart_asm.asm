@@ -164,6 +164,8 @@ mov i_src, src
 %define i_dst r15
 mov i_dst, dst
 
+dec filas
+
 .ciclo_filas:
   .ciclo_columnas:
     %define r xmm0
