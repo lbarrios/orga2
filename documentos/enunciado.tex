@@ -16,6 +16,14 @@ varias comparaciones en el ciclo principal.
 
 Utilizar la herramienta \verb|objdump| para verificar como el compilador de C deja ensamblado el código C. Como es el código generado, ¿cómo se manipulan las variables locales?¿le parece que ese código generado podría optimizarse?
 
+
+El código queda escrito en 109 líneas, mientras que la versión de asm llevaba 202 líneas. Ésto se debe en parte al diferente enfoque al problema.
+tiles\_c procesa de a un pixel a la vez. tiles\_asm procesa de a cinco pixeles a la vez, pero tiene una estructura de control más compleja.
+Se puede ver que se guardan los parámetros de la función en la pila. Se efectúan demasiados accesos a memoria, para acceder a éstas variables.
+Dada esta función en particular, se podrían mantener una mayor cantidad de variables en los registros, y no tener que buscarlos a memoria en cada
+iteración del ciclo.
+
+
 \newpage
 \vspace*{0.3cm} \noindent
 \textbf{Experimento 2 - optimizaciones del compilador}
@@ -25,6 +33,19 @@ Compile el código de C con optimizaciones del compilador, por ejemplo, pasando 
 ¿Qué otros flags de optimización brinda el compilador?
 ¿Para qué sirven?
 
+Importante para los gráficos: con O2 y O3 dan el mismo archivo. No tiene sentido graficar nada.
+
+Insertar gráfico de barras comparando tamaño del código.
+
+Insertar gráfico comparando tiempos de ejecución 3*c + asm.
+
+Con la optimización O1, el compilador intenta reducir el tamaño del código y el tiempo de ejecución, sin aumentar demasiado el tiempo de
+compilación. Al mismo tiempo se va perdiendo la capacidad de $debugging$, ya que se puede alterar el orden de ejecución de las instrucciones.
+En este programa en particular, con la optimización, se pueden observar menos accesos a memoria. La optimización O1 activa el flag 
+$-fif-conversion$, que intenta transformar saltos condicionales a estructuras de control.
+Los niveles de optimización O2 y O3 optimizan aún más, a través de un mayor tiempo de complilación. Activan el flag $-foptimize-sibling-calls$,
+que elimina la recursión en funciones con recursión a la cola. Si se quiere minimazar el tamaño del archivo objeto, lo mejor es utilizar la
+optimización Os.
 
 \vspace*{0.3cm} \noindent
 \textbf{Experimento 3 - secuencial vs. vectorial}
@@ -33,6 +54,18 @@ Compile el código de C con optimizaciones del compilador, por ejemplo, pasando 
 	de C y ASM (el primero con -O1, -O2 y -O3).\\
 	¿Como realizó la medición?¿Cómo sabe que su medición es una buena medida?¿Cómo afecta a la medición la existencia de \emph{outliers}\footnote{en español, valor atípico: \url{http://es.wikipedia.org/wiki/Valor_atípico}}?¿De qué manera puede minimizar su impacto?¿Qué resultados obtiene si mientras corre los tests ejecuta otras aplicaciones que utilicen al máximo la CPU? 
 	Realizar un análisis \textbf{riguroso} de los resultados y acompañar con un gráfico que presente estas diferencias.
+
+
+La medición se realizó tomando el promedio de diez corridas del programa, para distintos tamaños de imagen. Se esperaba que los tiempos de
+ejecución de los filtros sea del orden del tamaño de entrada, lo que confirmamos viendo el carácter lineal de los gráficos.
+
+Se detectó la presencia de outliers, específicamente tiempos de ejecución mayores que lo esperado para ese tamaño de entrada. Esto pudo haber
+sido causado, entre otras causas, por el uso del procesador debido a interrupciones o procesos periódicos del sistema.
+
+Mediante el procedimiento utilizado bastó para poder gráficar los tiempos de ejecución como una línea recta con respecto al tamaño de la imagen.
+Si se hubiese necesitado un mejor tratamiento de los outliers, se podría haber iterado más veces. También se podría haber utilizado la mediana en
+vez de la media. Se sabe en la ciencia de la estadística que la mediana minimiza el impacto de los outliers. Sin embargo requiere ordenar los
+resultados, procedimiento algorítmicamente más complejo que obtener el promedio.
 
 
 \vspace*{0.3cm} \noindent
