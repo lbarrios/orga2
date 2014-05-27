@@ -108,12 +108,130 @@ resultados, procedimiento algorítmicamente más complejo que obtener el promedi
 	será posible tomar una medida del impacto de los saltos condicionales.
 	Analizar como varía la performance. 
 	
-	Si se le ocurren, mencionar otras posibles formas de medir el impacto de los saltos condicionales.
+	Si se le ocurren, mencionar otras posibles formas de medir el impacto de los 
+  saltos condicionales.
+\begin{center}
+\line(1,0){100}\hspace{1em}\line(1,0){1}\hspace{1em}\line(1,0){100}
+\end{center}
+\vspace*{0.3cm} \noindent
 
+Este filtro \textbf{reduce la imagen a un total de 5 colores} según el valor de
+la sumatoria de las componentes de cada pixel. Es decir, asigna el valor del
+pixel resultante según el intervalo en el que caiga la suma, con la
+particularidad de que estos cinco intervalos son \emph{de igual tamaño}. 
 
-%\vspace*{0.3cm} \noindent
+Por otro lado, la \textbf{suma mínima posible es $0$}, y la \textbf{suma máxima
+posible es $(255*3)=765$}, lo que significa que \textbf{para cualquier pixel la
+sumatoria estará contenida en $\{0,~\dots,~765\}$}. Dado que $765$ es
+convenientemente divisible por $5$, la longitud de cada intervalo es de $153$.
+Así, el pixel $P$ destino va a tomar un determinado valor $P_1=(r_1,g_1,b_1)$ si
+la sumatoria de las componentes del pixel fuente está contenida en
+$I_1=[0,152]$, un valor $P_2=(r_2,g_2,b_2)$ si la misma se encuentra en
+$I_2=[153,305]$, etc. Este último detalle es muy conveniente, ya que permite
+tener los pixeles en una tabla: \[COLORES=~<P_1,P_2,P_3,P_4,P_5>\] evitando así
+tener que efectuar el cálculo del valor del pixel en cada iteración. Más aún,
+desde el punto de vista implementativo esto es una gran ventaja, ya que es
+posible crear un vector de colores y acceder al mismo mediante los índices que
+resultan de \textbf{dividir\footnote{División entera (es decir, con
+truncamiento).} el valor de la sumatoria del pixel fuente por $153$}. De esta
+forma, es fácil ver que el índice para cada intervalo coincidirá con el color
+que le corresponde: \[INDICES=~<I_1,I_2,I_3,I_4,I_5>\footnote{Abuso de notación:
+se busca mostrar un ``paralelismo'' entre la tabla (vector) de colores expuesta
+algunos renglones más arriba y el índice en donde caerá la sumatoria de cada
+intervalo.}\].
+
+Utilizando este último concepto, es posible evitar el uso de condicionales en la
+versión de C del filtro, ya que para cada iteración simplemente: 
+
+\begin{enumerate}
+  \item Se obtienen los valores de las componentes $(R,G,B)$ del pixel fuente.
+  \item Se obtiene la suma \textbf{Sum} $=R+G+B$.
+  \item Se divide con truncamiento, obteniendo el índice \textbf{i} $=$ \textbf{Sum}$/153$.
+  \item Se obtiene el color resultante \textbf{c} $=$ \texttt{COLORES}[\textbf{i}].
+  \item Se asigna \textbf{c} al pixel destino.
+\end{enumerate}
 
 \newpage
+Para realizar esto, es necesario definir previamente el array:
+\begin{center}\begin{minipage}{10em}\begin{codesnippet}\begin{verbatim}
+
+rgb_t colors[] =
+{
+  {255,   0,   0},
+  {127,   0, 127},
+  {255,   0, 255},
+  {  0,   0, 255},
+  {  0, 255, 255},
+  {  0, 255, 255}
+};
+
+\end{verbatim}\end{codesnippet}\end{minipage}\end{center}  
+
+Es importante notar que dado que $765/153=5$ se sale del rango de índices
+\footnote{Es decir que el último color tiene de 154 valores de largo, y no 153
+como el resto} necesarios para 5 colores, $[0,\dots,4]$, fue necesario repetir
+el último color.
+
+Para la versión de Assembler se aprovechan las características de SIMD para
+poder paralelizar las operaciones de lectura y cálculos con los datos. En este
+caso, por cada iteración se leen 4 pixeles a la vez, es decir 12 bytes, tal y
+como se ve en \fig{popart1}. Estos pixeles se guardan en \texttt{xmm0}.
+Posteriormente se los replica en \texttt{xmm1} y \texttt{xmm2}.
+
+\begin{figure}[h]
+  \begin{center}
+  \includegraphics[scale=0.66]{imagenes/popart1.png}
+  \caption{Estado inicial de XMM0}
+  \label{fig:popart1}
+  \end{center}
+\end{figure}
+
+Luego se aplica la operación \texttt{PSHUFB} para cada registro, con las
+máscaras \textbf{<<MÁSCARA R>>}, \textbf{<<MÁSCARA G>>} y \textbf{<<MÁSCARA
+B>>}, tal y como se puede apreciar en \fig{popart_mask_r} para rojo,
+\fig{popart_mask_g} para verde y \fig{popart_mask_b} para azul respectivamente.
+Luego de aplicar estas máscaras, como los valores fuente eran bytes sin signo,
+se puede extenderlos simplemente agregando ceros adelante. Por la forma en que
+están dispuestos los valores, esta extensión del tamaño del dato es trivial, tal
+y como se ejemplifica en \fig{popart_extiende_r} para el color rojo. La misma
+``operación'' (trivial, virtual) se realiza para el resto de los registros.
+
+\begin{figure}[h]
+  \begin{center}
+  \includegraphics[scale=0.55]{imagenes/popart-mask-r.png}
+  \caption{\textbf{<<MÁSCARA R>>}}
+  \label{fig:popart_mask_r}
+  \end{center}
+\end{figure}
+
+\begin{figure}[h]
+  \begin{center}
+  \includegraphics[scale=0.55]{imagenes/popart-mask-g.png}
+  \caption{\textbf{<<MÁSCARA G>>}}
+  \label{fig:popart_mask_g}
+  \end{center}
+\end{figure}
+
+\begin{figure}[h]
+  \begin{center}
+  \includegraphics[scale=0.55]{imagenes/popart-mask-b.png}
+  \caption{\textbf{<<MÁSCARA B>>}}
+  \label{fig:popart_mask_b}
+  \end{center}
+\end{figure}
+
+\begin{figure}[h]
+  \begin{center}
+  \includegraphics[scale=0.66]{imagenes/popart-extiende-r.png}
+  \caption{Extiende el registro trivialmente}
+  \label{fig:popart_extiende_r}
+  \end{center}
+\end{figure}
+
+
+
+%\newpage
+\clearpage
 
 \vspace*{0.3cm} \noindent
 \textbf{Experimento 2 - cpu vs. bus de memoria}
