@@ -41,30 +41,42 @@ start:
 
     ; Imprimir mensaje de bienvenida
     imprimir_texto_mr iniciando_mr_msg, iniciando_mr_len, 0x07, 0, 0
-    
 
     ; Habilitar A20
     call habilitar_A20
     
     ; Cargar la GDT
-    LGDT [GDT_DESC]
+    lgdt [GDT_DESC]
     
+    xchg bx, bx
+
     ; Setear el bit PE del registro CR0
     mov eax, cr0
     or eax, 1
     mov cr0, eax
 
     ; Saltar a modo protegido
-    jmp 0x8:modo_protegido ; jmp far
+    jmp 0x40:modo_protegido ; jmp far
 
+BITS 32
 modo_protegido:
-
     ; Establecer selectores de segmentos
+    xor eax, eax
+    mov ax, 1010000b
+    mov ds, ax
+    mov es, ax
+    mov gs, ax
+    mov ss, ax
+
+    mov ax, 1100000b
+    mov fs, ax
     
     ; Establecer la base de la pila
-    
+    mov esp, 0x27000
     ; Imprimir mensaje de bienvenida
-    
+    xchg bx, bx
+    imprimir_texto_mp iniciando_mp_msg, iniciando_mp_len, 0x07, 0, 0
+    xchg bx, bx
     ; Inicializar pantalla
     
     ; Inicializar el manejador de memoria

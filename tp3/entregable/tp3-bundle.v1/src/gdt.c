@@ -32,7 +32,6 @@ gdt_entry gdt[GDT_COUNT] = {
   { (int) 0, (int) 0 },
   { (int) 0, (int) 0 },
   { (int) 0, (int) 0 },
-  { (int) 0, (int) 0 },
   {
     .base_0_15 = 0,
     .base_23_16 = 0,
@@ -93,13 +92,28 @@ gdt_entry gdt[GDT_COUNT] = {
     .limit_0_15 = 0xDCFF,
     .limit_16_19 = 0x2,
     .type = 0, // 1000 en binario, Data Read-Only
-    .s  = 1, // Código/Datos
+    .s = 1, // Código/Datos
     .dpl = 3, // Nivel de privilegio 3
     .p = 1, // 1 = Presente
     .avl = 0, // A disposición del programador
     .l = 0, // Va en 0 cuando estás en 32 bits
     .db = 1, // 0=16bits, 1=32bits
     .g = 1 // Granularidad, bloques de 4k
+  },
+  {
+    .base_0_15 = 0x8000,
+    .base_23_16 = 0xB,
+    .base_31_24 = 0,
+    .limit_0_15 = 0x1F40,
+    .limit_16_19 = 0,
+    .type = 2,
+    .s = 1,
+    .dpl = 0,
+    .p = 1,
+    .avl = 0,
+    .l = 0,
+    .db = 1,
+    .g = 0
   }
 };
 
