@@ -140,4 +140,24 @@
     popa
 %endmacro
 
+%macro pintar_campo_verde 0
+    mov ax, 0xA000
+    xor bx, bx
+    xor cx, cx
+    
+
+    .pintoLinea:
+        mov cx, 50
+     .pintoCaracter:   
+        mov word [fs:bx], ax
+        inc bx
+        inc bx
+        loop .pintoCaracter
+
+    .pasoSiguienteLinea:
+        add bx, 60 
+        cmp bx, 8000
+        jl .pintoLinea
+
+%endmacro
 %endif  ;; !__IMPRIMIR_MAC__ ;;
