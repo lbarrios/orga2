@@ -48,7 +48,6 @@ start:
     ; Cargar la GDT
     lgdt [GDT_DESC]
     
-    xchg bx, bx
 
     ; Setear el bit PE del registro CR0
     mov eax, cr0
@@ -74,9 +73,11 @@ modo_protegido:
     ; Establecer la base de la pila
     mov esp, 0x27000
     ; Imprimir mensaje de bienvenida
-    xchg bx, bx
     imprimir_texto_mp iniciando_mp_msg, iniciando_mp_len, 0x07, 2, 0
+
+    pintar_campo_verde
     xchg bx, bx
+
     ; Inicializar pantalla
     
     ; Inicializar el manejador de memoria
