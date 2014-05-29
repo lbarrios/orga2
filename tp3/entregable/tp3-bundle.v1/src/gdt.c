@@ -7,6 +7,23 @@
 
 #include "gdt.h"
 
+#define SEG_DATA_R          0x00 // Read-Only
+#define SEG_DATA_R_A        0x01 // Read-Only, accessed
+#define SEG_DATA_RW         0x02 // Read/Write
+#define SEG_DATA_RW_A       0x03 // Read/Write, accessed
+#define SEG_DATA_R_EXP      0x04 // Read-Only, expand-down
+#define SEG_DATA_R_EXP_A    0x05 // Read-Only, expand-down, accessed
+#define SEG_DATA_RW_EXP     0x06 // Read/Write, expand-down
+#define SEG_DATA_RW_EXP_A   0x07 // Read/Write, expand-down, accessed
+#define SEG_CODE_X          0x08 // Execute-Only
+#define SEG_CODE_X_A        0x09 // Execute-Only, accessed
+#define SEG_CODE_XR         0x0A // Execute/Read
+#define SEG_CODE_XR_A       0x0B // Execute/Read, accessed
+#define SEG_CODE_X_C        0x0C // Execute-Only, conforming
+#define SEG_CODE_X_C_A      0x0D // Execute-Only, conforming, accessed
+#define SEG_CODE_XR_C       0x0E // Execute/Read, conforming
+#define SEG_CODE_XR_CA      0x0F // Execute/Read, conforming, accessed
+
 gdt_entry gdt[GDT_COUNT] = {
   /* Descriptor nulo*/
   /* Offset = 0x00 */
@@ -32,6 +49,7 @@ gdt_entry gdt[GDT_COUNT] = {
   { (int) 0, (int) 0 },
   { (int) 0, (int) 0 },
   { (int) 0, (int) 0 },
+  // Segmento de código para Kernel (nivel 0)
   {
     .base_0_15 = 0,
     .base_23_16 = 0,
@@ -49,6 +67,7 @@ gdt_entry gdt[GDT_COUNT] = {
     .db = 1, // 0=16bits, 1=32bits
     .g = 1 // Granularidad, bloques de 4k
   },
+  // Segmento de código para Usuario (nivel 3)
   {
     .base_0_15 = 0,
     .base_23_16 = 0,
@@ -66,6 +85,7 @@ gdt_entry gdt[GDT_COUNT] = {
     .db = 1, // 0=16bits, 1=32bits
     .g = 1 // Granularidad, bloques de 4k
   },
+  // Segmento de datos para Kernel (nivel 0)
   {
     .base_0_15 = 0,
     .base_23_16 = 0,
@@ -74,7 +94,7 @@ gdt_entry gdt[GDT_COUNT] = {
     // o sea 0x2DCFF
     .limit_0_15 = 0xDCFF,
     .limit_16_19 = 0x2,
-    .type = 0, // 1000 en binario, Data Read-Only
+    .type = SEG_DATA_RW, // 1000 en binario, Data Read-Only
     .s  = 1, // Código/Datos
     .dpl = 0, // Nivel de privilegio 0
     .p = 1, // 1 = Presente
@@ -83,6 +103,7 @@ gdt_entry gdt[GDT_COUNT] = {
     .db = 1, // 0=16bits, 1=32bits
     .g = 1 // Granularidad, bloques de 4k
   },
+  // Segmento de datos para Usuario (nivel 3)
   {
     .base_0_15 = 0,
     .base_23_16 = 0,
