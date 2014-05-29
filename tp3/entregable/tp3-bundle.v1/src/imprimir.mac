@@ -143,11 +143,11 @@
 %macro pintar_campo_verde 0
     mov ax, 0xA000
     xor bx, bx
-    xor cx, cx
+    xor ecx, ecx
     
 
     .pintoLinea:
-        mov cx, 50
+        mov ecx, 50
      .pintoCaracter:   
         mov word [fs:bx], ax
         inc bx
