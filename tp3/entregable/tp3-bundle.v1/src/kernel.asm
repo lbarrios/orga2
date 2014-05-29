@@ -75,7 +75,7 @@ modo_protegido:
     mov esp, 0x27000
     ; Imprimir mensaje de bienvenida
     xchg bx, bx
-    imprimir_texto_mp iniciando_mp_msg, iniciando_mp_len, 0x07, 0, 0
+    imprimir_texto_mp iniciando_mp_msg, iniciando_mp_len, 0x07, 2, 0
     xchg bx, bx
     ; Inicializar pantalla
     
