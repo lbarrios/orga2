@@ -11,6 +11,19 @@ BITS 32
 sched_tarea_offset:     dd 0x00
 sched_tarea_selector:   dw 0x00
 
+;; mensajes de las excepciones del procesador
+exc_msg_0 DB "Divide Error (#DE)" ; notar que no ponen :
+exc_msg_len_0 equ $ - exc_msg_0
+
+exc_msg_1 DB "RESERVED (#DB)"
+exc_msg_len_1 equ $ - exc_msg_1
+
+exc_msg_2 DB "NMI Interrupt (--)"
+exc_msg_len_2 equ $ - exc_msg_2
+
+exc_msg_3 DB "Breakpoint (#BP)"
+exc_msg_len_3 equ $ - exc_msg_3
+
 ;; PIC
 extern fin_intr_pic1
 
@@ -29,13 +42,8 @@ extern game_minar
 global _isr%1
 
 _isr%1:
-.loopear:
-    ; To Infinity And Beyond!!
-    mov eax, 0xFFFF
-    mov ebx, 0xFFFF
-    mov ecx, 0xFFFF
-    mov edx, 0xFFFF
-    jmp $
+    imprimir_texto_mp exc_msg_%1, exc_msg_len_%1, 0x07, 2, 0
+    ; que mas hay que hacer?
 %endmacro
 
 ;;
@@ -49,6 +57,9 @@ isrClock:            db '|/-\'
 ;; Rutina de atención de las EXCEPCIONES
 ;; -------------------------------------------------------------------------- ;;
 ISR 0
+ISR 1
+ISR 2
+ISR 3
 
 ;;
 ;; Rutina de atención del RELOJ
