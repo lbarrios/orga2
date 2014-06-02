@@ -1,0 +1,61 @@
+% Ejercicio 6 - a)
+\paragraph{replace-me-with-a-descriptive-text}\label{subsubsec:ej6-a}
+Definir 3 entradas en la GDT para ser usadas como descriptores de TSS. Una será
+reservada para la tarea inicial y otras dos para realizar el intercambio entre
+tareas, denominadas TSS1 y TSS2 respectivamente.
+\hruler
+\fixme{Respuesta}
+
+% Ejercicio 6 - b)
+\paragraph{replace-me-with-a-descriptive-text}\label{subsubsec:ej6-b}
+Completar la entrada de la TSS1 con la información de la tarea Idle. Esta
+información se encuentra en el archivo TSS.C. La tarea Idle se encuentra en la
+dirección 0x00020000. La pila se alojará en la misma dirección que la pila del
+kernel y será mapeada con identity mapping. Esta tarea ocupa 2 paginas de 4KB y
+debe ser mapeada con identity mapping. Además la misma debe compartir el mismo
+CR3 que el kernel.
+\hruler
+\fixme{Respuesta}
+
+% Ejercicio 6 - c)
+\paragraph{replace-me-with-a-descriptive-text}\label{subsubsec:ej6-c}
+Completar el resto de la información correspondiente a cada tarea en la
+estructura auxiliar de contextos. El código de las tareas se encuentra a partir
+de la dirección 0x00010000 ocupando dos páginas de 4kb cada una. El mismo debe
+ser mapeado a partir de la dirección 0x08000000. Para la dirección de la pila se
+debe utilizar el mismo espacio de la tarea, la misma crecerá desde la base de la
+tarea. Para el mapa de memoria se debe construir uno nuevo para cada tarea
+utilizando la función mmu inicializar dir usuario. Además, tener en cuenta que
+cada tarea utilizará una pila distinta de nivel 0, para esto se debe pedir una
+nueva pagina libre a tal fin.
+\hruler
+\fixme{Respuesta}
+
+% Ejercicio 6 - d)
+\paragraph{replace-me-with-a-descriptive-text}\label{subsubsec:ej6-d}
+Completar la entrada de la GDT correspondiente a la tarea inicial.
+\hruler
+\fixme{Respuesta}
+
+% Ejercicio 6 - e)
+\paragraph{replace-me-with-a-descriptive-text}\label{subsubsec:ej6-e}
+Completar la entrada de la GDT correspondiente a la TSS1, que contiene la
+información de la tarea Idle.
+\hruler
+\fixme{Respuesta}
+
+% Ejercicio 6 - f)
+\paragraph{replace-me-with-a-descriptive-text}\label{subsubsec:ej6-f}
+Completar la entrada de la GDT correspondiente a la TSS2.
+\hruler
+\fixme{Respuesta}
+
+% Ejercicio 6 - g)
+\paragraph{replace-me-with-a-descriptive-text}\label{subsubsec:ej6-g}
+Escribir el código necesario para ejecutar la tarea Idle, es decir, saltar
+intercambiando las TSS, entre la tarea inicial y la tarea Idle.
+
+Nota: En tss.c están definidas las tss como estructuras TSS. Trabajar en tss.c y
+kernel.asm.
+\hruler
+\fixme{Respuesta}
