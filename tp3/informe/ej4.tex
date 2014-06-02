@@ -1,0 +1,43 @@
+% Ejercicio 4 - a)
+\paragraph{replace-me-with-a-descriptive-text}\label{subsubsec:ej4-a}
+Escribir una rutina (inicializar mmu) que se encargue de inicializar las
+estructuras necesarias para administrar la memoria en el area libre.
+\hruler
+\fixme{Respuesta}
+
+% Ejercicio 4 - b)
+\paragraph{replace-me-with-a-descriptive-text}\label{subsubsec:ej4-b}
+Escribir una rutina (mmu inicializar dir tarea) encargada de inicializar un
+directorio de páginas y tablas de páginas para una tarea, respetando la figura
+5. La rutina debe copiar el código de la tarea a su área asignada, es decir sus
+dos páginas de código dentro de el mapa y mapear dichas páginas a partir de la
+dirección virtual 0x08000000(128MB).
+\hruler
+\fixme{Respuesta}
+
+% Ejercicio 4 - c)
+\paragraph{replace-me-with-a-descriptive-text}\label{subsubsec:ej4-c}
+Escribir dos rutinas encargadas de mapear y desmapear páginas de memoria.
+
+I- mmu mapear pagina(unsigned int virtual, unsigned int cr3, unsigned int
+fisica) Permite mapear la página física correspondiente a fisica en la dirección
+virtual virtual utilizando cr3.
+
+II- mmu unmapear pagina(unsigned int virtual, unsigned int cr3). Borra el mapeo
+creado en la dirección virtual virtual utilizando cr3.
+\hruler
+\fixme{Respuesta}
+
+% Ejercicio 4 - d)
+\paragraph{replace-me-with-a-descriptive-text}\label{subsubsec:ej4-d}
+Construir un mapa de memoria para tareas e intercambiarlo con el del kernel,
+luego cambiar el color del fondo del primer caracter de la pantalla y volver a
+la normalidad.
+
+Nota: Por la construcción del kernel, las direcciones de los los mapas de
+memoria (page directory y page table) están mapeadas con identity mapping. En
+los ejercicios en donde se modifica el directorio o tabla de páginas, hay que
+llamar a la función tlbflush para que se invalide la cache de traducción de
+direcciones.
+\hruler
+\fixme{Respuesta}

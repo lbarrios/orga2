@@ -1,0 +1,37 @@
+% Ejercicio 1 - a)
+\paragraph{GDT Básica}\label{subsubsec:ej1-a}
+Completar la Tabla de Descriptores Globales (GDT) con 4 segmentos, dos para
+código de nivel 0 y 3; y otros dos para datos de nivel 0 y 3. Estos segmentos
+deben direccionar los primeros 733MB de memoria. En la gdt, por restricción del
+trabajo práctico, las primeras 10 8 posiciones se consideran utilizadas y no
+deben utilizarse. El primer índice que deben usar para declarar los segmentos,
+es el 9 (contando desde cero).
+\hruler
+\fixme{Respuesta}
+
+% Ejercicio 1 - b)
+\paragraph{Modo Protegido}\label{subsubsec:ej1-b}
+Completar el código necesario para pasar a modo protegido y setear la pila del
+kernel en la dirección 0x27000.
+\hruler
+\fixme{Respuesta}
+
+% Ejercicio 1 - c)
+\paragraph{GDT - Área de Memoria}\label{subsubsec:ej1-c}
+Declarar un segmento adicional que describa el área de la pantalla en memoria
+que pueda ser utilizado sólo por el kernel.
+\hruler
+\fixme{Respuesta}
+
+% Ejercicio 1 - d)
+\paragraph{Limpiar la pantalla}\label{subsubsec:ej1-d}
+Escribir una rutina que se encargue de limpiar la pantalla y pintar el area de
+el mapa un fondo de color (sugerido verde). Para este ejercicio se debe escribir
+en la pantalla usando el segmento declarado en el punto anterior (para los
+próximos ejercicios se accederá a la memoria de vídeo por medio del segmento de
+datos de 773MB).
+
+Nota: La GDT es un arreglo de gdt entry declarado sólo una vez como gdt. El
+descriptor de la GDT en el código se llama GDT DESC.
+\hruler
+\fixme{Respuesta}

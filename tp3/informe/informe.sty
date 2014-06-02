@@ -1,0 +1,27 @@
+% make the depth of sections and index to 5
+\setcounter{secnumdepth}{5}
+\setcounter{tocdepth}{5}
+
+% -- commands --
+% specialize \ref command
+\newcommand{\fig}[1]{\textbf{\textit{Figura \ref{fig:#1}}}}
+
+% redefine section commands
+% \renewcommand{\thesubsubsection}{\thesection.\thesubsection.\alph{subsubsection}}
+\renewcommand{\thesection}{\Roman{section}}
+\renewcommand{\thesubsection}{\arabic{subsection}}
+\renewcommand{\thesubsubsection}{\alph{subsubsection}}
+\renewcommand{\theparagraph}{\alph{paragraph}}
+% redefine section decoration
+\usepackage{titlesec}
+\titlelabel{\thetitle)\quad}
+% make the paragraph counter reset at every subsection
+\@addtoreset{paragraph}{subsection}
+
+% make a command for the h-ruler
+\newcommand{\hruler}{\begin{center}%
+\line(1,0){100}\hspace{1em}\line(1,0){1}\hspace{1em}\line(1,0){100}%
+\end{center}%
+\vspace*{0.3cm} \noindent}
+
+\newcommand{\fixme}[1]{{\color{red}\textbf{\Large\texttt{FIXME}: #1}}}
