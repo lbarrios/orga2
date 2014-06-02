@@ -11,7 +11,7 @@ rgb_t colors[] =
   {255,   0, 255},
   {  0,   0, 255},
   {  0, 255, 255},
-  {  0, 255, 255} // Cuando pixel = {255,255,255} la división da 5.
+  {  0, 255, 255} // Cuando pixel = {255,255,255} la división da 5, con esto se arregla.
 };
 
 void popart_c ( unsigned char* src, unsigned char* dst, int cols, int filas, int src_row_size, int dst_row_size )

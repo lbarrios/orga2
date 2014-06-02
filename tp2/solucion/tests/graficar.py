@@ -17,8 +17,8 @@ except:
   print( "Debe ingresar el nombre de la imagen que desea testear como primer parámetro, o * para todas las imágenes." )
   print( "Debe el filtro como segundo parámetro." )
   print( "\nEjemplos: " )
-  print( "\tpython3 correrTest.py lena tiles\t\t\t para graficar una en especial" )
-  print( "\tpython3 correrTest.py TODAS tiles\t\t\t para correr todas juntas" )
+  print( "\tpython2 graficar.py lena tiles\t\t\t para graficar una en especial" )
+  print( "\tpython2 graficar.py TODAS tiles\t\t\t para correr todas juntas" )
   quit()
 
 if imagen=="TODAS":
