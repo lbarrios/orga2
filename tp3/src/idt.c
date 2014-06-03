@@ -34,6 +34,7 @@ idt_descriptor IDT_DESC = {
 */
 
 #define IDT_ENTRY(numero)                                                                                        \
+    void _isr ## numero ();                                                                                         \
     idt[numero].offset_0_15 = (unsigned short) ((unsigned int)(&_isr ## numero) & (unsigned int) 0xFFFF);        \
     idt[numero].segsel = (unsigned short) 0x40;                                                                  \
     idt[numero].attr = (unsigned short) 0x8700;                                                                  \
@@ -45,7 +46,6 @@ unsigned int idt_inicializar() {
     IDT_ENTRY(1)
     IDT_ENTRY(2)
     IDT_ENTRY(3)
-    /*
     IDT_ENTRY(4)
     IDT_ENTRY(5)
     IDT_ENTRY(6)
@@ -74,6 +74,7 @@ unsigned int idt_inicializar() {
     IDT_ENTRY(29)
     IDT_ENTRY(30)
     IDT_ENTRY(31)
+    /*
     IDT_ENTRY(32)
     */
     return (unsigned int)tss_tanques;
