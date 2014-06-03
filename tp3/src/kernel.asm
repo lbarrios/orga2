@@ -78,13 +78,14 @@ modo_protegido:
 
     pintar_campo_verde
 
+    xchg bx, bx
+
     ; Cargar interrupciones del procesador
     call idt_inicializar
     lidt [IDT_DESC]
-    int 0
-    int 1
-    int 2
-    int 3
+
+    xor ebx, ebx
+    idiv ebx; Acá tendría que levantar una excepción
     xchg bx, bx
 
     ; Inicializar pantalla

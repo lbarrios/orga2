@@ -69,7 +69,8 @@ extern game_minar
 global _isr%1
 
 _isr%1:
-   imprimir_texto_mp exc_msg_%1, exc_msg_len_%1, 0x07, 0, 0
+  imprimir_texto_mp exc_msg_%1, exc_msg_len_%1, 0x07, 0, 0
+  xchg bx, bx
 %endmacro
 
 ;;
