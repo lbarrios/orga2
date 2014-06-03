@@ -174,7 +174,7 @@ clean:
 	rm -f *.o
 	rm -f *.bin
 	rm -f *.tmp
-	rm -f *.ctsko
+	rm -f *.ctsk
 	rm -f *.tsko
 	rm -f *.tsk
 	rm -f $(DISK_IMG)
