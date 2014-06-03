@@ -5,7 +5,8 @@
 
 %include "imprimir.mac"
 extern GDT_DESC
-
+extern IDT_DESC
+extern idt_inicializar
 
 global start
 
@@ -76,6 +77,14 @@ modo_protegido:
     imprimir_texto_mp iniciando_mp_msg, iniciando_mp_len, 0x07, 2, 0
 
     pintar_campo_verde
+
+    ; Cargar interrupciones del procesador
+    call idt_inicializar
+    lidt [IDT_DESC]
+    int 0
+    int 1
+    int 2
+    int 3
     xchg bx, bx
 
     ; Inicializar pantalla
