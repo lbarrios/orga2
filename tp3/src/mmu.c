@@ -39,7 +39,7 @@ void mmu_inicializar_dir_kernel()
     // bit de "base de tabla" como la dirección de la base de la primera tabla
     // sumado al índice*TAM_TABLA, o sea (índice*4K) => (0x28000 + 0x1000*i).
     // (¡¡¡Todo esto shifteado 12 posiciones hacia la derecha!!!)
-    pde->table_base = ( (FIRST_PAGE_TABLE+ (i * PAGE_SIZE)) >> 12 );
+    pde->table_base = ( (FIRST_PAGE_TABLE + (i * PAGE_TABLE_ENTRY_SIZE * PAGE_TABLE_ENTRY_COUNT)) >> 12 );
     // Para cada tabla a la que estoy apuntando
     // recorro sus 1024 entradas y las lleno con entradas nulas
     for (j = 0; j < PAGE_TABLE_ENTRY_COUNT; j++)

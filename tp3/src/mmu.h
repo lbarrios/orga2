@@ -13,9 +13,6 @@
 #include "tss.h"
 #include "game.h"
 
-#define PAGE_DIR_ENTRY_NOT_PRESENT (int) 0
-#define PAGE_TABLE_ENTRY_NOT_PRESENT (int) 0
-
 
 typedef struct str_page_dir_entry {
   unsigned char present:1;
