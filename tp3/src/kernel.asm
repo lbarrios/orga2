@@ -7,6 +7,7 @@
 extern GDT_DESC
 extern IDT_DESC
 extern idt_inicializar
+extern mmu_inicializar_dir_kernel
 
 global start
 
@@ -78,26 +79,37 @@ modo_protegido:
 
     pintar_campo_verde
 
-    xchg bx, bx
-
     ; Cargar interrupciones del procesador
     call idt_inicializar
     lidt [IDT_DESC]
+    ;int 0
+    ;int 1
+    ;int 2
+    ;int 3
 
-    xor ebx, ebx
-    idiv ebx; Acá tendría que levantar una excepción
-    xchg bx, bx
+
+
+
+
+
 
     ; Inicializar pantalla
     
     ; Inicializar el manejador de memoria
     
     ; Inicializar el directorio de paginas
+    call mmu_inicializar_dir_kernel
     
     ; Cargar directorio de paginas
+    mov eax, 0x27000
+    mov cr3, eax
     
     ; Habilitar paginacion
+    mov eax, cr0
+    or eax, 0x80000000
+    mov cr0, eax
     
+    xchg bx, bx
     ; Inicializar tss
     
     ; Inicializar tss de la tarea Idle
