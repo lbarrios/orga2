@@ -3,11 +3,50 @@
 Completar la Tabla de Descriptores Globales (GDT) con 4 segmentos, dos para
 código de nivel 0 y 3; y otros dos para datos de nivel 0 y 3. Estos segmentos
 deben direccionar los primeros 733MB de memoria. En la gdt, por restricción del
-trabajo práctico, las primeras 10 8 posiciones se consideran utilizadas y no
+trabajo práctico, las primeras 8 posiciones se consideran utilizadas y no
 deben utilizarse. El primer índice que deben usar para declarar los segmentos,
 es el 9 (contando desde cero).
 \hruler
-\fixme{Respuesta}
+
+La GDT es una tabla de descriptores de segmento, en donde cada entrada describe
+un segmento particular, y tiene la siguiente forma:
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width=9cm]{imagenes/gdt.png}
+\end{center}
+\end{figure}
+
+\subparagraph*{Entrada 1}
+\begin{itemize}
+	
+    \item .base_0_15 = 0,
+
+    \item .base_23_16 = 0,
+    
+    \item .base_31_24 = 0,    // Hay que direccionar 187648 bloques de 4 kbytes o sea 0x2DCFF
+    \item .limit_0_15 = 0xDCFF,
+    \item .limit_16_19 = 0x2,
+    \item .type = 8, // 1000 en binario, Code Execute-Only
+    \item .s  = 1, // Código/Datos
+    \item .dpl = 0, // Nivel de privilegio 0
+    \item .p = 1, // 1 = Presente
+    \item .avl = 0, // A disposición del programador
+    \item .l = 0, // Va en 0 cuando estás en 32 bits
+    \item .db = 1, // 0=16bits, 1=32bits
+    \item .g = 1 // Granularidad, bloques de 4k
+
+\end{itemize}
+
+\subparagraph*{Entrada 2}
+
+\subparagraph*{Entrada 3}
+
+\subparagraph*{Entrada 4}
+
+
+
+Editamos el archivo gdt.c.
 
 % Ejercicio 1 - b)
 \paragraph{Modo Protegido}\label{subsubsec:ej1-b}

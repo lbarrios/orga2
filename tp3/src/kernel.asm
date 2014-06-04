@@ -24,7 +24,7 @@ iniciando_mr_len equ    $ - iniciando_mr_msg
 iniciando_mp_msg db     'Iniciando kernel (Modo Protegido)...'
 iniciando_mp_len equ    $ - iniciando_mp_msg
 
-paginacion_habilitada_msg db     'Paginaci'on Habilitada!!! :)'
+paginacion_habilitada_msg db     'Paginacion Habilitada!!! :)'
 paginacion_habilitada_len equ    $ - paginacion_habilitada_msg
 
 ;;
