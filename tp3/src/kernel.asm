@@ -24,6 +24,9 @@ iniciando_mr_len equ    $ - iniciando_mr_msg
 iniciando_mp_msg db     'Iniciando kernel (Modo Protegido)...'
 iniciando_mp_len equ    $ - iniciando_mp_msg
 
+paginacion_habilitada_msg db     'Paginaci'on Habilitada!!! :)'
+paginacion_habilitada_len equ    $ - paginacion_habilitada_msg
+
 ;;
 ;; Seccion de código.
 ;; -------------------------------------------------------------------------- ;;
@@ -64,38 +67,28 @@ modo_protegido:
     ; Establecer selectores de segmentos
     xor eax, eax
     mov ax, 1010000b
-    mov ds, ax
+    mov ds, ax ; data segment
     mov es, ax
     mov gs, ax
-    mov ss, ax
-
+    mov ss, ax ; stack segment
+    ; memoria de video
     mov ax, 1100000b
     mov fs, ax
     
     ; Establecer la base de la pila
     mov esp, 0x27000
     ; Imprimir mensaje de bienvenida
+    pintar_campo_verde ; reemplazar luego por un inicializador "de verdad"
     imprimir_texto_mp iniciando_mp_msg, iniciando_mp_len, 0x07, 2, 0
-
-    pintar_campo_verde
 
     ; Cargar interrupciones del procesador
     call idt_inicializar
     lidt [IDT_DESC]
-    ;int 0
-    ;int 1
-    ;int 2
-    ;int 3
-
-
-
-
-
-
 
     ; Inicializar pantalla
     
     ; Inicializar el manejador de memoria
+    ;call mmu_inicializar
     
     ; Inicializar el directorio de paginas
     call mmu_inicializar_dir_kernel
@@ -108,6 +101,10 @@ modo_protegido:
     mov eax, cr0
     or eax, 0x80000000
     mov cr0, eax
+
+		; Imprimo un mensaje de paginación habilitada.
+    imprimir_texto_mp paginacion_habilitada_msg, paginacion_habilitada_len, 0x07, 3, 0
+    
     
     xchg bx, bx
     ; Inicializar tss

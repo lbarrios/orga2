@@ -19,9 +19,10 @@
 /* Misc */
 /* -------------------------------------------------------------------------- */
 #define CANT_TANQUES            8
-#define PAGE_SIZE               0x00001000
+#define PAGE_SIZE               0x00001000 /* 4Kbytes */
 #define TASK_SIZE               2 * 4096
 #define CAMPO_SIZE              50
+#define IDENTITY_MAPPING_LAST_BYTE 0xDC3FFF
 
 
 /* Indices en la gdt */
@@ -36,6 +37,9 @@
 /* -------------------------------------------------------------------------- */
 #define PAGE_DIR_FIRST_ENTRY 0x27000
 #define FIRST_PAGE_TABLE 0x28000
+#define PAGE_TABLE_ENTRY_SIZE 0x4 /* 4bytes */
+#define PAGE_DIR_ENTRY_COUNT 1024
+#define PAGE_TABLE_ENTRY_COUNT 1024
 
 
 #endif  /* !__DEFINES_H__ */
