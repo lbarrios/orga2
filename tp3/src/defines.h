@@ -32,4 +32,10 @@
 /* -------------------------------------------------------------------------- */
 #define GDT_OFF_NULL_DESC           (GDT_IDX_NULL_DESC      << 3)
 
+/* Paginacion */
+/* -------------------------------------------------------------------------- */
+#define PAGE_DIR_FIRST_ENTRY 0x27000
+#define FIRST_PAGE_TABLE 0x28000
+
+
 #endif  /* !__DEFINES_H__ */
