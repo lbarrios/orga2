@@ -8,13 +8,23 @@
 #include "mmu.h"
 
 void mmu_inicializar() {
-
+  unsigned int tanque;
+  mmu_t* mmu = (mmu_t*) MMU_ADDRESS;
+  mmu_pointer = 
+  {
+    .free_pages_base = FREE_PAGES_BASE;
+    .used_pages = 0;
+  };
+  // Inicializo el directorio de páginas para cada tanque
+  for(tanque = 0; tanque < CANT_TANQUES; tanque ++)
+  {
+    void* cr3 = mmu_inicializar_dir_tarea( tanque );
+  }
 }
-
 
 void mmu_inicializar_dir_kernel()
 {
-  int i, j;
+  unsigned int i, j;
   // Recorro las 1024 entradas del Directorio de Páginas y las lleno con entradas nulas
   for (i = 0; i < PAGE_DIR_ENTRY_COUNT; i++)
   {
@@ -22,7 +32,7 @@ void mmu_inicializar_dir_kernel()
     // Dirección Base + (indice*4), sabiendo que cada página ocupa 4 Bytes
     page_dir_entry *pde = (page_dir_entry*)(PAGE_DIR_FIRST_ENTRY + (i*4));
     // Guardo una entrada de directorio nula (no presente)
-    *pde = (const page_dir_entry){0};
+    *pde = NOT_PRESENT_DIR_ENTRY;
   }
 
   // Luego recorro las 4 primeras entradas del directorio y las habilito
@@ -76,4 +86,15 @@ void mmu_inicializar_dir_kernel()
     entry_offset += PAGE_TABLE_ENTRY_SIZE;
   }
 
+  void mmu_inicializar_dir_tarea (unsigned int tarea)
+  {
+    unsigned int i;
+    mmu_t* mmu = (mmu_t*) MMU_ADDRESS;
+
+    for (i = 0; i < PAGE_DIR_ENTRY_COUNT; i++)
+    {
+      str_page_dir_entry* tpd = &(mmu->task_page_dir[tarea]) + (str_page_dir_entry*) (i * PAGE_DIR_ENTRY_SIZE);
+      *tpd = NOT_PRESENT_DIR_ENTRY;
+    }
+  }
 }
