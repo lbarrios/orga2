@@ -37,9 +37,14 @@
 /* -------------------------------------------------------------------------- */
 #define PAGE_DIR_FIRST_ENTRY 0x27000
 #define FIRST_PAGE_TABLE 0x28000
+#define PAGE_DIR_ENTRY_SIZE 0x4 /* 4bytes */
 #define PAGE_TABLE_ENTRY_SIZE 0x4 /* 4bytes */
 #define PAGE_DIR_ENTRY_COUNT 1024
 #define PAGE_TABLE_ENTRY_COUNT 1024
+
+/* MMU */
+/* -------------------------------------------------------------------------- */
+#define MMU_ADDRESS 0x100000
 
 
 #endif  /* !__DEFINES_H__ */
