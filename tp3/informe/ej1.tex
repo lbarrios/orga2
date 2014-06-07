@@ -8,7 +8,7 @@ deben utilizarse. El primer índice que deben usar para declarar los segmentos,
 es el 9 (contando desde cero).
 \hruler
 
-La GDT es una tabla de descriptores de segmento, en donde cada entrada describe
+La GDT - $Global$ $Descriptors$ $Table$ - es una tabla de descriptores de segmento, en donde cada entrada describe
 un segmento particular, y tiene la siguiente forma:
 
 \begin{figure}[H]
@@ -17,36 +17,70 @@ un segmento particular, y tiene la siguiente forma:
 \end{center}
 \end{figure}
 
+En éste ejercicio vamos a definir 4 segmentos, cada uno con su entrada en la GDT.
+
 \subparagraph*{Entrada 1}
 \begin{itemize}
 	
-    \item .base_0_15 = 0,
+    \item $.base_{0-15}$ = 0,
 
-    \item .base_23_16 = 0,
+    \item $.base_{23-16}$ = 0,
+    \item $.base_{31-24}$ = 0,
     
-    \item .base_31_24 = 0,    // Hay que direccionar 187648 bloques de 4 kbytes o sea 0x2DCFF
-    \item .limit_0_15 = 0xDCFF,
-    \item .limit_16_19 = 0x2,
-    \item .type = 8, // 1000 en binario, Code Execute-Only
-    \item .s  = 1, // Código/Datos
-    \item .dpl = 0, // Nivel de privilegio 0
-    \item .p = 1, // 1 = Presente
-    \item .avl = 0, // A disposición del programador
-    \item .l = 0, // Va en 0 cuando estás en 32 bits
-    \item .db = 1, // 0=16bits, 1=32bits
-    \item .g = 1 // Granularidad, bloques de 4k
+El segmento empieza en la dirección de memoria 0.
+        
+    \item $.limit_{0-15}$ = 0xDCFF,
+    \item $.limit_{16-19}$ = 0x2;
+
+733 MB = 187648 bloques de 4 KB.
+\\ El máximo offset que queremos utilizar es 187648 - 1 = 0x2DCFF 
+    
+    \item .type = 8
+        
+Será un segmento de código $Execute-Only$.
+        
+    \item .s  = 1
+        
+Código/Datos \fixme{explicar que significa esto}
+        
+    \item .dpl = 0
+        
+Este segmento tendrá nivel de privilegio 0.
+
+    \item .p = 1
+        
+Este segmento estará presente en memoria.  \fixme{asi se expresa?}
+    
+    \item .avl = 0
+        
+A disposición del programador.
+
+
+    \item .l = 0
+        
+Sólo va en 1 cuando estás en modo IA-32e \fixme{no esta en nuestro dibujo}
+
+    \item .db = 1
+        
+Siginifica que vamos a trabajar en 32 bits. \fixme{especificamente?}
+
+    \item .g = 1
+
+Nuestro límite lo vamos a expresar con una granularidad de 4KB en vez de 1B. Es decir, vamos a poder direccionar (limite - 1) * 4K bytes.
 
 \end{itemize}
 
 \subparagraph*{Entrada 2}
 
+Se diferencia de la entrada 1 en que el campo $dpl$ - el nivel de privilegio - se pone en 3.
+
 \subparagraph*{Entrada 3}
+
+Se diferencia de la entrada 1 en que el campo $type$ se pone en 2 - $Read-Write$.
 
 \subparagraph*{Entrada 4}
 
-
-
-Editamos el archivo gdt.c.
+Se diferencia de la entrada 3 en que el campo $dpl$ se pone en 3.
 
 % Ejercicio 1 - b)
 \paragraph{Modo Protegido}\label{subsubsec:ej1-b}
