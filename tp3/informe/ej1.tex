@@ -82,19 +82,31 @@ Se diferencia de la entrada 1 en que el campo $type$ se pone en 2 - $Read-Write$
 
 Se diferencia de la entrada 3 en que el campo $dpl$ se pone en 3.
 
+
+
+
 % Ejercicio 1 - b)
 \paragraph{Modo Protegido}\label{subsubsec:ej1-b}
 Completar el código necesario para pasar a modo protegido y setear la pila del
 kernel en la dirección 0x27000.
 \hruler
-\fixme{Respuesta}
+
+Primero cargamos la GDT, pasandole su descriptor como parámetro a la instrucción LGDT. Deshabilitamos las interrupciones y seteamos el bit PE del
+registro $CR0$ en 1. \fixme{para que?}
+Habilitamos el el pin A20 para poder acceder a direcciones de memoria superiores al MB.
+En éste momento se hace un $FAR$ $JUMP$ hacia la siguiente instrucción, utilizando como selector de segmento el offset en la GDT de la primer 
+entrada definida más arriba (de código de nivel de administrador).
+Se procede a cargar los selectores de segmento y setear la base de la pila.
 
 % Ejercicio 1 - c)
 \paragraph{GDT - Área de Memoria}\label{subsubsec:ej1-c}
 Declarar un segmento adicional que describa el área de la pantalla en memoria
 que pueda ser utilizado sólo por el kernel.
 \hruler
-\fixme{Respuesta}
+
+En la GDT ya habíamos definido una quinta entrada para el segmento de la memoria de video.
+
+Tiene la base en la posición 0xB8000. Como sólo va a direccionar \fixme{}
 
 % Ejercicio 1 - d)
 \paragraph{Limpiar la pantalla}\label{subsubsec:ej1-d}
@@ -106,5 +118,8 @@ datos de 773MB).
 
 Nota: La GDT es un arreglo de gdt entry declarado sólo una vez como gdt. El
 descriptor de la GDT en el código se llama GDT DESC.
+
 \hruler
-\fixme{Respuesta}
+La pantalla en este caso es una matriz en donde cada posición es un caracter ASCII con un determinado color de letra y fondo. La rutina es un
+simple ciclo que va escribiendo el caracter nulo con un fondo verde sobre las posiciones de (0, 0) a (50, 50), que representan el campo de
+batalla.
