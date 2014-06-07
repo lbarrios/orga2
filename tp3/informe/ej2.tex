@@ -1,6 +1,6 @@
 %\setcounter{paragraph}{1}
 % Ejercicio 2 - a)
-\paragraph{replace-me-with-a-descriptive-text}\label{subsubsec:ej2-a}
+\paragraph{}\label{subsubsec:ej2-a}
 Completar las entradas necesarias en la IDT para asociar diferentes rutinas a
 todas las excepciones del procesador. Cada rutina de excepción debe indicar en
 pantalla qué problema se produjo e interrumpir la ejecución. Posteriormente se
@@ -9,8 +9,31 @@ problema y desalojando a la tarea que lo produjo.
 \hruler
 \fixme{Respuesta}
 
+La IDT - $Interrupt$ $Descriptor$ $Table$ - es una tabla de descriptores de manejadores de interrupción. Cada entrada describe la atención de
+un tipo de interrupción en particular. Tiene la siguiente forma:
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[]{imagenes/idt_entry.png}
+\end{center}
+\end{figure}
+
+\fixme{decidir si lo que queremos es int, trap, gate}
+
+En éste ejercicio vamos a ocuparnos de las excepciones del procesador, cuyo tipo va entre 0 y 19.
+Para cada una nuestra rutina de atención será imprimir los detalles de la excepción, según el manual de Intel. \fixme{y autodestruirse?}
+Con tal propósito llenamos las entradas de la IDT de la siguiente forma.
+
+\begin{itemize}
+    \item segment-selector = 0x40 (de código de nivel 0)
+    \item offset = la dirección donde escribimos la rutina de tal excepción
+    \item p = 1 (presente)
+    \item dpl = 0 (nivel administrador)
+    \item d = \fixme{?}
+\end{itemize}
+
 % Ejercicio 2 - b)
-\paragraph{replace-me-with-a-descriptive-text}\label{subsubsec:ej2-b}
+\paragraph{}\label{subsubsec:ej2-b}
 Hacer lo necesario para que el procesador utilice la IDT creada anteriormente.
 Generar una excepción para probarla.
 
@@ -18,4 +41,4 @@ Nota: La IDT es un arreglo de idt entry declarado solo una vez como idt. El
 descriptor de la IDT en el código se llama IDT DESC. Para inicializar la IDT se
 debe invocar la función idt inicializar.
 \hruler
-\fixme{Respuesta}
+\fixme{la que hiciste vos Eze}
