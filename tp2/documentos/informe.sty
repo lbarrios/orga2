@@ -1,3 +1,11 @@
 % -- commands --
 % specialize \ref command
 \newcommand{\fig}[1]{\textbf{\textit{Figura \ref{fig:#1}}}}
+
+% make a command for the h-ruler
+\newcommand{\hruler}{\begin{center}%
+\line(1,0){100}\hspace{1em}\line(1,0){1}\hspace{1em}\line(1,0){100}%
+\end{center}%
+\vspace*{0.3cm} \noindent}
+
+\newcommand{\fixme}[1]{{\color{red}\textbf{\Large\texttt{FIXME}: #1}}}
