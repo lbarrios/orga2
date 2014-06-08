@@ -6,9 +6,12 @@ Programar el filtro \textit{tiles} en lenguaje C y luego en ASM haciendo uso de 
 \vspace*{0.3cm} \noindent
 \textbf{Descripción}
 
-En esta función, el procesamiento de los pixeles es muy sencillo. Se debe copiar un fragmento de la imagen repetidas veces. Se copian de a 5 
-pixeles, que es la máxima cantidad que entra en un registro xmm. Lo complejo de esta función fue llevar control de la parte a copiar, mediante
-varias comparaciones en el ciclo principal.
+En esta función, el procesamiento de los pixeles es muy sencillo. Se debe copiar un fragmento de la imagen - $tile$  - repetidas veces. Se copian de a 5 
+pixeles, que es la máxima cantidad que entra en un registro $xmm$. Lo complejo de esta función fue llevar control de la parte a copiar.
+
+Vamos copiando por filas en la imagen destino, en adelante $dst$. Es decir, se copia la primera fila del $tile$ repetidamente hasta llegar al
+final de la fila de $dst$. En la segunda fila de $dst$ copiamos la segunda fila de $tile$ repetidamente, etc...
+Si pasamos la última fila del $tile$ volvemos a copiar desde su primera fila. Si pasamos la última fila del $dst$ hemos finalizado.
 
 
 \vspace*{0.3cm} \noindent
@@ -16,10 +19,13 @@ varias comparaciones en el ciclo principal.
 
 Utilizar la herramienta \verb|objdump| para verificar como el compilador de C deja ensamblado el código C. Como es el código generado, ¿cómo se manipulan las variables locales?¿le parece que ese código generado podría optimizarse?
 
+\hruler
 
 El código queda escrito en 109 líneas, mientras que la versión de asm llevaba 202 líneas. Ésto se debe en parte al diferente enfoque al problema.
-tiles\_c procesa de a un pixel a la vez. tiles\_asm procesa de a cinco pixeles a la vez, pero tiene una estructura de control más compleja.
-Se puede ver que se guardan los parámetros de la función en la pila. Se efectúan demasiados accesos a memoria, para acceder a éstas variables.
+tiles\_c procesa de a un pixel a la vez, simplemente utilizando la función módulo. Es un ciclo muy simple. tiles\_asm procesa de a cinco pixeles
+a la vez, pero tiene una estructura de control más compleja.
+Se puede ver que se guardan los parámetros de la función en la pila, según la convención de manejo de variables locales. Se efectúan demasiados
+accesos a memoria para acceder a éstas variables.
 Dada esta función en particular, se podrían mantener una mayor cantidad de variables en los registros, y no tener que buscarlos a memoria en cada
 iteración del ciclo.
 
@@ -33,17 +39,18 @@ Compile el código de C con optimizaciones del compilador, por ejemplo, pasando 
 ¿Qué otros flags de optimización brinda el compilador?
 ¿Para qué sirven?
 
+\hruler
+
 Importante para los gráficos: con O2 y O3 dan el mismo archivo. No tiene sentido graficar nada.
 
 Insertar gráfico de barras comparando tamaño del código.
 
-Insertar gráfico comparando tiempos de ejecución 3*c + asm.
 
 Con la optimización O1, el compilador intenta reducir el tamaño del código y el tiempo de ejecución, sin aumentar demasiado el tiempo de
 compilación. Al mismo tiempo se va perdiendo la capacidad de $debugging$, ya que se puede alterar el orden de ejecución de las instrucciones.
 En este programa en particular, con la optimización, se pueden observar menos accesos a memoria. La optimización O1 activa el flag 
-$-fif-conversion$, que intenta transformar saltos condicionales a estructuras de control.
-Los niveles de optimización O2 y O3 optimizan aún más, a través de un mayor tiempo de complilación. Activan el flag $-foptimize-sibling-calls$,
+$-fif-conversion$, que intenta transformar saltos condicionales a otras estructuras de control.
+Los niveles de optimización O2 y O3 optimizan aún más, a razón de un mayor tiempo de complilación. Por ejemplo, activan el flag $-foptimize-sibling-calls$,
 que elimina la recursión en funciones con recursión a la cola. Si se quiere minimazar el tamaño del archivo objeto, lo mejor es utilizar la
 optimización Os.
 
@@ -55,18 +62,20 @@ optimización Os.
 	¿Como realizó la medición?¿Cómo sabe que su medición es una buena medida?¿Cómo afecta a la medición la existencia de \emph{outliers}\footnote{en español, valor atípico: \url{http://es.wikipedia.org/wiki/Valor_atípico}}?¿De qué manera puede minimizar su impacto?¿Qué resultados obtiene si mientras corre los tests ejecuta otras aplicaciones que utilicen al máximo la CPU? 
 	Realizar un análisis \textbf{riguroso} de los resultados y acompañar con un gráfico que presente estas diferencias.
 
+\hruler
 
-La medición se realizó tomando el promedio de diez corridas del programa, para distintos tamaños de imagen. Se esperaba que los tiempos de
-ejecución de los filtros sea del orden del tamaño de entrada, lo que confirmamos viendo el carácter lineal de los gráficos.
+Se midió el tiempo de ejecución de \fixme{diez} corridas del programa, para cada tamaño de imagen. Se descartaron las mediciones menores que el
+percentil 25 o mayores que el percentil 75. Luego se tomó promedio. Se esperaba que los tiempos de ejecución de los filtros sean del orden del
+tamaño de entrada, lo que confirmamos viendo el carácter lineal de los gráficos.
 
 Se detectó la presencia de outliers, específicamente tiempos de ejecución mayores que lo esperado para ese tamaño de entrada. Esto pudo haber
-sido causado, entre otras causas, por el uso del procesador debido a interrupciones o procesos periódicos del sistema.
+sido causado, entre otras causas, por el uso del procesador debido a interrupciones o procesos de mantenimiento del sistema.
 
 Mediante el procedimiento utilizado bastó para poder gráficar los tiempos de ejecución como una línea recta con respecto al tamaño de la imagen.
-Si se hubiese necesitado un mejor tratamiento de los outliers, se podría haber iterado más veces. También se podría haber utilizado la mediana en
-vez de la media. Se sabe en la ciencia de la estadística que la mediana minimiza el impacto de los outliers. Sin embargo requiere ordenar los
-resultados, procedimiento algorítmicamente más complejo que obtener el promedio.
+Si se hubiese necesitado un mejor tratamiento de los outliers, se podría haber iterado más veces. Nuestro procedimiento es algorítmicamente más
+complejo que simplemente tomar el promedio, pero mucho más robusto frente a la presencia de outliers.
 
+\fixme{Insertar gráfico comparando tiempos de ejecución O, O1, O2, asm.}
 
 \vspace*{0.3cm} \noindent
 \textbf{Experimento 4 - cpu vs. bus de memoria}
@@ -302,20 +311,24 @@ divisiones en una sola instrucción, y la tercera en otra instrucción. Para pod
 que nos interesan. 
 En registros xmm, como double, vamos a tener:
 
-$alfa | alfa$
+\begin{verbatim}
+alfa | alfa
 
-$max | max$
+max | max
 
-$sumargb | sumargb$
+sumargb | sumargb
 
-$- | src_r$
+- | src_r
 
-$src_g | src_b$
+src_g | src_b
+\end{verbatim}
 
 Luego procedemos a hacer las respectivas multiplicaciones y divisiones. Ahora, para sumar $src_{(i,j)}$ y $var_{(i,j)}$, los voy a tener que
-considerar como $signed$. Entonces, los voy a querer tener como signed word. $src_{(i,j)}$ lo voy a extender con ceros, y $var_{(i,j)}$, que era
-de punto flotante, lo voy a truncar con signo. Se efectua una suma con signo, ahora podemos trabajar con r, g, y b al mismo tiempo. El resultado
-se empaqueta de vuelta a byte, con saturación sin signo. Ahora se escribe el pixel procesado a memoria.
+considerar como $signed$. Los voy a usar como signed word.  $src_{(i,j)}$ lo voy a extender con ceros, y $var_{(i,j)}$, que era
+de punto flotante, lo voy a truncar con signo. No se va a perder información relevante al truncar, ya que valores mayores que 255 o menores que
+-255 no van a hacer diferencia, si después se va a saturar entre 0 y 255. Se efectua una suma con signo, ahora podemos trabajar con r, g, y b
+al mismo tiempo.
+El resultado se empaqueta de vuelta a byte, con saturación sin signo. Ahora se escribe el pixel procesado a memoria.
 
 \vspace*{0.3cm} \noindent
 \textbf{Experimento 1}
