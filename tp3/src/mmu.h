@@ -63,10 +63,10 @@ typedef struct str_page_table_attributes {
   unsigned char attribute_index:1;
   unsigned char global:1;
   unsigned char trash:3;
-} __attribute__((aligned(8))) page_table_attributes;
+} __attribute__((__packed__, aligned(8))) page_table_attributes;
 
-void mmu_mapear_pagina(unsigned int, page_dir*, void*, page_table_attributes);
-void mmu_unmapear_pagina(unsigned int, unsigned int);
+void mmu_mapear_pagina(unsigned long, page_dir*, void*, page_table_attributes);
+void mmu_unmapear_pagina(unsigned long, void*);
 
 typedef struct str_mmu {
   void* free_pages_base;
@@ -84,6 +84,9 @@ typedef struct str_mmu {
 #define TASK_SECOND_CODE_PAGE 0x8001000
 
 /* PTE Defines */
+// La siguiente macro recibe a la izquierda un page_table_entry y a la derecha un page_table_attributes, y guarda los del segundo en el primero
+#define PTE_LOAD_ATTRIBUTES(p,a) p.present=a.present;p.read_write=a.read_write;p.user_supervisor=a.user_supervisor;p.write_through=a.write_through;p.cache_disable=a.cache_disable;p.accessed=a.accessed;p.dirty=a.dirty;p.attribute_index=a.attribute_index;p.global=a.global;p.trash=a.trash;
+
 #define PTE_SUPERVISOR (unsigned char)0
 #define PTE_USER (unsigned char)1
 #define PTE_PRESENT (unsigned char)1

@@ -152,11 +152,18 @@ void mmu_inicializar_dir_tarea (unsigned int tarea)
   // Reemplazar las siguientes dos líneas por un randomizador
   void* code_page_1 = (void*) ((unsigned long) 0x40000 + (0x2000 * (unsigned long)tarea) );
   void* code_page_2 = (void*) ((unsigned long) 0x41000 + (0x2000 * (unsigned long)tarea) );
-  page_table_attributes attr;
+  // Casteo una estructura de atributos con todos los valores en 0
+  page_table_attributes attr = (page_table_attributes){0};
+  // Marco la página presente
+  attr.present = PTE_PRESENT;
+  // Marco la página como de escritura
+  attr.read_write = PTE_WRITE;
+  // Marco la página como "de usuario"
+  attr.user_supervisor = PTE_USER;
   mmu_mapear_pagina(TASK_FIRST_CODE_PAGE, &(mmu->task_page_dir[0]), code_page_1, attr);
   mmu_mapear_pagina(TASK_SECOND_CODE_PAGE, &(mmu->task_page_dir[0]), code_page_2, attr);
 }
-void mmu_mapear_pagina(unsigned int virtual_addr, page_dir* cr3, void* fisica, page_table_attributes atributos)
+void mmu_mapear_pagina(unsigned long virtual_addr, page_dir* cr3, void* fisica, page_table_attributes atributos)
 {
   // Obtengo el índice que voy a utilizar para acceder a la entrada correspondiente en el directorio de páginas
   unsigned long pde_index = (virtual_addr>>22);
@@ -169,16 +176,37 @@ void mmu_mapear_pagina(unsigned int virtual_addr, page_dir* cr3, void* fisica, p
   // Me fijo si el bit de presente está marcado
   if ( !(pde->present == (unsigned char)1) )
   {
-    // La tabla de páginas todavía no existe; la tengo que crear
+    // La tabla de páginas todavía no existe; así que la tengo que crear
     pde->present = PTE_PRESENT;
-    // 
-    // TODO: Creo la tabla..
-    //
-  } // En este punto, ya sea porque ya existía o porque la acabo de crear, la tabla de páginas ya existe.
-  // Obtengo la dirección de la tabla de páginas
+    // Obtengo un pedazo de memoria en el que guardar la nueva tabla de páginas
+    pde->table_base = ((long)mmu_get_free_page()>>12);
+    // Reemplazo todas las entradas de la nueva tabla de páginas por un descriptor de página no presente
+    long i;
+    for(i=0;i<PAGE_TABLE_ENTRY_COUNT;i++)
+    {
+      *(page_table_entry*)(((long)pde->table_base)<<12) = NOT_PRESENT_TABLE_ENTRY;
+    }
+  } 
+  // En este punto, ya sea porque ya existía o porque la acabo de crear, la tabla de páginas ya existe.
+
+  // Obtengo la dirección de la entrada de la tabla de página que se corresponde con el pte_index
   page_table_entry* pte = (page_table_entry*) (((unsigned long)pde->table_base<<12) + pte_index);
-  pte->present = PTE_PRESENT;
-  pte->read_write = PTE_WRITE;
-  pte->user_supervisor = PTE_USER;
-  //unsigned int offset;
+  // Asigno el valor base de la página los 20 bits más significativos de la dirección física
+  pte->page_base = (((long)fisica)>>12);
+  PTE_LOAD_ATTRIBUTES((*pte), atributos);
+}
+void mmu_unmapear_pagina(unsigned long virtual_addr, void* cr3)
+{
+  // Obtengo el índice que voy a utilizar para acceder a la entrada correspondiente en el directorio de páginas
+  unsigned long pde_index = (virtual_addr>>22);
+  // Obtengo el índice que voy a utilizar para acceder a la entrada correspondiente en la tabla de páginas
+  unsigned long pte_index = ((virtual_addr<<10)>>22);
+  // Obtengo un puntero al directorio de páginas de la tarea
+  page_dir* pd = (page_dir*) cr3;
+  // Obtengo un puntero a la entrada correspondiente al índice pde_index
+  page_dir_entry* pde = (page_dir_entry*) pd + (pde_index*PAGE_DIR_ENTRY_SIZE);
+  // Obtengo la dirección de la entrada de la tabla de página que se corresponde con el pte_index
+  page_table_entry* pte = (page_table_entry*) (((unsigned long)pde->table_base<<12) + pte_index);
+  // Reemplazo el descriptor por un descriptor de página no presente
+  *pte = NOT_PRESENT_TABLE_ENTRY;
 }
