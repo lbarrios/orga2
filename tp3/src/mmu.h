@@ -51,7 +51,7 @@ typedef struct str_page_table_entry {
 void mmu_inicializar();
 void mmu_inicializar_dir_kernel();
 
-void mmu_inicializar_dir_tarea(int tarea);
+void mmu_inicializar_dir_tarea(unsigned int tarea);
 void mmu_mapear_pagina(unsigned int virtual, unsigned int cr3, unsigned int fisica, unsigned int atributos);
 void mmu_unmapear_pagina(unsigned int virtual, unsigned int cr3);
 
@@ -66,5 +66,8 @@ typedef struct str_mmu {
 /* Defines */
 #define FREE_PAGES_BASE 0x200000
 #define NOT_PRESENT_DIR_ENTRY (const page_dir_entry){0}
+#define NOT_PRESENT_TABLE_ENTRY (const page_table_entry){0}
+#define TASK_FIRST_CODE_PAGE 0x8000000
+#define TASK_SECOND_CODE_PAGE 0x8001000
 
 #endif	/* !__MMU_H__ */ 
