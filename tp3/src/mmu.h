@@ -51,9 +51,22 @@ typedef struct str_page_table_entry {
 void mmu_inicializar();
 void mmu_inicializar_dir_kernel();
 
-void mmu_inicializar_dir_tarea(unsigned int tarea);
-void mmu_mapear_pagina(unsigned int virtual, unsigned int cr3, unsigned int fisica, unsigned int atributos);
-void mmu_unmapear_pagina(unsigned int virtual, unsigned int cr3);
+void mmu_inicializar_dir_tarea(unsigned int);
+typedef struct str_page_table_attributes {
+  unsigned char present:1;
+  unsigned char read_write:1;
+  unsigned char user_supervisor:1;
+  unsigned char write_through:1;
+  unsigned char cache_disable:1;
+  unsigned char accessed:1;
+  unsigned char dirty:1;
+  unsigned char attribute_index:1;
+  unsigned char global:1;
+  unsigned char trash:3;
+} __attribute__((aligned(8))) page_table_attributes;
+
+void mmu_mapear_pagina(unsigned int, page_dir*, void*, page_table_attributes);
+void mmu_unmapear_pagina(unsigned int, unsigned int);
 
 typedef struct str_mmu {
   void* free_pages_base;
@@ -69,5 +82,13 @@ typedef struct str_mmu {
 #define NOT_PRESENT_TABLE_ENTRY (const page_table_entry){0}
 #define TASK_FIRST_CODE_PAGE 0x8000000
 #define TASK_SECOND_CODE_PAGE 0x8001000
+
+/* PTE Defines */
+#define PTE_SUPERVISOR (unsigned char)0
+#define PTE_USER (unsigned char)1
+#define PTE_PRESENT (unsigned char)1
+#define PTE_NOT_PRESENT (unsigned char)0
+#define PTE_READ (unsigned char)0
+#define PTE_WRITE (unsigned char)1
 
 #endif	/* !__MMU_H__ */ 
