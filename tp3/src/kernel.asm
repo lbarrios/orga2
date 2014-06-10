@@ -7,6 +7,7 @@
 extern GDT_DESC
 extern IDT_DESC
 extern idt_inicializar
+extern mmu_inicializar
 extern mmu_inicializar_dir_kernel
 
 global start
@@ -87,25 +88,36 @@ modo_protegido:
 
     ; Inicializar pantalla
     
-    ; Inicializar el manejador de memoria
-    ;call mmu_inicializar
-    
     ; Inicializar el directorio de paginas
     call mmu_inicializar_dir_kernel
     
     ; Cargar directorio de paginas
     mov eax, 0x27000
     mov cr3, eax
-    
+
     ; Habilitar paginacion
     mov eax, cr0
     or eax, 0x80000000
     mov cr0, eax
-
-		; Imprimo un mensaje de paginación habilitada.
+    
+    ; Imprimo un mensaje de paginación habilitada.
     imprimir_texto_mp paginacion_habilitada_msg, paginacion_habilitada_len, 0x07, 3, 0
+
+    xchg bx, bx
+    ; Inicializar el manejador de memoria
+    call mmu_inicializar
+
+    xchg bx, bx
     
-    
+    ; Habilito paginación con el directorio de la 1er tarea
+    mov eax, 0x100000
+    mov cr3, eax
+    tlbflush
+
+    xchg bx, bx
+
+    mov ax, 0xD040
+    mov word [fs:0], ax
     xchg bx, bx
     ; Inicializar tss
     

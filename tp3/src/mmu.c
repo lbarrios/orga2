@@ -125,18 +125,23 @@ void mmu_inicializar_dir_tarea (unsigned int tarea)
     for (j = 0; j < PAGE_TABLE_ENTRY_COUNT; j++)
     {
       // Obtengo la dirección de la entrada de tabla
-      page_table_entry *pte = (page_table_entry*)(pde->table_base + (j * PAGE_TABLE_ENTRY_SIZE));
+      page_table_entry *pte = (page_table_entry*)((pde->table_base<<12) + (j * PAGE_TABLE_ENTRY_SIZE));
       // Gurado una entrada de tabla nula (no presente)
       *pte = NOT_PRESENT_TABLE_ENTRY;
     }
   }
-  unsigned long entry_offset = 0;
   unsigned long page_offset = 0;
+  unsigned long dir_entry_offset = 0;
+  unsigned long table_entry_offset = 0;
   while ( page_offset < IDENTITY_MAPPING_LAST_BYTE )// 0xDC3FFF
   {
+    dir_entry_offset = (page_offset>>22);
+    table_entry_offset = ((page_offset<<10)>>22);
     // Sabiendo que las tablas están consecutivas, voy a obtenerlas a partir de
-    // la primer entrada de la primer tabla, sumando el entry_offset
-    page_table_entry *pte = (page_table_entry*) ((unsigned long) mmu->task_page_dir[tarea].pde[0].table_base << 12) + entry_offset;
+    // la primer entrada de la primer tabla, sumando el table_entry_offset
+    page_dir* pd = &(mmu->task_page_dir[tarea]);
+    page_dir_entry* pde = &(pd->pde[dir_entry_offset]);
+    page_table_entry *pte = (page_table_entry*) ((pde->table_base << 12) + (table_entry_offset * PAGE_TABLE_ENTRY_SIZE));
     // Le asigno como dirección base de la página el page_offset shifteado 12
     // veces a la derecha, de esta forma logro hacer identity mapping
     pte->page_base = (page_offset>>12);
@@ -146,22 +151,22 @@ void mmu_inicializar_dir_tarea (unsigned int tarea)
     pte->present = PTE_PRESENT;
     // Sumo PAGE_SIZE al offset de páginas
     page_offset += PAGE_SIZE;
-    // Sumo PAGE_TABLE_ENTRY_SIZE al offset de entradas
-    entry_offset += PAGE_TABLE_ENTRY_SIZE;
   }
+  /*
   // Reemplazar las siguientes dos líneas por un randomizador
   void* code_page_1 = (void*) ((unsigned long) 0x40000 + (0x2000 * (unsigned long)tarea) );
   void* code_page_2 = (void*) ((unsigned long) 0x41000 + (0x2000 * (unsigned long)tarea) );
   // Casteo una estructura de atributos con todos los valores en 0
-  page_table_attributes attr = (page_table_attributes){0};
+  page_table_attributes attr = NOT_PRESENT_PAGE_TABLE_ATTRIBUTES;
   // Marco la página presente
   attr.present = PTE_PRESENT;
   // Marco la página como de escritura
   attr.read_write = PTE_WRITE;
   // Marco la página como "de usuario"
-  attr.user_supervisor = PTE_USER;
-  mmu_mapear_pagina(TASK_FIRST_CODE_PAGE, &(mmu->task_page_dir[0]), code_page_1, attr);
-  mmu_mapear_pagina(TASK_SECOND_CODE_PAGE, &(mmu->task_page_dir[0]), code_page_2, attr);
+  attr.user_supervisor = PTE_SUPERVISOR;
+  mmu_mapear_pagina(TASK_FIRST_CODE_PAGE, &(mmu->task_page_dir[tarea]), code_page_1, attr);
+  mmu_mapear_pagina(TASK_SECOND_CODE_PAGE, &(mmu->task_page_dir[tarea]), code_page_2, attr);
+  */
 }
 void mmu_mapear_pagina(unsigned long virtual_addr, page_dir* cr3, void* fisica, page_table_attributes atributos)
 {
