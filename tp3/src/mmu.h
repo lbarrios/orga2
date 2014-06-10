@@ -69,9 +69,10 @@ void mmu_mapear_pagina(unsigned long, page_dir*, void*, page_table_attributes);
 void mmu_unmapear_pagina(unsigned long, void*);
 
 typedef struct str_mmu {
+  // Pongo los task_page_dir al principio para poder acceder fácilmente desde ASM
+  page_dir task_page_dir[8];
   void* free_pages_base;
   unsigned int used_pages;
-  page_dir task_page_dir[8];
 } __attribute__((__packed__, aligned (8))) mmu_t;
 
 
@@ -80,6 +81,7 @@ typedef struct str_mmu {
 #define FREE_PAGES_BASE 0x200000
 #define NOT_PRESENT_DIR_ENTRY (const page_dir_entry){0}
 #define NOT_PRESENT_TABLE_ENTRY (const page_table_entry){0}
+#define NOT_PRESENT_PAGE_TABLE_ATTRIBUTES (page_table_attributes){0}
 #define TASK_FIRST_CODE_PAGE 0x8000000
 #define TASK_SECOND_CODE_PAGE 0x8001000
 
