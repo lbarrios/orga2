@@ -77,5 +77,8 @@ unsigned int idt_inicializar() {
     /*
     IDT_ENTRY(32)
     */
+    IDT_ENTRY(32) // clock
+    IDT_ENTRY(33) // keyboard
+    IDT_ENTRY(82) // syscall
     return (unsigned long)tss_tanques;
 }

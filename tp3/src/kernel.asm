@@ -9,6 +9,9 @@ extern IDT_DESC
 extern idt_inicializar
 extern mmu_inicializar
 extern mmu_inicializar_dir_kernel
+extern habilitar_pic
+extern resetear_pic
+extern deshabilitar_pic
 
 global start
 
@@ -134,12 +137,15 @@ modo_protegido:
     ; Cargar IDT
     
     ; Configurar controlador de interrupciones
+    call resetear_pic
     
     ; pintar posiciones inciales de tanques
     
     ; Cargar tarea inicial
 
     ; Habilitar interrupciones
+    call habilitar_pic
+    ;sti
  
     ; Saltar a la primera tarea: Idle
 
