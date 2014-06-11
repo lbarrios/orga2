@@ -7,7 +7,7 @@
 
 #include "sched.h"
 
-
+unsigned char flag_pause = 0;
 
 unsigned short sched_proximo_indice() {
   return 0;

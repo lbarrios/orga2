@@ -5,6 +5,7 @@
 ; definicion de rutinas de atencion de interrupciones
 
 %include "imprimir.mac"
+extern flag_pause
 
 BITS 32
 
@@ -120,10 +121,84 @@ ISR 31
 ;;
 ;; Rutina de atención del RELOJ
 ;; -------------------------------------------------------------------------- ;;
+_isr32:
+    cli
+    pusha
+    fin_intr_pic1
+    ; llenar codigo
+    popa
+    sti
+    iret
 
 ;;
 ;; Rutina de atención del TECLADO
 ;; -------------------------------------------------------------------------- ;;
+_isr33:
+    cli
+    pusha
+    fin_intr_pic1
+    in al, 0x60 ; leo scan code
+    cmp al, BREAK_1
+    je .key_1
+    cmp al, BREAK_2
+    je .key_2
+    cmp al, BREAK_3
+    je .key_3
+    cmp al, BREAK_4
+    je .key_4
+    cmp al, BREAK_5
+    je .key_5
+    cmp al, BREAK_6
+    je .key_6
+    cmp al, BREAK_7
+    je .key_7
+    cmp al, BREAK_8
+    je .key_8
+    cmp al, BREAK_P
+    je .key_P
+
+    .key_1:
+        mov edi, 1
+        call print_tank_context
+        jmp .fin
+    .key_2:
+        mov edi, 2
+        call print_tank_context
+        jmp .fin
+    .key_3:
+        mov edi, 3
+        call print_tank_context
+        jmp .fin
+    .key_4:
+        mov edi, 4
+        call print_tank_context
+        jmp .fin
+    .key_5:
+        mov edi, 5
+        call print_tank_context
+        jmp .fin
+    .key_6:
+        mov edi, 6
+        call print_tank_context
+        jmp .fin
+    .key_7:
+        mov edi, 7
+        call print_tank_context
+        jmp .fin
+    .key_8:
+        mov edi, 8
+        call print_tank_context
+        jmp .fin
+    .key_P:
+        mov dl, [flag_pause]
+        xor dl, dl
+        mov [flag_pause], dl
+        jmp .fin
+
+    .fin:
+    popa
+    sti
+    iret
 
 ;;
 ;; Rutinas de atención de las SYSCALLS
@@ -132,6 +207,13 @@ ISR 31
 %define SYS_MISIL     0x911
 %define SYS_MINAR     0x355
 
+_isr82:
+    cli
+    pusha
+    mov eax, 0x42 ; ej 5.d
+    popa
+    sti
+    iret
 
 
 ;; Funciones Auxiliares
