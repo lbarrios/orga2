@@ -128,8 +128,9 @@ global _isr32
 _isr32:
     cli
     pusha
-    ;fin_intr_pic1
+    call proximo_reloj
     ; llenar codigo
+    call fin_intr_pic1
     popa
     sti
     iret
