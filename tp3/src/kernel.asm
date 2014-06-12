@@ -115,7 +115,6 @@ modo_protegido:
     ; Habilito paginación con el directorio de la 1er tarea
     mov eax, 0x100000
     mov cr3, eax
-    tlbflush
 
     xchg bx, bx
 
