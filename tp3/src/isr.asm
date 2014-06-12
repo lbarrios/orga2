@@ -62,6 +62,9 @@ extern game_mover
 extern game_misil
 extern game_minar
 
+;; SCREEN
+extern print_tank_context
+
 ;;
 ;; Definición de MACROS
 ;; -------------------------------------------------------------------------- ;;
@@ -121,10 +124,11 @@ ISR 31
 ;;
 ;; Rutina de atención del RELOJ
 ;; -------------------------------------------------------------------------- ;;
+global _isr32
 _isr32:
     cli
     pusha
-    fin_intr_pic1
+    ;fin_intr_pic1
     ; llenar codigo
     popa
     sti
@@ -133,10 +137,25 @@ _isr32:
 ;;
 ;; Rutina de atención del TECLADO
 ;; -------------------------------------------------------------------------- ;;
+
+;;
+;; Defines para rutina de atención del teclado
+;;
+%define BREAK_1 0
+%define BREAK_2 0
+%define BREAK_3 0
+%define BREAK_4 0
+%define BREAK_5 0
+%define BREAK_6 0
+%define BREAK_7 0
+%define BREAK_8 0
+%define BREAK_P 0
+
+global _isr33
 _isr33:
     cli
     pusha
-    fin_intr_pic1
+    ;fin_intr_pic1
     in al, 0x60 ; leo scan code
     cmp al, BREAK_1
     je .key_1
@@ -206,7 +225,7 @@ _isr33:
 %define SYS_MOVER     0x83D
 %define SYS_MISIL     0x911
 %define SYS_MINAR     0x355
-
+global _isr82
 _isr82:
     cli
     pusha
