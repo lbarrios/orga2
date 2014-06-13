@@ -135,7 +135,26 @@ gdt_entry gdt[GDT_COUNT] = {
     .l = 0,
     .db = 1,
     .g = 0
-  }
+  },
+  {
+    .base_0_15 = 0x8000,
+    .base_23_16 = 0xB,
+    .base_31_24 = 0,
+    .limit_0_15 = 0x1F40,
+    .limit_16_19 = 0,
+    .type = 2,
+    .s = 1,
+    .dpl = 0,
+    .p = 1,
+    .avl = 0,
+    .l = 0,
+    .db = 1,
+    .g = 0
+  },
+  // tres descriptores de TSS nulos
+  { (int) 0, (int) 0 },
+  { (int) 0, (int) 0 },
+  { (int) 0, (int) 0 }
 };
 
 gdt_descriptor GDT_DESC = {

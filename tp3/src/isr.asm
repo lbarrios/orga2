@@ -128,6 +128,7 @@ global _isr32
 _isr32:
     pushad
     call proximo_reloj
+    call sched_proximo_indice
     ; llenar codigo
     call fin_intr_pic1
     popad
