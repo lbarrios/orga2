@@ -67,4 +67,7 @@ void tss_inicializar_tareas_tanques();
 void tss_copy(tss* tss_src, tss* tss_dst);
 unsigned int tss_get_cr3(unsigned int id);
 
+// defines
+#define IDLE_TASK_ADDR 0x20000
+
 #endif  /* !__TSS_H__ */

@@ -81,6 +81,8 @@ modo_protegido:
     
     ; Establecer la base de la pila
     mov esp, 0x27000
+    mov ebp, 0x27000
+
     ; Imprimir mensaje de bienvenida
     pintar_campo_verde ; reemplazar luego por un inicializador "de verdad"
     imprimir_texto_mp iniciando_mp_msg, iniciando_mp_len, 0x07, 2, 0
@@ -88,6 +90,7 @@ modo_protegido:
     ; Cargar interrupciones del procesador
     call idt_inicializar
     lidt [IDT_DESC]
+
 
     ; Inicializar pantalla
     
@@ -106,23 +109,20 @@ modo_protegido:
     ; Imprimo un mensaje de paginación habilitada.
     imprimir_texto_mp paginacion_habilitada_msg, paginacion_habilitada_len, 0x07, 3, 0
 
-    xchg bx, bx
     ; Inicializar el manejador de memoria
     call mmu_inicializar
-
-    xchg bx, bx
     
     ; Habilito paginación con el directorio de la 1er tarea
     mov eax, 0x100000
     mov cr3, eax
 
-    xchg bx, bx
-
+    ; Imprimo un color en el primer pixel de la pantalla
     mov ax, 0xD040
     mov word [fs:0], ax
-    xchg bx, bx
+
     ; Inicializar tss
-    
+    ;call tss_inicializar
+
     ; Inicializar tss de la tarea Idle
     
     ; Inicializar tss de las tanques
@@ -136,15 +136,15 @@ modo_protegido:
     ; Cargar IDT
     
     ; Configurar controlador de interrupciones
+    call deshabilitar_pic
     call resetear_pic
-    
+    call habilitar_pic    
     ; pintar posiciones inciales de tanques
     
     ; Cargar tarea inicial
 
     ; Habilitar interrupciones
-    call habilitar_pic
-    ;sti
+    sti
  
     ; Saltar a la primera tarea: Idle
 
