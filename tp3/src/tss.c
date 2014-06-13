@@ -18,4 +18,7 @@ tss tss_tanques[CANT_TANQUES];
 void tss_inicializar() {
 }
 
-
+void tss_inicializar_idle() 
+{
+	tss_idle.eip = IDLE_TASK_ADDR;
+}
