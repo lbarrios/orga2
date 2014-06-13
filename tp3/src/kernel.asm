@@ -124,10 +124,10 @@ modo_protegido:
     ;call tss_inicializar
 
     ; Inicializar tss de la tarea Idle
-    call tss_inicializar_idle
+    ;call tss_inicializar_idle
     
     ; Inicializar tss de las tanques
-    call tss_inicializar_tanques
+    ;call tss_inicializar_tanques
     
     ; Inicializar el scheduler
     
@@ -136,9 +136,9 @@ modo_protegido:
     ; Cargar IDT
     
     ; Configurar controlador de interrupciones
-    call deshabilitar_pic
-    call resetear_pic
-    call habilitar_pic    
+    ;call deshabilitar_pic
+    ;call resetear_pic
+    ;call habilitar_pic    
     ; pintar posiciones inciales de tanques
     
     ; Cargar tarea inicial
