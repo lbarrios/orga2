@@ -23,6 +23,7 @@
 #define TASK_SIZE               2 * 4096
 #define CAMPO_SIZE              50
 #define IDENTITY_MAPPING_LAST_BYTE 0xDC3FFF
+#define KERNEL_STACK_ADDR		0x27000
 
 
 /* Indices en la gdt */

@@ -88,9 +88,9 @@ modo_protegido:
     imprimir_texto_mp iniciando_mp_msg, iniciando_mp_len, 0x07, 2, 0
 
     ; Cargar interrupciones del procesador
+    ; Inicializar la IDT
     call idt_inicializar
     lidt [IDT_DESC]
-
 
     ; Inicializar pantalla
     
@@ -124,12 +124,12 @@ modo_protegido:
     ;call tss_inicializar
 
     ; Inicializar tss de la tarea Idle
+    call tss_inicializar_idle
     
     ; Inicializar tss de las tanques
+    call tss_inicializar_tanques
     
     ; Inicializar el scheduler
-    
-    ; Inicializar la IDT
     
     ; Inicializar Game
     

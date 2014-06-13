@@ -69,5 +69,9 @@ unsigned int tss_get_cr3(unsigned int id);
 
 // defines
 #define IDLE_TASK_ADDR 0x20000
+#define GDT_INIT_DESCRIPTOR 14
+#define GDT_TASK1_DESCRIPTOR 15
+#define GDT_TASK2_DESCRIPTOR 16
+#define TSS_SIZE 0x67
 
 #endif  /* !__TSS_H__ */

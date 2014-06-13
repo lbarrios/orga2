@@ -8,7 +8,7 @@
 #ifndef __GDT_H__
 #define __GDT_H__
 
-#define GDT_COUNT 13
+#define GDT_COUNT 17
 
 #include "defines.h"
 
@@ -30,7 +30,7 @@ typedef struct str_gdt_entry {
     unsigned char   avl:1;
     unsigned char   l:1;
     unsigned char   db:1;
-    unsigned char   g:1;
+    unsigned char   g:1; // Granularidad 1=4kb, 0=1byte
     unsigned char   base_31_24;
 } __attribute__((__packed__, aligned (8))) gdt_entry;
 
@@ -38,5 +38,7 @@ typedef struct str_gdt_entry {
 extern gdt_entry gdt[];
 extern gdt_descriptor GDT_DESC;
 
+/* defines */
+#define GDT_TSS_NOT_BUSY_DESCRIPTOR_TYPE 0b1001
 
 #endif  /* !__GDT_H__ */
