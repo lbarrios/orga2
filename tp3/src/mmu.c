@@ -36,7 +36,7 @@ void mmu_inicializar_dir_kernel()
   {
     // Obtengo la dirección de la entrada de directorio con la cuenta
     // Dirección Base + (indice*4), sabiendo que cada entrada ocupa 4 Bytes
-    page_dir_entry *pde = (page_dir_entry*)(PAGE_DIR_FIRST_ENTRY + (i*PAGE_DIR_ENTRY_SIZE));
+    page_dir_entry *pde = (page_dir_entry*)(KERNEL_PAGE_DIR_FIRST_ENTRY + (i*PAGE_DIR_ENTRY_SIZE));
     // Guardo una entrada de directorio nula (no presente)
     *pde = NOT_PRESENT_DIR_ENTRY;
   }
@@ -45,7 +45,7 @@ void mmu_inicializar_dir_kernel()
   for (i = 0; i < 4; i++)
   {
     // Obtengo la dirección de la entrada sobre la que estoy iterando
-    page_dir_entry *pde = (page_dir_entry*)(PAGE_DIR_FIRST_ENTRY + (i*4));
+    page_dir_entry *pde = (page_dir_entry*)(KERNEL_PAGE_DIR_FIRST_ENTRY + (i*4));
     // Marco el bit de presente (presente)
     pde->present = PTE_PRESENT;
     // Marco el bit de read/write (write)

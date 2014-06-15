@@ -151,7 +151,7 @@ gdt_entry gdt[GDT_COUNT] = {
     .db = 1,
     .g = 0
   },
-  // tres descriptores de TSS nulos
+  // tres descriptores de TSS, nulos
   { (int) 0, (int) 0 },
   { (int) 0, (int) 0 },
   { (int) 0, (int) 0 }
