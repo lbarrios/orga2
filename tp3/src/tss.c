@@ -69,7 +69,8 @@ void tss_inicializar_idle()
 
 void tss_inicializar_tanques()
 {
-	for (int i = 0; i < CANT_TANQUES; ++i)
+  int i;
+	for (i = 0; i < CANT_TANQUES; ++i)
 	{
 		// Descriptor de código
 		tss_tanques[i].cs = GDT_USER_CODE_SEGMENT_DESCRIPTOR;
