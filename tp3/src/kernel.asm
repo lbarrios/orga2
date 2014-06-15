@@ -74,7 +74,7 @@ modo_protegido:
     mov ds, ax ; data segment
     mov es, ax
     mov gs, ax
-    mov ss, ax ; stack segment
+    mov ss, ax ;stack segment
     ; memoria de video
     mov ax, 1100000b
     mov fs, ax

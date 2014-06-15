@@ -34,9 +34,17 @@
 /* -------------------------------------------------------------------------- */
 #define GDT_OFF_NULL_DESC           (GDT_IDX_NULL_DESC      << 3)
 
+/* Segmentación */
+/* -------------------------------------------------------------------------- */
+#define GDT_KERNEL_CODE_SEGMENT_DESCRIPTOR (8<<3)
+#define GDT_USER_CODE_SEGMENT_DESCRIPTOR (9<<3)
+#define GDT_KERNEL_DATA_SEGMENT_DESCRIPTOR (10<<3)
+#define GDT_USER_DATA_SEGMENT_DESCRIPTOR (11<<3)
+#define GDT_VIDEO_SEGMENT_DESCRIPTOR (12<<3)
+
 /* Paginacion */
 /* -------------------------------------------------------------------------- */
-#define PAGE_DIR_FIRST_ENTRY 0x27000
+#define KERNEL_PAGE_DIR_FIRST_ENTRY 0x27000
 #define FIRST_PAGE_TABLE 0x28000
 #define PAGE_DIR_ENTRY_SIZE 0x4 /* 4bytes */
 #define PAGE_TABLE_ENTRY_SIZE 0x4 /* 4bytes */
