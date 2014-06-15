@@ -136,9 +136,9 @@ modo_protegido:
     ; Cargar IDT
     
     ; Configurar controlador de interrupciones
-    ;call deshabilitar_pic
-    ;call resetear_pic
-    ;call habilitar_pic    
+    call deshabilitar_pic
+    call resetear_pic
+    call habilitar_pic    
     ; pintar posiciones inciales de tanques
     
     ; Cargar tarea inicial
