@@ -12,6 +12,7 @@ extern mmu_inicializar_dir_kernel
 extern habilitar_pic
 extern resetear_pic
 extern deshabilitar_pic
+extern print_map
 
 global start
 
@@ -84,7 +85,8 @@ modo_protegido:
     mov ebp, 0x27000
 
     ; Imprimir mensaje de bienvenida
-    pintar_campo_verde ; reemplazar luego por un inicializador "de verdad"
+    ;pintar_campo_verde ; reemplazar luego por un inicializador "de verdad"
+
     imprimir_texto_mp iniciando_mp_msg, iniciando_mp_len, 0x07, 2, 0
 
     ; Cargar interrupciones del procesador
@@ -143,6 +145,8 @@ modo_protegido:
     
     ; Cargar tarea inicial
 
+    call print_map
+    xchg bx, bx
     ; Habilitar interrupciones
     sti
  

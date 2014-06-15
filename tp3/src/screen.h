@@ -8,6 +8,8 @@
 #ifndef __SCREEN_H__
 #define __SCREEN_H__
 
+#include "colors.h"
+
 /* Definicion de la pantalla */
 #define VIDEO_FILS 50
 #define VIDEO_COLS 80
