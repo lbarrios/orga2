@@ -12,7 +12,7 @@ extern mmu_inicializar_dir_kernel
 extern habilitar_pic
 extern resetear_pic
 extern deshabilitar_pic
-extern print_map
+;extern print_map
 
 global start
 
@@ -145,8 +145,8 @@ modo_protegido:
     
     ; Cargar tarea inicial
 
-    call print_map
-    xchg bx, bx
+    ;call print_map
+    ;xchg bx, bx
     ; Habilitar interrupciones
     sti
  
