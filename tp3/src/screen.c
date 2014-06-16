@@ -4,6 +4,10 @@
 ================================================================================
   definicion de funciones del scheduler
 */
+void print_tank_context( int tank )
+{
+	//int t = (tank<1 || tank>8) ? (1) : (tank);
+}
 /*
 #include "screen.h"
 #define SIZE_MAP 2500 // esto es el size en pixeles
@@ -22,10 +26,6 @@ typedef struct EstadoCasilla_s
 
 EstadoCasilla map_state[SIZE_MAP];
 
-void print_tank_context( int tank )
-{
-	//int t = (tank<1 || tank>8) ? (1) : (tank);
-}
 
 #define verdeCampo 0xA000
 #define ASCII_ZERO 48
