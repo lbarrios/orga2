@@ -75,7 +75,7 @@ typedef struct str_mmu {
   unsigned int used_pages;
 } __attribute__((__packed__, aligned (8))) mmu_t;
 
-
+inline void* mmu_get_free_page();
 
 /* Defines */
 #define FREE_PAGES_BASE 0x200000

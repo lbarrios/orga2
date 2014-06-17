@@ -9,6 +9,9 @@ extern IDT_DESC
 extern idt_inicializar
 extern mmu_inicializar
 extern mmu_inicializar_dir_kernel
+extern tss_inicializar
+extern tss_inicializar_idle
+extern tss_inicializar_tanques
 extern habilitar_pic
 extern resetear_pic
 extern deshabilitar_pic
@@ -97,7 +100,6 @@ modo_protegido:
 
     ; Inicializar pantalla
     call screen_inicializar
-    xchg bx, bx
 
     ; Inicializar el directorio de paginas
     call mmu_inicializar_dir_kernel
@@ -112,7 +114,7 @@ modo_protegido:
     mov cr0, eax
     
     ; Imprimo un mensaje de paginación habilitada.
-    imprimir_texto_mp paginacion_habilitada_msg, paginacion_habilitada_len, 0x07, 3, 0
+    imprimir_texto_mp paginacion_habilitada_msg, paginacion_habilitada_len, 0x07, 2, 0
 
     ; Inicializar el manejador de memoria
     call mmu_inicializar
@@ -126,13 +128,13 @@ modo_protegido:
     mov word [fs:0], ax
 
     ; Inicializar tss
-    ;call tss_inicializar
+    call tss_inicializar
 
     ; Inicializar tss de la tarea Idle
-    ;call tss_inicializar_idle
+    call tss_inicializar_idle
     
     ; Inicializar tss de las tanques
-    ;call tss_inicializar_tanques
+    call tss_inicializar_tanques
     
     ; Inicializar el scheduler
     
@@ -160,6 +162,10 @@ modo_protegido:
     mov ebx, 0xFFFF
     mov ecx, 0xFFFF
     mov edx, 0xFFFF
+
+    xchg bx, bx
+    jmp 0x78:0
+
     jmp $
     jmp $
 

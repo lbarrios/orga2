@@ -12,6 +12,7 @@ char campo_minado[CAMPO_SIZE][CAMPO_SIZE];
 void game_inicializar() {
 }
 
+/*
 unsigned int game_mover(unsigned int id, direccion d) {
 
     int nueva_pos;
@@ -83,3 +84,4 @@ unsigned int game_minar(unsigned int id, direccion d) {
 
     return TRUE;
 }
+*/
