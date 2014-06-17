@@ -39,14 +39,25 @@ pixel colorea_pixel(EstadoCasilla s)
     Estado current_state = s.current_state;
     Tank t = s.tank_number;
     unsigned char color;
-    if (current_state == PASTO) color = COLOR_PASTO;
-    else if (current_state == INICIAL) color = COLOR_INICIAL;
-    else if (current_state == PISADO) color = COLOR_PISADO;
-    else if (current_state == SUPERPUESTO) color = COLOR_SUPERPUESTO;
-    else if (current_state == MINA) color = COLOR_MINA;
-    else if (current_state == MISIL) color = COLOR_MISIL;
-    else if (current_state == MUERTO) color = COLOR_MUERTO;
-
+    switch (current_state) {
+        case PASTO:
+            color = COLOR_PASTO; break;
+        case INICIAL:
+            color = COLOR_INICIAL; break;
+        case PISADO:
+            color = COLOR_PISADO; break;
+        case SUPERPUESTO:
+            color = COLOR_SUPERPUESTO; break;
+        case MINA:
+            color = COLOR_MINA; break;
+        case MISIL:
+            color = COLOR_MISIL; break;
+        case MUERTO:
+            color = COLOR_MUERTO; break;
+        default:
+            // Kernel bug?
+            break;
+    };
     pixel res; 
     res.color = color;
     if (current_state == PASTO) res.ascii = 0; // igual es verde sobre verde, no se nota

@@ -7,7 +7,8 @@
 
 #include "mmu.h"
 
-void mmu_inicializar() {
+void mmu_inicializar() 
+{
   unsigned int tanque;
   // Apunto la struct mmu a la dirección de la constante MMU_ADDR
   mmu_t* mmu = (mmu_t*) MMU_ADDRESS;
@@ -152,6 +153,9 @@ void mmu_inicializar_dir_tarea (unsigned int tarea)
     // Sumo PAGE_SIZE al offset de páginas
     page_offset += PAGE_SIZE;
   }
+  //int* seed = 0;
+  //float random = sfrand(seed);
+  //0xDC3FFF - 0x400000
   /*
   // Reemplazar las siguientes dos líneas por un randomizador
   void* code_page_1 = (void*) ((unsigned long) 0x40000 + (0x2000 * (unsigned long)tarea) );
@@ -168,6 +172,7 @@ void mmu_inicializar_dir_tarea (unsigned int tarea)
   mmu_mapear_pagina(TASK_SECOND_CODE_PAGE, &(mmu->task_page_dir[tarea]), code_page_2, attr);
   */
 }
+
 void mmu_mapear_pagina(unsigned long virtual_addr, page_dir* cr3, void* fisica, page_table_attributes atributos)
 {
   // Obtengo el índice que voy a utilizar para acceder a la entrada correspondiente en el directorio de páginas
