@@ -7,7 +7,7 @@
 
 #include "tss.h"
 
-// GDT
+// TSS
 tss tss_next_1;
 tss tss_next_2;
 tss tss_inicial;
@@ -75,8 +75,7 @@ void tss_inicializar_idle()
   tss_next_1.es = tss_next_1.ds;
   tss_next_1.gs = tss_next_1.ds;
   tss_next_1.ss = tss_next_1.ds;
-  // Descriptor de video
-  tss_next_1.fs = GDT_VIDEO_SEGMENT_DESCRIPTOR;
+  tss_next_1.fs = tss_next_1.ds;
   // Instruction Pointer
   tss_next_1.eip = IDLE_TASK_ADDR;
   // Stack
@@ -85,7 +84,8 @@ void tss_inicializar_idle()
   // Paginación
   tss_next_1.cr3 = KERNEL_PAGE_DIR_FIRST_ENTRY;
   // flags, bit 1 reservado en 1, los demás en 0
-  tss_next_1.eflags = 0x2; // ¿Esto está bien?
+  /* ACTIVAR INTERRUPCIONES ABAJO */
+  tss_next_1.eflags = 0x202;
 }
 
 void tss_inicializar_tanques()
@@ -100,16 +100,17 @@ void tss_inicializar_tanques()
     tss_tanques[i].es = tss_tanques[i].ds;
     tss_tanques[i].gs = tss_tanques[i].ds;
     tss_tanques[i].ss = tss_tanques[i].ds;
-    // Descriptor de video
-    tss_tanques[i].fs = GDT_VIDEO_SEGMENT_DESCRIPTOR;
+    tss_tanques[i].fs = tss_tanques[i].ds;
     // Instruction Pointer
     tss_tanques[i].eip = TASK_FIRST_CODE_PAGE;
-    // Stack, el stack crece desde la base del código, pero hacia abajo
-    tss_tanques[i].esp = TASK_FIRST_CODE_PAGE;
-    tss_tanques[i].ebp = TASK_FIRST_CODE_PAGE;
-    // Paginación
+    // Stack, el stack crece desde el tope de la segunda página, hacia abajo
+    tss_tanques[i].esp = TASK_SECOND_CODE_PAGE + PAGE_SIZE;
+    tss_tanques[i].ebp = TASK_SECOND_CODE_PAGE + PAGE_SIZE;
+
+    tss_tanques[i].esp0 = (long) mmu_get_free_page();
+    tss_tanques[i].ss0 = GDT_KERNEL_DATA_SEGMENT_DESCRIPTOR;
+    // Paginación, el cr3 lo tengo en la struct mmu, que ya está inicializada
     mmu_t* mmu = (mmu_t*) MMU_ADDRESS;
     tss_tanques[i].cr3 = (unsigned long) &(mmu->task_page_dir[i]);
-    //tss_tanques[i]
   }
 }

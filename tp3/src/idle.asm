@@ -9,6 +9,10 @@ BITS 32
 %include "imprimir.mac"
 
 idle:
+    ;xchg bx, bx
+    ;mov ax, 1
+    ;mov bx, 0
+    ;idiv bx
     .loopear:
         inc dword [numero]
         cmp dword [numero], 0x4

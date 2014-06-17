@@ -8,15 +8,88 @@
 #include "sched.h"
 
 unsigned char flag_pause = 0;
+unsigned char tarea_actual[2];
 unsigned char indice_actual = 0;
+unsigned char tss_actual = GDT_TASK1_DESCRIPTOR;
 unsigned char tareas_muertas[8] = {0,0,0,0,0,0,0,0};
+#define TAREA_ACTUAL_IDLE 200
 
 unsigned short sched_proximo_indice()
 {
-  indice_actual = (indice_actual+1)%8;
-  if(tareas_muertas[indice_actual])
+  int i = 0;
+  if( flag_pause != 1)
   {
-  	indice_actual = sched_proximo_indice();
+    do
+    {
+      indice_actual = (indice_actual+1)%8;
+      i++;
+    } while (!tareas_muertas[indice_actual] && i<8);
   }
-  return indice_actual;
+  else
+  {
+    i = 8;
+  }
+  if(i==8)
+  {
+    // Ejecuto tarea idle
+    if(tss_actual == GDT_TASK1_DESCRIPTOR)
+    {
+      // Pongo la tarea idle en el descriptor de tss 2
+      tss_next_2 = tss_idle;
+      // Pongo la tarea IDLE como tarea_actual en TSS 2
+      tarea_actual[1] = TAREA_ACTUAL_IDLE;
+      // El nuevo tss_actual va a ser task 2
+      tss_actual = GDT_TASK2_DESCRIPTOR;
+      return 2;
+    }
+    else
+    {
+      // Pongo la tarea idle en el descriptor de tss 1
+      tss_next_1 = tss_idle;
+      // Pongo la tarea IDLE como tarea_actual en TSS 1
+      tarea_actual[0] = TAREA_ACTUAL_IDLE;
+      // El nuevo tss_actual va a ser task 1
+      tss_actual = GDT_TASK1_DESCRIPTOR;
+      return 1;
+    }
+  }
+  else
+  {
+    // Salto a la próxima tarea
+    if(tss_actual == GDT_TASK1_DESCRIPTOR)
+    {
+      // Resguardo el contexto de la tarea actual
+      int tarea = tarea_actual[0];
+      // Solo resguardo si la tarea anterior no era idle
+      if( tarea != TAREA_ACTUAL_IDLE )
+      {
+        tss_tanques[tarea] = tss_next_1;
+      }
+      // Pongo la siguiente tarea en el TSS que no está busy
+      tss_next_2 = tss_tanques[indice_actual];
+      // Pongo la tarea indice_actual como tarea_actual en TSS 2
+      tarea_actual[1] = indice_actual;
+      // El nuevo tss_actual va a ser task 2
+      tss_actual = GDT_TASK2_DESCRIPTOR;
+      return 2;
+    }
+    else
+    {
+
+      // Resguardo el contexto de la tarea actual
+      int tarea = tarea_actual[1];
+      if( tarea != TAREA_ACTUAL_IDLE )
+      {
+        tss_tanques[tarea] = tss_next_1;
+      }
+      tss_tanques[tarea] = tss_next_2;
+      // Pongo la siguiente tarea en el TSS que no está busy
+      tss_next_1 = tss_tanques[indice_actual];
+      // Pongo la tarea indice_actual como tarea_actual en TSS 1
+      tarea_actual[0] = indice_actual;
+      // El nuevo tss_actual va a ser task 1
+      tss_actual = GDT_TASK1_DESCRIPTOR;
+      return 1;
+    }
+  }
 }

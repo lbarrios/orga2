@@ -12,26 +12,31 @@
 void pisar(unsigned int m);
 
 void task() {
+  int a = 0;
+  int b = 1000;
+  int c = b/a;
     /* Tarea 1 */
   char aa[512];
+  breakpoint();
+  aa[0] = c;
 
-  syscall_misil(2, 2, (unsigned int)aa, 512);
-  syscall_misil(3, 3, (unsigned int)aa, 512);
-  syscall_misil(4, 4, (unsigned int)aa, 512);
-  syscall_misil(5, 5, (unsigned int)aa, 512);
-  syscall_misil(6, 6, (unsigned int)aa, 512);
-  syscall_misil(7, 7, (unsigned int)aa, 512);
-  syscall_misil(8, 8, (unsigned int)aa, 512);
-  syscall_misil(9, 9, (unsigned int)aa, 512);
+  syscall_misil(2, 2, (unsigned long)aa, 512);
+  syscall_misil(3, 3, (unsigned long)aa, 512);
+  syscall_misil(4, 4, (unsigned long)aa, 512);
+  syscall_misil(5, 5, (unsigned long)aa, 512);
+  syscall_misil(6, 6, (unsigned long)aa, 512);
+  syscall_misil(7, 7, (unsigned long)aa, 512);
+  syscall_misil(8, 8, (unsigned long)aa, 512);
+  syscall_misil(9, 9, (unsigned long)aa, 512);
 
-  syscall_misil( -1,  -1, (unsigned int)aa, 512);
-  syscall_misil(-10, -10, (unsigned int)aa, 512);
-  syscall_misil( 10, -10, (unsigned int)aa, 512);
-  syscall_misil(-10,  10, (unsigned int)aa, 512);
-  syscall_misil( -8,  -8, (unsigned int)aa, 512);
-  syscall_misil(  8,   8, (unsigned int)aa, 512);
-  syscall_misil(  8,  -8, (unsigned int)aa, 512);
-  syscall_misil( -8,   8, (unsigned int)aa, 512);
+  syscall_misil( -1,  -1, (unsigned long)aa, 512);
+  syscall_misil(-10, -10, (unsigned long)aa, 512);
+  syscall_misil( 10, -10, (unsigned long)aa, 512);
+  syscall_misil(-10,  10, (unsigned long)aa, 512);
+  syscall_misil( -8,  -8, (unsigned long)aa, 512);
+  syscall_misil(  8,   8, (unsigned long)aa, 512);
+  syscall_misil(  8,  -8, (unsigned long)aa, 512);
+  syscall_misil( -8,   8, (unsigned long)aa, 512);
 
   unsigned int i;
   for(i=0;i<10;i++) {
@@ -55,7 +60,7 @@ void task() {
 
 void pisar(unsigned int m) {
   unsigned int i;
-  char* p = (char*)m;
+  char* p = (char*)(long)m;
   for(i=0;i<PAGE_SIZE;i++) {
     p[i]=0xcd;
   }
