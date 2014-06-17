@@ -12,7 +12,8 @@ extern mmu_inicializar_dir_kernel
 extern habilitar_pic
 extern resetear_pic
 extern deshabilitar_pic
-;extern print_map
+extern print_map
+extern screen_inicializar
 
 global start
 
@@ -95,7 +96,9 @@ modo_protegido:
     lidt [IDT_DESC]
 
     ; Inicializar pantalla
-    
+    call screen_inicializar
+    xchg bx, bx
+
     ; Inicializar el directorio de paginas
     call mmu_inicializar_dir_kernel
     

@@ -31,4 +31,12 @@
 
 #define C_BLINK                 (0x8 << 4)
 
+#define COLOR_PASTO (C_FG_GREEN + C_BG_GREEN)
+#define COLOR_INICIAL (C_FG_WHITE + C_BG_LIGHT_GREY)
+#define COLOR_PISADO (C_FG_BLACK + C_BG_LIGHT_GREY)
+#define COLOR_SUPERPUESTO (C_FG_BLACK + C_BG_BROWN)
+#define COLOR_MINA (C_FG_WHITE + C_BG_BLACK)
+#define COLOR_MISIL (C_FG_RED + C_BG_CYAN)
+#define COLOR_MUERTO (C_FG_WHITE + C_BG_RED)
+
 #endif /* !__COLORS_H__ */
