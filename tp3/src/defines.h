@@ -68,4 +68,19 @@ Ejemplo:
 	CCASSERT(sizeof(_someVariable)==4)
 */
 
+
+float frand( int *seed )
+{
+    union
+    {
+        float fres;
+        unsigned int ires;
+    };
+
+    seed[0] *= 16807;
+
+    ires = ((((unsigned int)seed[0])>>9 ) | 0x3f800000);
+    return fres - 1.0f;
+}
+
 #endif  /* !__DEFINES_H__ */
