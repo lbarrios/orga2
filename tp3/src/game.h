@@ -11,6 +11,8 @@
 #include "screen.h"
 #include "mmu.h"
 
+#define GAME_MAP_FIRST_ADDRESS 0x400000
+#define GAME_MAP_LAST_ADDRESS 0xDC3FFF
 
 typedef enum direccion_e { NE = 12, N  = 11, NO = 14,
                            E  = 22, C  = 0,  O  = 44,

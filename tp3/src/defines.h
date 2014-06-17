@@ -68,6 +68,12 @@ Ejemplo:
 	CCASSERT(sizeof(_someVariable)==4)
 */
 
+static inline int time()
+{
+    int ret;
+    asm volatile ( "rdtsc" : "=A"(ret) );
+    return ret;
+}
 
 float frand( int *seed )
 {

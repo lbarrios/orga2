@@ -41,4 +41,7 @@ extern gdt_descriptor GDT_DESC;
 /* defines */
 #define GDT_TSS_NOT_BUSY_DESCRIPTOR_TYPE 0b1001
 
+#define GDT_PRESENT 1
+#define GDT_NOT_PRESENT 0
+
 #endif  /* !__GDT_H__ */

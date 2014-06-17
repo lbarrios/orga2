@@ -153,13 +153,27 @@ void mmu_inicializar_dir_tarea (unsigned int tarea)
     // Sumo PAGE_SIZE al offset de páginas
     page_offset += PAGE_SIZE;
   }
-  //int* seed = 0;
-  //float random = sfrand(seed);
-  //0xDC3FFF - 0x400000
-  /*
-  // Reemplazar las siguientes dos líneas por un randomizador
-  void* code_page_1 = (void*) ((unsigned long) 0x40000 + (0x2000 * (unsigned long)tarea) );
-  void* code_page_2 = (void*) ((unsigned long) 0x41000 + (0x2000 * (unsigned long)tarea) );
+  /* 
+  Obtengo las dos páginas físicas de código de la tarea usando un randomizador
+  */
+  // Obtengo el time stamp counter
+  int seed = time();
+  // Dirección base del mapa
+  unsigned long base_addr = GAME_MAP_FIRST_ADDRESS;
+  /* 
+  Usando TSC como seed, corro frand() que me devuelve un float entre 0 y 1
+  y luego multiplico ese número por el tamaño del mapa en bytes, obteniendo
+  así un offset para mi tarea
+  */
+  unsigned long offset_1 = (unsigned long)(frand(&seed)*(GAME_MAP_LAST_ADDRESS - GAME_MAP_FIRST_ADDRESS));
+  unsigned long offset_2 = (unsigned long)(frand(&seed)*(GAME_MAP_LAST_ADDRESS - GAME_MAP_FIRST_ADDRESS));
+  // Uso una máscara para quitar los últimos 12 bits de la dirección obtenida
+  unsigned long bitmask = 0xFFFFF000;
+  unsigned long code_page_1_addr = (base_addr + offset_1) && bitmask;
+  unsigned long code_page_2_addr = (base_addr + offset_2) && bitmask;
+  // Obtengo el puntero a la dirección física de la página
+  void* code_page_1 = (void*) ( code_page_1_addr );
+  void* code_page_2 = (void*) ( code_page_2_addr );
   // Casteo una estructura de atributos con todos los valores en 0
   page_table_attributes attr = NOT_PRESENT_PAGE_TABLE_ATTRIBUTES;
   // Marco la página presente
@@ -167,10 +181,10 @@ void mmu_inicializar_dir_tarea (unsigned int tarea)
   // Marco la página como de escritura
   attr.read_write = PTE_WRITE;
   // Marco la página como "de usuario"
-  attr.user_supervisor = PTE_SUPERVISOR;
+  attr.user_supervisor = PTE_USER;
+  // Mapeo las dos páginas de código de la tarea
   mmu_mapear_pagina(TASK_FIRST_CODE_PAGE, &(mmu->task_page_dir[tarea]), code_page_1, attr);
   mmu_mapear_pagina(TASK_SECOND_CODE_PAGE, &(mmu->task_page_dir[tarea]), code_page_2, attr);
-  */
 }
 
 void mmu_mapear_pagina(unsigned long virtual_addr, page_dir* cr3, void* fisica, page_table_attributes atributos)

@@ -20,28 +20,49 @@ void tss_inicializar()
 {
   gdt_entry* gdte;
 
+  /* 
+  Inicializo el descriptor de tarea inicial
+  */
+  // Obtengo la dirección del descriptor de tarea inicial
   gdte = &(gdt[GDT_INIT_DESCRIPTOR]);
+  // Guardo en la parte baja del atributo base los bits menos 
+  // significativos de la dirección tss_inicial (se trunca automáticamente)
   gdte->base_0_15 = ((long)&(tss_inicial));
+  // Pongo los 8 bits del medio, shifteando 16 veces
   gdte->base_23_16 = ((long)&(tss_inicial))>>16;
+  // Pongo los 8 bits más significativos shifteando 24 veces
   gdte->base_31_24 = ((long)&(tss_inicial))>>24;
+  // El tipo de descriptor es NOT_BUSY
   gdte->type = GDT_TSS_NOT_BUSY_DESCRIPTOR_TYPE;
-  gdte->p = 1;
+  // El descriptor está presente
+  gdte->p = GDT_PRESENT;
+  // Guardo en límite el tamaño del TSS
   gdte->limit_0_15 = TSS_SIZE;
 
+  /* 
+  Inicializo el desriptor de tarea 1
+  */
+  // Obtengo la dirección del descriptor de tarea 1
   gdte = &(gdt[GDT_TASK1_DESCRIPTOR]);
+  // En adelante se omiten comentarios, es igual a GDT_INIT
   gdte->base_0_15 = ((long)&(tss_next_1));
   gdte->base_23_16 = ((long)&(tss_next_1))>>16;
   gdte->base_31_24 = ((long)&(tss_next_1))>>24;
   gdte->type = GDT_TSS_NOT_BUSY_DESCRIPTOR_TYPE;
-  gdte->p = 1;
+  gdte->p = GDT_PRESENT;
   gdte->limit_0_15 = TSS_SIZE;
 
+  /* 
+  Inicializo el descriptor de tarea 2
+  */
+  // Obtengo la dirección del descriptor de tarea 2
   gdte = &(gdt[GDT_TASK2_DESCRIPTOR]);
+  // En adelante se omiten comentarios, es igual a GDT_INIT
   gdte->base_0_15 = ((long)&(tss_next_2));
   gdte->base_23_16 = ((long)&(tss_next_2))>>16;
   gdte->base_31_24 = ((long)&(tss_next_2))>>24;
   gdte->type = GDT_TSS_NOT_BUSY_DESCRIPTOR_TYPE;
-  gdte->p = 1;
+  gdte->p = GDT_PRESENT;
   gdte->limit_0_15 = TSS_SIZE;
 }
 
@@ -63,7 +84,7 @@ void tss_inicializar_idle()
   tss_next_1.ebp = KERNEL_STACK_ADDR;
   // Paginación
   tss_next_1.cr3 = KERNEL_PAGE_DIR_FIRST_ENTRY;
-  // flags
+  // flags, bit 1 reservado en 1, los demás en 0
   tss_next_1.eflags = 0x2; // ¿Esto está bien?
 }
 
