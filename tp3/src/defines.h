@@ -56,4 +56,16 @@
 #define MMU_ADDRESS 0x100000
 
 
+//CCASSERT - 強制編譯時斷言
+#define CCASSERT(predicate) _x_CCASSERT_LINE(predicate, __LINE__)
+#define _x_CCASSERT_LINE(predicate, line) typedef char constraint_violated_on_line_##line[2*((predicate)!=0)-1];
+//典型的使用：
+/* Use:
+To assert in compilation time :)
+Si la condición es falsa, entonces la compilación falla
+
+Ejemplo:
+	CCASSERT(sizeof(_someVariable)==4)
+*/
+
 #endif  /* !__DEFINES_H__ */
