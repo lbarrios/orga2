@@ -8,34 +8,44 @@ void print_tank_context( int tank )
 {
 	//int t = (tank<1 || tank>8) ? (1) : (tank);
 }
-/*
+
 #include "screen.h"
 #define SIZE_MAP 2500 // esto es el size en pixeles
 #define SIZE_PIXEL 2 // size en bytes
 #define MAP_FIRST_PIXEL 0xB8000 // esperemos que asi sea
 
-typedef enum {VERDE, INICIAL, PISADO, SUPERPUESTO, MINA, MISIL, MUERTO} Estado;
-typedef unsigned short pixel;
+typedef enum {PASTO, INICIAL, PISADO, SUPERPUESTO, MINA, MISIL, MUERTO} Estado;
+
+typedef struct pixel_s {
+    unsigned char color;
+    unsigned char ascii;
+} __attribute__((__packed__)) pixel;
+
 typedef unsigned char Tank;
 
 typedef struct EstadoCasilla_s
 {            
-    Estado current_state;
-    Tank tank_number;
+    Estado current_state; // inicializar en verde
+    Tank tank_number;   // inicializar en 0(ninguno)
 } EstadoCasilla;
 
 EstadoCasilla map_state[SIZE_MAP];
 
-
-#define verdeCampo 0xA000
 #define ASCII_ZERO 48
+#define ASCII_EQUIS 120
 
 pixel colorea_pixel(EstadoCasilla s)
 {
+    pixel res;
+    res.color = COLOR_PASTO;
+    res.ascii = 0;
+    return res;
+
+    /*
     Estado current_state = s.current_state;
     Tank t = s.tank_number;
     unsigned char color;
-    if (current_state == VERDE) color = COLOR_CAMPO;
+    if (current_state == PASTO) color = COLOR_PASTO;
     else if (current_state == INICIAL) color = COLOR_INICIAL;
     else if (current_state == PISADO) color = COLOR_PISADO;
     else if (current_state == SUPERPUESTO) color = COLOR_SUPERPUESTO;
@@ -43,9 +53,14 @@ pixel colorea_pixel(EstadoCasilla s)
     else if (current_state == MISIL) color = COLOR_MISIL;
     else if (current_state == MUERTO) color = COLOR_MUERTO;
 
-    pixel pixel_color = color<<8;
-    pixel pixel_ascii = t + ASCII_ZERO;
-    return color + ascii;
+    pixel res; 
+    res.color = color;
+    if (current_state == PASTO) res.ascii = 0;
+    else if (current_state == SUPERPUESTO) res.ascii = ASCII_EQUIS;
+    else res.ascii = t + ASCII_ZERO;
+
+    return res;
+    */
 }
 
 
@@ -62,7 +77,20 @@ void print_map ()
         }
     }
 }
-*/
+
+void screen_inicializar ()
+{
+    EstadoCasilla pasto;
+    pasto.current_state = PASTO;
+    pasto.tank_number = 0;
+
+    int i;
+    for (i = 0; i < SIZE_MAP; i++)
+    {
+        map_state[i] = pasto;
+    }
+    print_map();
+}
 /*
 void screen_proximo_reloj ()
 {
