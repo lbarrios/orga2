@@ -17,16 +17,16 @@ void print_tank_context( int tank )
 typedef enum {PASTO, INICIAL, PISADO, SUPERPUESTO, MINA, MISIL, MUERTO} Estado;
 
 typedef struct pixel_s {
-    unsigned char color;
     unsigned char ascii;
+    unsigned char color;
 } __attribute__((__packed__)) pixel;
 
 typedef unsigned char Tank;
 
 typedef struct EstadoCasilla_s
 {            
-    Estado current_state; // inicializar en verde
-    Tank tank_number;   // inicializar en 0(ninguno)
+    Estado current_state;
+    Tank tank_number;
 } EstadoCasilla;
 
 EstadoCasilla map_state[SIZE_MAP];
@@ -36,12 +36,6 @@ EstadoCasilla map_state[SIZE_MAP];
 
 pixel colorea_pixel(EstadoCasilla s)
 {
-    pixel res;
-    res.color = COLOR_PASTO;
-    res.ascii = 0;
-    return res;
-
-    /*
     Estado current_state = s.current_state;
     Tank t = s.tank_number;
     unsigned char color;
@@ -55,12 +49,11 @@ pixel colorea_pixel(EstadoCasilla s)
 
     pixel res; 
     res.color = color;
-    if (current_state == PASTO) res.ascii = 0;
+    if (current_state == PASTO) res.ascii = 0; // igual es verde sobre verde, no se nota
     else if (current_state == SUPERPUESTO) res.ascii = ASCII_EQUIS;
     else res.ascii = t + ASCII_ZERO;
 
     return res;
-    */
 }
 
 
