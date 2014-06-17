@@ -31,9 +31,6 @@ typedef struct EstadoCasilla_s
 
 EstadoCasilla map_state[SIZE_MAP];
 
-#define ASCII_ZERO 48
-#define ASCII_EQUIS 120
-
 pixel colorea_pixel(EstadoCasilla s)
 {
     Estado current_state = s.current_state;
@@ -60,9 +57,9 @@ pixel colorea_pixel(EstadoCasilla s)
     };
     pixel res; 
     res.color = color;
-    if (current_state == PASTO) res.ascii = 0; // igual es verde sobre verde, no se nota
-    else if (current_state == SUPERPUESTO) res.ascii = ASCII_EQUIS;
-    else res.ascii = t + ASCII_ZERO;
+    if (current_state == PASTO) res.ascii = 0;
+    else if (current_state == SUPERPUESTO) res.ascii = 'x';
+    else res.ascii = t + '0';
 
     return res;
 }
@@ -93,6 +90,9 @@ void screen_inicializar ()
     {
         map_state[i] = pasto;
     }
+
+    //importante: marcar las casillas INICIAL
+
     print_map();
 }
 /*

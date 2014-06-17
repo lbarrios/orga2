@@ -14,29 +14,53 @@ void game_inicializar() {
 
 unsigned int game_mover(unsigned int id, direccion d) {
 
-
     int nueva_pos;
     EstadoCasilla estado_nueva_pos;
     switch (estado_nueva_pos->current_state) {
+
         case PASTO:
             estado_nueva_pos->current_state = PISADO;
             estado_nueva_pos->tank_number = NUMERODETANQUE;
-            mapear_pagina(args);
+            mmu_mapear_pagina(args);
             break;
-        case INICIAL:
-            if (estado_nueva_pos->)
 
-            color = COLOR_INICIAL; break;
+        case INICIAL:
+            if (estado_nueva_pos->tank_number != NUMERODETANQUE)
+            {
+                estado_nueva_pos->current_state = SUPERPUESTO;
+                estado_nueva_pos->tank_number = 0;
+                mmu_mapear_pagina(args); // aunque ya sea de otro?
+            }
+            break;
+
         case PISADO:
-            color = COLOR_PISADO; break;
+            if (estado_nueva_pos->tank_number != NUMERODETANQUE)
+            {
+                estado_nueva_pos->current_state = SUPERPUESTO;
+                estado_nueva_pos->tank_number = 0;
+                mmu_mapear_pagina(args); // aunque ya sea de otro?
+            }
+            break;
+
         case SUPERPUESTO:
-            color = COLOR_SUPERPUESTO; break;
+            if (estado_nueva_pos->tank_number != NUMERODETANQUE)
+            {
+                mmu_mapear_pagina(args); // aunque ya sea de otro?
+            }
+            break;
+
         case MINA:
-            color = COLOR_MINA; break;
+            desalojar_tarea(NUMERODETANQUE);
+            break;
+            
         case MISIL:
-            color = COLOR_MISIL; break;
+            // que pasa?
+            break;
+
         case MUERTO:
-            color = COLOR_MUERTO; break;
+            // superpones?
+            break;
+
         default:
             // Kernel bug?
             break;
@@ -46,12 +70,16 @@ unsigned int game_mover(unsigned int id, direccion d) {
 }
 
 unsigned int game_misil(unsigned int id, int val_x, int val_y, unsigned int misil, unsigned int size) {
+    int posicion;
+    
+
     return TRUE;
 }
 
 unsigned int game_minar(unsigned int id, direccion d) {
+    int posicion;
+    map_state[posicion].current_state = MINA;
+    map_state[posicion].tank_number = NUMERODETANQUE;
+
     return TRUE;
 }
-
-
-
