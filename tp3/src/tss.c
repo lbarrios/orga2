@@ -8,9 +8,9 @@
 #include "tss.h"
 
 // TSS
+tss tss_inicial = (const tss) {0};
 tss tss_next_1 = (const tss) {0xffff};
 tss tss_next_2 = (const tss) {0xffff};
-tss tss_inicial = (const tss) {0};
 
 // Contextos backup
 tss tss_idle;
@@ -116,5 +116,5 @@ void tss_inicializar_tanques()
     tss_tanques[i].eflags = 0x202;
   }
   //tss_next_1 = tss;//tss_tanques[0];
-  tss_next_2 = tss_tanques[1];
+  tss_next_2 = tss_tanques[0];
 }

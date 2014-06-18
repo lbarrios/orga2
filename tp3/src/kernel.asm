@@ -135,7 +135,7 @@ modo_protegido:
     
     ; Inicializar tss de las tanques
     call tss_inicializar_tanques
-    
+		
     ; Inicializar el scheduler
 
     ; Inicializar Game
@@ -155,11 +155,14 @@ modo_protegido:
     ; Habilitar interrupciones
     sti
  
-    mov ax, 0x70
-    ltr ax
-    jmp 0x78:0
+		xchg bx, bx ; En este breakpoint #x 0x20+0x000049c0 imprime el EIP de tarea
+
+	;luego ya no
 
     ; Saltar a la primera tarea: Idle
+    mov ax, 0x70; Cargo en ax el offset_gdt de la tarea init
+    ltr ax; Pongo en el TR la tarea init
+    jmp 0x78:0; jmp far a la tarea idle
 
     ; Ciclar infinitamente (por si algo sale mal...)
     mov eax, 0xFFFF
