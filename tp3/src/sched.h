@@ -11,6 +11,6 @@
 #include "screen.h"
 #include "tss.h"
 
-unsigned short sched_proximo_indice();
+unsigned long sched_proximo_indice();
 
 #endif	/* !__SCHED_H__ */

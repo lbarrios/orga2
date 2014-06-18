@@ -66,6 +66,7 @@ config_interface: textconfig
 #display_library: wx
 #display_library: x, options="hideIPS" # disable IPS output in status bar
 display_library: x, options="gui_debug" # use GTK debugger gui
+#display_library: x # use GTK debugger gui
 
 #=======================================================================
 # ROMIMAGE:

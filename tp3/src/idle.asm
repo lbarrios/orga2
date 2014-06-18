@@ -9,7 +9,7 @@ BITS 32
 %include "imprimir.mac"
 
 idle:
-    ;xchg bx, bx
+    xchg bx, bx
     ;mov ax, 1
     ;mov bx, 0
     ;idiv bx

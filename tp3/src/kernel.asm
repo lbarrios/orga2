@@ -137,7 +137,7 @@ modo_protegido:
     call tss_inicializar_tanques
     
     ; Inicializar el scheduler
-    
+
     ; Inicializar Game
     
     ; Cargar IDT
@@ -155,6 +155,10 @@ modo_protegido:
     ; Habilitar interrupciones
     sti
  
+    mov ax, 0x70
+    ltr ax
+    jmp 0x78:0
+
     ; Saltar a la primera tarea: Idle
 
     ; Ciclar infinitamente (por si algo sale mal...)
@@ -162,9 +166,6 @@ modo_protegido:
     mov ebx, 0xFFFF
     mov ecx, 0xFFFF
     mov edx, 0xFFFF
-
-    xchg bx, bx
-    jmp 0x78:0
 
     jmp $
     jmp $

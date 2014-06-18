@@ -9,15 +9,15 @@
 
 unsigned char flag_pause = 0;
 unsigned char tarea_actual[2];
-unsigned char indice_actual = 0;
+unsigned char indice_actual = 8;
 unsigned char tss_actual = GDT_TASK1_DESCRIPTOR;
 unsigned char tareas_muertas[8] = {0,0,0,0,0,0,0,0};
 #define TAREA_ACTUAL_IDLE 200
 
-unsigned short sched_proximo_indice()
+unsigned long sched_proximo_indice()
 {
   int i = 0;
-  if( flag_pause != 1)
+  if( flag_pause != 1 )
   {
     do
     {
@@ -29,7 +29,7 @@ unsigned short sched_proximo_indice()
   {
     i = 8;
   }
-  if(i==8)
+  if( i==8 )
   {
     // Ejecuto tarea idle
     if(tss_actual == GDT_TASK1_DESCRIPTOR)
@@ -75,14 +75,12 @@ unsigned short sched_proximo_indice()
     }
     else
     {
-
       // Resguardo el contexto de la tarea actual
       int tarea = tarea_actual[1];
       if( tarea != TAREA_ACTUAL_IDLE )
       {
-        tss_tanques[tarea] = tss_next_1;
+        tss_tanques[tarea] = tss_next_2;
       }
-      tss_tanques[tarea] = tss_next_2;
       // Pongo la siguiente tarea en el TSS que no está busy
       tss_next_1 = tss_tanques[indice_actual];
       // Pongo la tarea indice_actual como tarea_actual en TSS 1
