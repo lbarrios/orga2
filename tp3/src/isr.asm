@@ -128,9 +128,19 @@ global _isr32
 _isr32:
     pushad
     call proximo_reloj
-    call sched_proximo_indice
-    ; llenar codigo
     call fin_intr_pic1
+    call sched_proximo_indice
+    xchg bx, bx
+    cmp ax, 1
+    je .jmp_tss_1
+    
+    jmp 0x80:0 ; Selector tss_next_2
+    jmp .fin
+
+    .jmp_tss_1:
+    jmp 0x78:0 ; selector tss_next_1
+    
+    .fin:
     popad
     iret
 

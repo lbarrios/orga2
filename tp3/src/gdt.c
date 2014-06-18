@@ -58,7 +58,7 @@ gdt_entry gdt[GDT_COUNT] = {
     // o sea 0x2DCFF
     .limit_0_15 = 0xDCFF,
     .limit_16_19 = 0x2,
-    .type = 8, // 1000 en binario, Code Execute-Only
+    .type = SEG_CODE_X, // 1000 en binario, Code Execute-Only
     .s  = 1, // Código/Datos
     .dpl = 0, // Nivel de privilegio 0
     .p = 1, // 1 = Presente
@@ -76,7 +76,7 @@ gdt_entry gdt[GDT_COUNT] = {
     // o sea 0x2DCFF
     .limit_0_15 = 0xDCFF,
     .limit_16_19 = 0x2,
-    .type = 8, // 1000 en binario, Code Execute-Only
+    .type = SEG_CODE_X, // 1000 en binario, Code Execute-Only
     .s  = 1, // Código/Datos
     .dpl = 3, // Nivel de privilegio 3
     .p = 1, // 1 = Presente
@@ -112,7 +112,7 @@ gdt_entry gdt[GDT_COUNT] = {
     // o sea 0x2DCFF
     .limit_0_15 = 0xDCFF,
     .limit_16_19 = 0x2,
-    .type = 0, // 1000 en binario, Data Read-Only
+    .type = SEG_DATA_RW, // 1000 en binario, Data Read-Only
     .s = 1, // Código/Datos
     .dpl = 3, // Nivel de privilegio 3
     .p = 1, // 1 = Presente

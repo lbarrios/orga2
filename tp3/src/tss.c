@@ -8,9 +8,9 @@
 #include "tss.h"
 
 // TSS
-tss tss_next_1;
-tss tss_next_2;
-tss tss_inicial;
+tss tss_next_1 = (const tss) {0xffff};
+tss tss_next_2 = (const tss) {0xffff};
+tss tss_inicial = (const tss) {0};
 
 // Contextos backup
 tss tss_idle;
@@ -40,7 +40,7 @@ void tss_inicializar()
   gdte->limit_0_15 = TSS_SIZE;
 
   /* 
-  Inicializo el desriptor de tarea 1
+  Inicializo el descriptor de tarea 1
   */
   // Obtengo la dirección del descriptor de tarea 1
   gdte = &(gdt[GDT_TASK1_DESCRIPTOR]);
@@ -107,10 +107,14 @@ void tss_inicializar_tanques()
     tss_tanques[i].esp = TASK_SECOND_CODE_PAGE + PAGE_SIZE;
     tss_tanques[i].ebp = TASK_SECOND_CODE_PAGE + PAGE_SIZE;
 
-    tss_tanques[i].esp0 = (long) mmu_get_free_page();
+    tss_tanques[i].esp0 = (long) mmu_get_free_page() + PAGE_SIZE;
     tss_tanques[i].ss0 = GDT_KERNEL_DATA_SEGMENT_DESCRIPTOR;
     // Paginación, el cr3 lo tengo en la struct mmu, que ya está inicializada
     mmu_t* mmu = (mmu_t*) MMU_ADDRESS;
     tss_tanques[i].cr3 = (unsigned long) &(mmu->task_page_dir[i]);
+    // EFLAGS con interrupciones activas
+    tss_tanques[i].eflags = 0x202;
   }
+  //tss_next_1 = tss;//tss_tanques[0];
+  tss_next_2 = tss_tanques[1];
 }
