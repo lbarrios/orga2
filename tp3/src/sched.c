@@ -6,13 +6,13 @@
 */
 
 #include "sched.h"
+#define TAREA_ACTUAL_IDLE 200
 
 unsigned char flag_pause = 0;
-unsigned char tarea_actual[2];
+unsigned char tarea_actual[2] = {TAREA_ACTUAL_IDLE, TAREA_ACTUAL_IDLE};
 unsigned char indice_actual = 8;
 unsigned char tss_actual = GDT_TASK1_DESCRIPTOR;
 unsigned char tareas_muertas[8] = {0,0,0,0,0,0,0,0};
-#define TAREA_ACTUAL_IDLE 200
 
 unsigned long sched_proximo_indice()
 {
