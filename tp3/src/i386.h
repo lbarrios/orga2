@@ -26,6 +26,8 @@ LS_INLINE unsigned short rtr(void);
 LS_INLINE void hlt(void);
 LS_INLINE void breakpoint(void);
 
+LS_INLINE void outportb(unsigned int port,unsigned char value);
+
 /*
  * Implementaciones
  */
@@ -103,5 +105,20 @@ LS_INLINE void hlt(void) {
 LS_INLINE void breakpoint(void) {
     __asm __volatile("xchg %%bx, %%bx" : :);
 }
+
+LS_INLINE void outportb(unsigned int port,unsigned char value)
+{
+    __asm __volatile ("outb %%al,%%dx": :"d" (port), "a" (value));
+}
+
+LS_INLINE void oute9(unsigned short value);
+LS_INLINE void oute9(unsigned short value)
+{
+		short port = 0xe9;
+    __asm __volatile ("out %%al, %%dx": :"d"(port), "a" (value));
+		port = 0x3F8;
+    __asm __volatile ("out %%al, %%dx": :"d"(port), "a" (value));
+}
+
 
 #endif  /* !__i386_H__ */

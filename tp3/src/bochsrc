@@ -65,8 +65,8 @@ config_interface: textconfig
 #display_library: win32, options="gui_debug" # use Win32 debugger gui
 #display_library: wx
 #display_library: x, options="hideIPS" # disable IPS output in status bar
-#display_library: x, options="gui_debug" # use GTK debugger gui
-display_library: x # use GTK debugger gui
+display_library: x, options="gui_debug" # use GTK debugger gui
+#display_library: x # use GTK debugger gui
 
 #=======================================================================
 # ROMIMAGE:
@@ -482,7 +482,7 @@ debugger_log: -
 #   com4: enabled=1, mode=pipe-client, dev=\\.\pipe\mypipe
 #   com4: enabled=1, mode=pipe-server, dev=\\.\pipe\mypipe
 #=======================================================================
-#com1: enabled=1, mode=term, dev=/dev/ttyp9
+com1: enabled=1, mode=file, dev=com1.out
 
 
 #=======================================================================
@@ -809,7 +809,7 @@ magic_break: enabled=1
 # Example:
 #   port_e9_hack: enabled=1
 #=======================================================================
-#port_e9_hack: enabled=1
+port_e9_hack: enabled=1
 
 #=======================================================================
 # DEBUG_SYMBOLS:

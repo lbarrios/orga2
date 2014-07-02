@@ -7,8 +7,9 @@
 
 #include "mmu.h"
 
-void mmu_inicializar() 
+void mmu_inicializar()
 {
+	BOCHSDEBUG("Iniciando MMU...")
   unsigned int tanque;
   // Apunto la struct mmu a la dirección de la constante MMU_ADDR
   mmu_t* mmu = (mmu_t*) MMU_ADDRESS;
@@ -96,6 +97,7 @@ void mmu_inicializar_dir_kernel()
 
 void mmu_inicializar_dir_tarea (unsigned int tarea)
 {
+  BD("Iniciando mmu tarea ") char debugtarea = '1'; debugtarea += tarea; BD(debugtarea) BD(".....")
   unsigned long i,j;
   void* pagina_libre;
   // Obtengo la dirección de la estructura mmu

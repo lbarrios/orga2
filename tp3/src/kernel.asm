@@ -45,7 +45,6 @@ BITS 16
 start:
     ; Deshabilitar interrupciones
     cli
-
     ; Cambiar modo de video a 80 X 50
     mov ax, 0003h
     int 10h ; set mode 03h
@@ -112,20 +111,23 @@ modo_protegido:
     mov eax, cr0
     or eax, 0x80000000
     mov cr0, eax
-    
+
     ; Imprimo un mensaje de paginación habilitada.
     imprimir_texto_mp paginacion_habilitada_msg, paginacion_habilitada_len, 0x07, 2, 0
 
     ; Inicializar el manejador de memoria
     call mmu_inicializar
-    
+
+
+
     ; Habilito paginación con el directorio de la 1er tarea
-    mov eax, 0x100000
-    mov cr3, eax
+    ;mov eax, 0x100000
+    ;mov cr3, eax
 
     ; Imprimo un color en el primer pixel de la pantalla
-    mov ax, 0xD040
-    mov word [fs:0], ax
+    ;mov ax, 0xD040
+    ;mov word [fs:0], ax
+
 
     ; Inicializar tss
     call tss_inicializar
@@ -135,7 +137,8 @@ modo_protegido:
     
     ; Inicializar tss de las tanques
     call tss_inicializar_tanques
-		
+
+xchg bx, bx
     ; Inicializar el scheduler
 
     ; Inicializar Game
@@ -153,16 +156,15 @@ modo_protegido:
     ;call print_map
     ;xchg bx, bx
     ; Habilitar interrupciones
-    sti
- 
-		xchg bx, bx ; En este breakpoint #x 0x20+0x000049c0 imprime el EIP de tarea
+    ;sti
+    cli
 
-	;luego ya no
-
+    ;luego ya no
+    xchg bx, bx
     ; Saltar a la primera tarea: Idle
     mov ax, 0x70; Cargo en ax el offset_gdt de la tarea init
     ltr ax; Pongo en el TR la tarea init
-    jmp 0x78:0; jmp far a la tarea idle
+    jmp 0x80:0; jmp far a la tarea idle
 
     ; Ciclar infinitamente (por si algo sale mal...)
     mov eax, 0xFFFF

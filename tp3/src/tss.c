@@ -83,9 +83,44 @@ void tss_inicializar_idle()
   tss_next_1.ebp = KERNEL_STACK_ADDR;
   // Paginación
   tss_next_1.cr3 = KERNEL_PAGE_DIR_FIRST_ENTRY;
+
+  // Casteo el page dir
+  page_dir* pd_idle = (page_dir*) tss_next_1.cr3;
+  // Obtengo la pde correspondiente a la direcciòn lògica 0x80000000 
+  page_dir_entry* pde = &((pd_idle->pde)[TASK_FIRST_CODE_PAGE>>22]);
+  // Marco el bit de presente (presente)
+    pde->present = PTE_PRESENT;
+    // Marco el bit de read/write (write)
+    pde->read_write = PTE_WRITE;
+    // Obtengo la dirección base de la page_table
+    pde->table_base = (unsigned long)mmu_get_free_page();
+    // Marco todas "no presentes"
+    int j;
+    for (j = 0; j < PAGE_TABLE_ENTRY_COUNT; j++)
+    {
+      // Obtengo la dirección de la entrada de tabla
+      page_table_entry *pte = (page_table_entry*)((pde->table_base<<12) + (j * PAGE_TABLE_ENTRY_SIZE));
+      // Gurado una entrada de tabla nula (no presente)
+      *pte = NOT_PRESENT_TABLE_ENTRY;
+    }
+    // Marco presentes las dos páginas de la tarea
+      // Se que estan en la misma tabla, sino esto podría ocasionar un BUG !!!
+      page_table_entry *pte1 = (page_table_entry*)((pde->table_base<<12) + (((TASK_FIRST_CODE_PAGE<<10)>>22) * PAGE_TABLE_ENTRY_SIZE));
+      page_table_entry *pte2 = (page_table_entry*)((pde->table_base<<12) + (((TASK_SECOND_CODE_PAGE<<10)>>22) * PAGE_TABLE_ENTRY_SIZE));
+      // Marco el bit de presente (presente)
+      pte1->present = PTE_PRESENT;
+      pte2->present = PTE_PRESENT;
+      // Marco el bit de read/write (write)
+      pte1->read_write = PTE_WRITE;
+      pte2->read_write = PTE_WRITE;
+      // Obtengo la dirección base de la page_table
+      pte1->page_base = IDLE_TASK_ADDR;
+      pte2->page_base = IDLE_TASK_ADDR + PAGE_SIZE;
   // flags, bit 1 reservado en 1, los demás en 0
   /* ACTIVAR INTERRUPCIONES ABAJO */
   tss_next_1.eflags = 0x202;
+  // INTERRUPCIONES DESHABILITADAS
+  tss_next_1.eflags = 0x2;
 }
 
 void tss_inicializar_tanques()
@@ -94,9 +129,9 @@ void tss_inicializar_tanques()
   for (i = 0; i < CANT_TANQUES; ++i)
   {
     // Descriptor de código
-    tss_tanques[i].cs = GDT_USER_CODE_SEGMENT_DESCRIPTOR;
+    tss_tanques[i].cs = GDT_USER_CODE_SEGMENT_DESCRIPTOR + 3;
     // Descriptor de datos
-    tss_tanques[i].ds = GDT_USER_DATA_SEGMENT_DESCRIPTOR;
+    tss_tanques[i].ds = GDT_USER_DATA_SEGMENT_DESCRIPTOR + 3;
     tss_tanques[i].es = tss_tanques[i].ds;
     tss_tanques[i].gs = tss_tanques[i].ds;
     tss_tanques[i].ss = tss_tanques[i].ds;
@@ -114,6 +149,8 @@ void tss_inicializar_tanques()
     tss_tanques[i].cr3 = (unsigned long) &(mmu->task_page_dir[i]);
     // EFLAGS con interrupciones activas
     tss_tanques[i].eflags = 0x202;
+    // TEMP sin interrupciones
+    tss_tanques[i].eflags = 0x2;
   }
   //tss_next_1 = tss;//tss_tanques[0];
   tss_next_2 = tss_tanques[0];
