@@ -63,10 +63,16 @@
     %%ciclo_cadena:
         mov     al, [edi]       ; al = caracter
         mov     [ebx], ax       ; Escribir en pantalla
+        ;out			0xe9, ax ; port e9 hack
+        ;out	    0x3f8, ax ; serial port out
         add     ebx, 2          ; Avanzar el puntero de la memoria de video
         inc     edi             ; Avanzar el puntero de la cadena
         loop    %%ciclo_cadena
-
+        
+    mov ax, 10
+    ;out 0xe9, ax ; port e9 hack - enter
+    ;out 0x3F8, ax ; serial port out
+    
     popad
 %endmacro
 
@@ -131,9 +137,15 @@
     %%ciclo_cadena:
         mov     al, [di]        ; al = caracter
         mov     [es:bx], ax     ; Escribir en pantalla
+        out			0xe9, ax ; port e9 hack
+        out 0x3F8, ax ; serial port out
         add     bx, 2           ; Avanzar el puntero de la memoria de video
         inc     di              ; Avanzar el puntero de la cadena
         loop    %%ciclo_cadena
+
+    mov ax, 10
+    out 0xe9, ax ; port e9 hack - enter
+    out 0x3F8, ax ; serial port out
 
     pop es
 

@@ -17,7 +17,6 @@ void task() {
   int c = b/a;
     /* Tarea 1 */
   char aa[512];
-  breakpoint();
   aa[0] = c;
 
   syscall_misil(2, 2, (unsigned long)aa, 512);

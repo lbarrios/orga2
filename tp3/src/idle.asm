@@ -9,11 +9,8 @@ BITS 32
 %include "imprimir.mac"
 
 idle:
-    ;xchg bx, bx
-    ;mov ax, 1
-    ;mov bx, 0
-    ;idiv bx
-    .loopear:
+ 		 imprimir_texto_mp idle_msg, idle_len, 0x07, 2, 0
+     .loopear:
         inc dword [numero]
         cmp dword [numero], 0x4
         jb .imprimir
@@ -42,3 +39,6 @@ message4: db '\'
 
 chirimbolo_open: db '('
 chirimbolo_close: db ')'
+
+idle_msg: db 'Entrando en tarea idle...',0
+idle_len: equ $ - idle_msg
