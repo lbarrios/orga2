@@ -133,12 +133,11 @@ modo_protegido:
     call tss_inicializar
 
     ; Inicializar tss de la tarea Idle
-    call tss_inicializar_idle
+    call tss_inicializar_idle ; aca falla con Page Fault
     
     ; Inicializar tss de las tanques
     call tss_inicializar_tanques
 
-xchg bx, bx
     ; Inicializar el scheduler
 
     ; Inicializar Game
@@ -160,11 +159,11 @@ xchg bx, bx
     cli
 
     ;luego ya no
-    xchg bx, bx
+    ;xchg bx, bx
     ; Saltar a la primera tarea: Idle
     mov ax, 0x70; Cargo en ax el offset_gdt de la tarea init
     ltr ax; Pongo en el TR la tarea init
-    jmp 0x80:0; jmp far a la tarea idle
+    jmp 0x80:0 ; jmp far a la tarea idle
 
     ; Ciclar infinitamente (por si algo sale mal...)
     mov eax, 0xFFFF
