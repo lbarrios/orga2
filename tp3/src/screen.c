@@ -6,7 +6,12 @@
 */
 void print_tank_context( int tank )
 {
-	//int t = (tank<1 || tank>8) ? (1) : (tank);
+    //int t = (tank<1 || tank>8) ? (1) : (tank);
+    
+    //tss contexto;
+    
+
+
 }
 
 #include "screen.h"

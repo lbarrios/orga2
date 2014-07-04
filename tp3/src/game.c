@@ -73,7 +73,7 @@ unsigned int game_mover(unsigned int id, direccion d) {
 unsigned int game_misil(unsigned int id, int val_x, int val_y, unsigned int misil, unsigned int size) {
     int posicion;
     
-
+    //usar un buffer?
     return TRUE;
 }
 

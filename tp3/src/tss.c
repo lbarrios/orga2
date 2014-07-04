@@ -84,6 +84,7 @@ void tss_inicializar_idle()
   // Paginación
   tss_next_1.cr3 = KERNEL_PAGE_DIR_FIRST_ENTRY;
 
+  /*
   // Casteo el page dir
   page_dir* pd_idle = (page_dir*) tss_next_1.cr3;
   // Obtengo la pde correspondiente a la direcciòn lògica 0x80000000 
@@ -117,6 +118,7 @@ void tss_inicializar_idle()
       pte1->page_base = IDLE_TASK_ADDR;
       pte2->page_base = IDLE_TASK_ADDR + PAGE_SIZE;
   // flags, bit 1 reservado en 1, los demás en 0
+  */
   /* ACTIVAR INTERRUPCIONES ABAJO */
   tss_next_1.eflags = 0x202;
   // INTERRUPCIONES DESHABILITADAS
