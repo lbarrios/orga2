@@ -12,6 +12,7 @@
 void pisar(unsigned int m);
 
 void task() {
+  breakpoint();
   int a = 0;
   int b = 1000;
   int c = b/a;
