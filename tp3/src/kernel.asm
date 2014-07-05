@@ -117,12 +117,12 @@ modo_protegido:
 
     ; Inicializar el manejador de memoria
     call mmu_inicializar
-
-
-
-    ; Habilito paginación con el directorio de la 1er tarea
-    ;mov eax, 0x100000
-    ;mov cr3, eax
+    
+    ;Habilito paginación con el directorio de la 1er tarea
+    mov eax, 0x100000
+    mov cr3, eax
+    xchg bx, bx
+    inc edi
 
     ; Imprimo un color en el primer pixel de la pantalla
     ;mov ax, 0xD040
