@@ -107,7 +107,8 @@ void mmu_inicializar_dir_tarea (unsigned int tarea)
   for (i = 0; i < PAGE_DIR_ENTRY_COUNT; i++)
   {
     // Obtengo la dirección de la entrada sobre la que estoy iterando
-    page_dir_entry* pde = (page_dir_entry*) &(mmu->task_page_dir[tarea]) + (i * PAGE_DIR_ENTRY_SIZE);
+    // el parentesis de las cosas de la derecha salvo todoooooooooooo
+    page_dir_entry* pde = (page_dir_entry*) (&(mmu->task_page_dir[tarea]) + (i * PAGE_DIR_ENTRY_SIZE));
     // Guardo una entrada "nula" (descriptor de tabla no presente)
     *pde = NOT_PRESENT_DIR_ENTRY;
   }
@@ -136,7 +137,8 @@ void mmu_inicializar_dir_tarea (unsigned int tarea)
   unsigned long page_offset = 0;
   unsigned long dir_entry_offset = 0;
   unsigned long table_entry_offset = 0;
-  while ( page_offset < IDENTITY_MAPPING_LAST_BYTE )// 0xDC3FFF
+  // adonde ponemos que es de nivel 0 este mapeo? como dice el enunciado, no lo entiendo...
+  while ( page_offset < 0xDC3FFF )// 0xDC3FFF
   {
     dir_entry_offset = (page_offset>>22);
     table_entry_offset = ((page_offset<<10)>>22);
@@ -154,19 +156,21 @@ void mmu_inicializar_dir_tarea (unsigned int tarea)
     pte->present = PTE_PRESENT;
     // Sumo PAGE_SIZE al offset de páginas
     page_offset += PAGE_SIZE;
+
   }
-  /* 
-  Obtengo las dos páginas físicas de código de la tarea usando un randomizador
-  */
+  /*
+  // 
+  //Obtengo las dos páginas físicas de código de la tarea usando un randomizador
+  //
   // Obtengo el time stamp counter
   int seed = time();
   // Dirección base del mapa
   unsigned long base_addr = GAME_MAP_FIRST_ADDRESS;
-  /* 
-  Usando TSC como seed, corro frand() que me devuelve un float entre 0 y 1
-  y luego multiplico ese número por el tamaño del mapa en bytes, obteniendo
-  así un offset para mi tarea
-  */
+  // 
+  //Usando TSC como seed, corro frand() que me devuelve un float entre 0 y 1
+  //y luego multiplico ese número por el tamaño del mapa en bytes, obteniendo
+  //así un offset para mi tarea
+  //
   unsigned long offset_1 = (unsigned long)(frand(&seed)*(GAME_MAP_LAST_ADDRESS - GAME_MAP_FIRST_ADDRESS));
   unsigned long offset_2 = (unsigned long)(frand(&seed)*(GAME_MAP_LAST_ADDRESS - GAME_MAP_FIRST_ADDRESS));
   // Uso una máscara para quitar los últimos 12 bits de la dirección obtenida
@@ -187,6 +191,7 @@ void mmu_inicializar_dir_tarea (unsigned int tarea)
   // Mapeo las dos páginas de código de la tarea
   mmu_mapear_pagina(TASK_FIRST_CODE_PAGE, &(mmu->task_page_dir[tarea]), code_page_1, attr);
   mmu_mapear_pagina(TASK_SECOND_CODE_PAGE, &(mmu->task_page_dir[tarea]), code_page_2, attr);
+  */
 }
 
 void mmu_mapear_pagina(unsigned long virtual_addr, page_dir* cr3, void* fisica, page_table_attributes atributos)
@@ -198,7 +203,7 @@ void mmu_mapear_pagina(unsigned long virtual_addr, page_dir* cr3, void* fisica, 
   // Obtengo un puntero al directorio de páginas de la tarea
   page_dir* pd = (page_dir*) cr3;
   // Obtengo un puntero a la entrada correspondiente al índice pde_index
-  page_dir_entry* pde = (page_dir_entry*) pd + (pde_index*PAGE_DIR_ENTRY_SIZE);
+  page_dir_entry* pde = (page_dir_entry*) (pd + (pde_index*PAGE_DIR_ENTRY_SIZE));
   // Me fijo si el bit de presente está marcado
   if ( !(pde->present == (unsigned char)1) )
   {
@@ -221,6 +226,7 @@ void mmu_mapear_pagina(unsigned long virtual_addr, page_dir* cr3, void* fisica, 
   pte->page_base = (((long)fisica)>>12);
   PTE_LOAD_ATTRIBUTES((*pte), atributos);
 }
+
 void mmu_unmapear_pagina(unsigned long virtual_addr, void* cr3)
 {
   // Obtengo el índice que voy a utilizar para acceder a la entrada correspondiente en el directorio de páginas

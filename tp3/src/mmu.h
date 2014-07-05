@@ -70,7 +70,7 @@ void mmu_unmapear_pagina(unsigned long, void*);
 
 typedef struct str_mmu {
   // Pongo los task_page_dir al principio para poder acceder fácilmente desde ASM
-  page_dir task_page_dir[8];
+  page_dir task_page_dir[8]; //estaran alineadas??????
   void* free_pages_base;
   unsigned int used_pages;
 } __attribute__((__packed__, aligned (8))) mmu_t;

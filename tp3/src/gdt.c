@@ -50,7 +50,7 @@ gdt_entry gdt[GDT_COUNT] = {
   { (int) 0, (int) 0 },
   { (int) 0, (int) 0 },
   // Segmento de código para Kernel (nivel 0)
-  {
+  {//indice 8
     .base_0_15 = 0,
     .base_23_16 = 0,
     .base_31_24 = 0,
@@ -121,7 +121,7 @@ gdt_entry gdt[GDT_COUNT] = {
     .db = 1, // 0=16bits, 1=32bits
     .g = 1 // Granularidad, bloques de 4k
   },
-  {
+  {//indice 12
     .base_0_15 = 0x8000,
     .base_23_16 = 0xB,
     .base_31_24 = 0,
@@ -152,9 +152,9 @@ gdt_entry gdt[GDT_COUNT] = {
     .g = 0
   },
   // tres descriptores de TSS, nulos
-  { (int) 0, (int) 0 },
-  { (int) 0, (int) 0 },
-  { (int) 0, (int) 0 }
+  { (int) 0, (int) 0 }, //indice 14 -> 0x70
+  { (int) 0, (int) 0 }, //indice 15 -> 0x78
+  { (int) 0, (int) 0 }  //indice 16 -> 0x80
 };
 
 gdt_descriptor GDT_DESC = {

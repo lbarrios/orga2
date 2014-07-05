@@ -145,6 +145,7 @@ void tss_inicializar_tanques()
     tss_tanques[i].ebp = TASK_SECOND_CODE_PAGE + PAGE_SIZE;
 
     tss_tanques[i].esp0 = (long) mmu_get_free_page() + PAGE_SIZE;
+    // estara bien esto?
     tss_tanques[i].ss0 = GDT_KERNEL_DATA_SEGMENT_DESCRIPTOR;
     // Paginación, el cr3 lo tengo en la struct mmu, que ya está inicializada
     mmu_t* mmu = (mmu_t*) MMU_ADDRESS;

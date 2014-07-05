@@ -9,7 +9,8 @@ BITS 32
 %include "imprimir.mac"
 
 idle:
- 		 imprimir_texto_mp idle_msg, idle_len, 0x07, 2, 0
+     xchg bx, bx
+     imprimir_texto_mp idle_msg, idle_len, 0x07, 2, 0
      .loopear:
         inc dword [numero]
         cmp dword [numero], 0x4

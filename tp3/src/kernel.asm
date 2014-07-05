@@ -163,7 +163,7 @@ modo_protegido:
     ; Saltar a la primera tarea: Idle
     mov ax, 0x70; Cargo en ax el offset_gdt de la tarea init
     ltr ax; Pongo en el TR la tarea init
-    jmp 0x80:0 ; jmp far a la tarea idle
+    jmp 0x80:0
 
     ; Ciclar infinitamente (por si algo sale mal...)
     mov eax, 0xFFFF
