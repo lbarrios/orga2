@@ -64,7 +64,7 @@ void mmu_inicializar_dir_kernel()
     {
       // Obtengo la dirección de la entrada de tabla
       // usando la base de tabla seteada anteriormente + 4*indice
-      page_table_entry *pte = (page_table_entry*)(pde->table_base + (j*4));
+      page_table_entry *pte = (page_table_entry*)((pde->table_base<<12) + (j*4));
       // Gurado una entrada de tabla nula (no presente)
       *pte = NOT_PRESENT_TABLE_ENTRY;
     }
@@ -107,8 +107,8 @@ void mmu_inicializar_dir_tarea (unsigned int tarea)
   for (i = 0; i < PAGE_DIR_ENTRY_COUNT; i++)
   {
     // Obtengo la dirección de la entrada sobre la que estoy iterando
-    // el parentesis de las cosas de la derecha salvo todoooooooooooo
-    page_dir_entry* pde = (page_dir_entry*) (&(mmu->task_page_dir[tarea]) + (i * PAGE_DIR_ENTRY_SIZE));
+    // el parentesis de las cosas de la derecha acordarse
+    page_dir_entry* pde = (page_dir_entry*) ((unsigned long)&(mmu->task_page_dir[tarea]) + (i * PAGE_DIR_ENTRY_SIZE));
     // Guardo una entrada "nula" (descriptor de tabla no presente)
     *pde = NOT_PRESENT_DIR_ENTRY;
   }
@@ -116,7 +116,7 @@ void mmu_inicializar_dir_tarea (unsigned int tarea)
   for (i = 0; i < 4; i++)
   {
     // Obtengo la dirección de la entrada sobre la que estoy iterando
-    page_dir_entry* pde = (page_dir_entry*) (&(mmu->task_page_dir[tarea]) + (i * PAGE_DIR_ENTRY_SIZE));
+    page_dir_entry* pde = (page_dir_entry*) ((unsigned long)&(mmu->task_page_dir[tarea]) + (i * PAGE_DIR_ENTRY_SIZE));
     // Marco el bit de presente (presente)
     pde->present = PTE_PRESENT;
     // Marco el bit de read/write (write)
@@ -138,7 +138,7 @@ void mmu_inicializar_dir_tarea (unsigned int tarea)
   unsigned long dir_entry_offset = 0;
   unsigned long table_entry_offset = 0;
   // adonde ponemos que es de nivel 0 este mapeo? como dice el enunciado, no lo entiendo...
-  while ( page_offset < 0xDC3FFF )// 0xDC3FFF
+  while ( page_offset < 0xDC3FFF)// 0xDC3FFF
   {
     dir_entry_offset = (page_offset>>22);
     table_entry_offset = ((page_offset<<10)>>22);
@@ -210,12 +210,12 @@ void mmu_mapear_pagina(unsigned long virtual_addr, page_dir* cr3, void* fisica, 
     // La tabla de páginas todavía no existe; así que la tengo que crear
     pde->present = PTE_PRESENT;
     // Obtengo un pedazo de memoria en el que guardar la nueva tabla de páginas
-    pde->table_base = ((long)mmu_get_free_page()>>12);
+    pde->table_base = ((unsigned long)mmu_get_free_page()>>12);
     // Reemplazo todas las entradas de la nueva tabla de páginas por un descriptor de página no presente
     long i;
     for(i=0;i<PAGE_TABLE_ENTRY_COUNT;i++)
     {
-      *(page_table_entry*)(((long)pde->table_base)<<12) = NOT_PRESENT_TABLE_ENTRY;
+      *(page_table_entry*)(((unsigned long)pde->table_base)<<12) = NOT_PRESENT_TABLE_ENTRY;
     }
   } 
   // En este punto, ya sea porque ya existía o porque la acabo de crear, la tabla de páginas ya existe.
@@ -223,7 +223,7 @@ void mmu_mapear_pagina(unsigned long virtual_addr, page_dir* cr3, void* fisica, 
   // Obtengo la dirección de la entrada de la tabla de página que se corresponde con el pte_index
   page_table_entry* pte = (page_table_entry*) (((unsigned long)pde->table_base<<12) + pte_index);
   // Asigno el valor base de la página los 20 bits más significativos de la dirección física
-  pte->page_base = (((long)fisica)>>12);
+  pte->page_base = (((unsigned long)fisica)>>12);
   PTE_LOAD_ATTRIBUTES((*pte), atributos);
 }
 
