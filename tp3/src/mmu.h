@@ -26,7 +26,8 @@ typedef struct str_page_dir_entry {
   unsigned char global:1;
   unsigned char trash:3;
   unsigned int  table_base:20;
-} __attribute__((__packed__, aligned (8))) page_dir_entry;
+} __attribute__((__packed__, aligned (4))) page_dir_entry;
+// ¡Las page_dir_entry estaban alineadas a 8!, ¿¿no van a 4??
 
 typedef struct str_page_dir {
   page_dir_entry pde[1024];
@@ -45,7 +46,7 @@ typedef struct str_page_table_entry {
   unsigned char global:1;
   unsigned char trash:3;
   unsigned int  page_base:20;
-} __attribute__((__packed__, aligned (8))) page_table_entry;
+} __attribute__((__packed__, aligned (4))) page_table_entry;
 
 
 void mmu_inicializar();

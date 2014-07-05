@@ -116,8 +116,8 @@ LS_INLINE void oute9(unsigned short value)
 {
 		short port = 0xe9;
     __asm __volatile ("out %%al, %%dx": :"d"(port), "a" (value));
-		port = 0x3F8;
-    __asm __volatile ("out %%al, %%dx": :"d"(port), "a" (value));
+		//port = 0x3F8;
+    //__asm __volatile ("out %%al, %%dx": :"d"(port), "a" (value));
 }
 
 
