@@ -162,7 +162,7 @@ void mmu_inicializar_dir_tarea (unsigned int tarea)
   //Obtengo las dos páginas físicas de código de la tarea usando un randomizador
   //
   // Obtengo el time stamp counter
-  //int seed = time();
+  int seed = time();
   // Dirección base del mapa
   unsigned long base_addr = GAME_MAP_FIRST_ADDRESS;
   // 
@@ -171,21 +171,19 @@ void mmu_inicializar_dir_tarea (unsigned int tarea)
   //así un offset para mi tarea
   //
 
-  /*
   unsigned long offset_1 = (unsigned long)(frand(&seed)*(GAME_MAP_LAST_ADDRESS - GAME_MAP_FIRST_ADDRESS));
   unsigned long offset_2 = (unsigned long)(frand(&seed)*(GAME_MAP_LAST_ADDRESS - GAME_MAP_FIRST_ADDRESS));
-  */
   
   //primero pruebo con no randoms
-  unsigned long offset_1 = 0x1000;
-  unsigned long offset_2 = 0x2000;
+  //unsigned long offset_1 = 0x1000;
+  //unsigned long offset_2 = 0x2000;
 
   // Uso una máscara para quitar los últimos 12 bits de la dirección obtenida
   unsigned long bitmask = 0xFFFFF000;
   unsigned long code_page_1_addr = (base_addr + offset_1) & bitmask;
   unsigned long code_page_2_addr = (base_addr + offset_2) & bitmask;
-  //BD(" code_page_1_addr ") BDPOINTER(code_page_1_addr) BDENTER()
-  //BD(" code_page_2_addr ") BDPOINTER(code_page_2_addr) BDENTER()
+  BD(" code_page_1_addr ") BDPOINTER(code_page_1_addr) BDENTER()
+  BD(" code_page_2_addr ") BDPOINTER(code_page_2_addr) BDENTER()
   // Obtengo el puntero a la dirección física de la página
   void* code_page_1 = (void*) ( code_page_1_addr );
   void* code_page_2 = (void*) ( code_page_2_addr );
@@ -200,6 +198,12 @@ void mmu_inicializar_dir_tarea (unsigned int tarea)
   // Mapeo las dos páginas de código de la tarea
   mmu_mapear_pagina(TASK_FIRST_CODE_PAGE, &(mmu->task_page_dir[tarea]), code_page_1, attr);
   mmu_mapear_pagina(TASK_SECOND_CODE_PAGE, &(mmu->task_page_dir[tarea]), code_page_2, attr);
+  //page_dir_entry *debugD = &(mmu->task_page_dir[tarea].pde[0x200]);
+  //page_table_entry *debugT1 = (page_table_entry*)((debugD->table_base)<<12);
+  //page_table_entry *debugT2 = (page_table_entry*)(((debugD->table_base)<<12) + PAGE_TABLE_ENTRY_SIZE);
+  //BD("debug d ") BDPOINTER(debugD)
+  //BD("debug t1 ") BDPOINTER(debugT1)
+  //BD("debug t2 ") BDPOINTER(debugT2)
 }
 
 void mmu_mapear_pagina(unsigned long virtual_addr, page_dir* cr3, void* fisica, page_table_attributes atributos)
@@ -212,9 +216,12 @@ void mmu_mapear_pagina(unsigned long virtual_addr, page_dir* cr3, void* fisica, 
   // Obtengo el índice que voy a utilizar para acceder a la entrada correspondiente en la tabla de páginas
   unsigned long pte_index = ((virtual_addr<<10)>>22);
   // Obtengo un puntero al directorio de páginas de la tarea
+  BD("pde_index: ") BDPOINTER(pde_index) BDENTER()
+  BD("pte_index: ") BDPOINTER(pte_index) BDENTER()
   page_dir* pd = cr3;
   // Obtengo un puntero a la entrada correspondiente al índice pde_index
-  page_dir_entry* pde = (page_dir_entry*) (pd + (pde_index*PAGE_DIR_ENTRY_SIZE));
+  page_dir_entry* pde = &(pd->pde[pde_index]);
+  BD("pde: ") BDPOINTER(pde) BDENTER()
   // Me fijo si el bit de presente está marcado
   if ( !(pde->present == (unsigned char)1) )
   {

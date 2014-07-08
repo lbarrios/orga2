@@ -12,8 +12,7 @@
 void pisar(unsigned int m);
 
 void task() {
-  breakpoint();
-  breakpoint();
+    BD("entrando a tarea 1 (uno) " )
   breakpoint();
   int a = 0;
   int b = 1000;
