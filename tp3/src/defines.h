@@ -24,8 +24,6 @@
 #define CAMPO_SIZE              50
 #define IDENTITY_MAPPING_LAST_BYTE 0xDC3FFF
 #define KERNEL_STACK_ADDR		0x27000
-//#define TASK_FIRST_CODE_PAGE    0x80000000
-//#define TASK_SECOND_CODE_PAGE    (0x80000000 + PAGE_SIZE)
 
 
 /* Indices en la gdt */

@@ -162,7 +162,7 @@ void mmu_inicializar_dir_tarea (unsigned int tarea)
   //Obtengo las dos páginas físicas de código de la tarea usando un randomizador
   //
   // Obtengo el time stamp counter
-  int seed = time();
+  //int seed = time();
   // Dirección base del mapa
   unsigned long base_addr = GAME_MAP_FIRST_ADDRESS;
   // 
@@ -171,17 +171,31 @@ void mmu_inicializar_dir_tarea (unsigned int tarea)
   //así un offset para mi tarea
   //
 
-  unsigned long offset_1 = (unsigned long)(frand(&seed)*(GAME_MAP_LAST_ADDRESS - GAME_MAP_FIRST_ADDRESS));
-  unsigned long offset_2 = (unsigned long)(frand(&seed)*(GAME_MAP_LAST_ADDRESS - GAME_MAP_FIRST_ADDRESS));
+  //unsigned long offset_1 = (unsigned long)(frand(&seed)*(GAME_MAP_LAST_ADDRESS - GAME_MAP_FIRST_ADDRESS));
+  //unsigned long offset_2 = (unsigned long)(frand(&seed)*(GAME_MAP_LAST_ADDRESS - GAME_MAP_FIRST_ADDRESS));
   
   //primero pruebo con no randoms
-  //unsigned long offset_1 = 0x1000;
-  //unsigned long offset_2 = 0x2000;
+  unsigned long offset_1 = 0x1000;
+  unsigned long offset_2 = 0x2000;
 
   // Uso una máscara para quitar los últimos 12 bits de la dirección obtenida
   unsigned long bitmask = 0xFFFFF000;
   unsigned long code_page_1_addr = (base_addr + offset_1) & bitmask;
   unsigned long code_page_2_addr = (base_addr + offset_2) & bitmask;
+
+  // tengo que copiar el codigo de la tarea a tal direccion fisica
+  int *base_codigo1 = (int*)(0x10000 + tarea*2*0x1000);
+  int *base_codigo2 = (int*)(0x10000 + tarea*2*0x1000+0x1000);
+
+  int *copioAca1 = (int*)code_page_1_addr;
+  int *copioAca2 = (int*)code_page_2_addr;
+
+  for (i = 0; i < 0x1000/sizeof(int); i++) {
+    copioAca1[i] = base_codigo1[i];
+    copioAca2[i] = base_codigo2[i];
+  }
+
+
   BD(" code_page_1_addr ") BDPOINTER(code_page_1_addr) BDENTER()
   BD(" code_page_2_addr ") BDPOINTER(code_page_2_addr) BDENTER()
   // Obtengo el puntero a la dirección física de la página
