@@ -241,6 +241,8 @@ void mmu_mapear_pagina(unsigned long virtual_addr, page_dir* cr3, void* fisica, 
   {
     // La tabla de páginas todavía no existe; así que la tengo que crear
     pde->present = PTE_PRESENT;
+    pde->user_supervisor = PTE_USER;
+    pde->read_write = PTE_WRITE;
     // Obtengo un pedazo de memoria en el que guardar la nueva tabla de páginas
     pde->table_base = ((unsigned long)mmu_get_free_page()>>12);
     BD(" creando tabla cuyo indice es: ") BDPOINTER((unsigned long)pde->table_base) BDENTER()
