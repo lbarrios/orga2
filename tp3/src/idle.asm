@@ -10,6 +10,7 @@ BITS 32
 
 idle:
      xchg bx, bx
+     inc edi
      imprimir_texto_mp idle_msg, idle_len, 0x07, 2, 0
      .loopear:
         inc dword [numero]
