@@ -118,11 +118,6 @@ modo_protegido:
     ; Inicializar el manejador de memoria
     call mmu_inicializar
 
-    ;Habilito paginación con el directorio de la 1er tarea
-    ;mov eax, 0x100000
-    ;mov cr3, eax
-    ;xchg bx, bx
-    ;inc edi
 
     ; Imprimo un color en el primer pixel de la pantalla
     ;mov ax, 0xD040
@@ -158,11 +153,18 @@ modo_protegido:
     ;sti
     cli
 
+    ;Habilito paginación con el directorio de la 1er tarea
+    ;mov eax, 0x100000
+    ;mov cr3, eax
+    ;xchg bx, bx
+    ;inc edi
+
     ;luego ya no
     ; Saltar a la primera tarea: Idle
     ;mov ax, 0x70; Cargo en ax el offset_gdt de la tarea init
     ;ltr ax; Pongo en el TR la tarea init
-    jmp 0x80:0
+    xchg bx, bx
+    jmp 0x83:0
 
     ; Ciclar infinitamente (por si algo sale mal...)
     mov eax, 0xFFFF

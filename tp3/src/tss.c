@@ -64,6 +64,7 @@ void tss_inicializar()
   gdte->type = GDT_TSS_NOT_BUSY_DESCRIPTOR_TYPE;
   gdte->p = GDT_PRESENT;
   gdte->limit_0_15 = TSS_SIZE;
+  gdte->dpl = 3;
 }
 
 void tss_inicializar_idle()

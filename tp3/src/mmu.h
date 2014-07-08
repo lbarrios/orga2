@@ -83,8 +83,8 @@ void* mmu_get_free_page();
 #define NOT_PRESENT_DIR_ENTRY (const page_dir_entry){0}
 #define NOT_PRESENT_TABLE_ENTRY (const page_table_entry){0}
 #define NOT_PRESENT_PAGE_TABLE_ATTRIBUTES (page_table_attributes){0}
-#define TASK_FIRST_CODE_PAGE 0x80000000
-#define TASK_SECOND_CODE_PAGE 0x80001000
+#define TASK_FIRST_CODE_PAGE 0x8000000
+#define TASK_SECOND_CODE_PAGE 0x8001000
 
 /* PTE Defines */
 // La siguiente macro recibe a la izquierda un page_table_entry y a la derecha un page_table_attributes, y guarda los del segundo en el primero
