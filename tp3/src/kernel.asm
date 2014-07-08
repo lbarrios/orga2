@@ -118,7 +118,6 @@ modo_protegido:
     ; Inicializar el manejador de memoria
     call mmu_inicializar
 
-    xchg bx, bx
     ;Habilito paginación con el directorio de la 1er tarea
     mov eax, 0x100000
     mov cr3, eax
@@ -134,7 +133,7 @@ modo_protegido:
     call tss_inicializar
 
     ; Inicializar tss de la tarea Idle
-    call tss_inicializar_idle ; aca falla con Page Fault
+    call tss_inicializar_idle
     
     ; Inicializar tss de las tanques
     call tss_inicializar_tanques
@@ -160,11 +159,12 @@ modo_protegido:
     cli
 
     ;luego ya no
-    ;xchg bx, bx
+    xchg bx, bx
+    inc esi
     ; Saltar a la primera tarea: Idle
-    mov ax, 0x70; Cargo en ax el offset_gdt de la tarea init
-    ltr ax; Pongo en el TR la tarea init
-    jmp 0x80:0
+    ;mov ax, 0x70; Cargo en ax el offset_gdt de la tarea init
+    ;ltr ax; Pongo en el TR la tarea init
+    jmp 0x78:0
 
     ; Ciclar infinitamente (por si algo sale mal...)
     mov eax, 0xFFFF

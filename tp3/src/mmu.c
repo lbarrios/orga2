@@ -24,7 +24,7 @@ void mmu_inicializar()
   }
 }
 
-inline void* mmu_get_free_page()
+void* mmu_get_free_page()
 {
   mmu_t* mmu = (mmu_t*) MMU_ADDRESS;
   return (void*) (FREE_PAGES_BASE + (PAGE_SIZE)*((unsigned long)mmu->used_pages++));
@@ -121,6 +121,7 @@ void mmu_inicializar_dir_tarea (unsigned int tarea)
     // Marco el bit de read/write (write)
     pde->read_write = PTE_WRITE;
     // Obtengo una página de memoria del pool de paginas libres
+    //BOCHSDEBUG("pido pagina libre")
     pagina_libre = mmu_get_free_page();
     // Guardo los 20 bits más significativos de la base de la tabla
     pde->table_base = ((unsigned long)pagina_libre)>>12;
@@ -145,7 +146,7 @@ void mmu_inicializar_dir_tarea (unsigned int tarea)
     // la primer entrada de la primer tabla, sumando el table_entry_offset
     page_dir* pd = &(mmu->task_page_dir[tarea]);
     page_dir_entry* pde = &(pd->pde[dir_entry_offset]);
-    BD(" reservando en pde == &(pd->pde[1]) == ") BDPOINTER(pde) BDENTER()
+    //BD(" reservando en pde == &(pd->pde[1]) == ") BDPOINTER(pde) BDENTER()
     page_table_entry *pte = (page_table_entry*) ((pde->table_base << 12) + (table_entry_offset * PAGE_TABLE_ENTRY_SIZE));
     // Le asigno como dirección base de la página el page_offset shifteado 12
     // veces a la derecha, de esta forma logro hacer identity mapping
@@ -161,7 +162,7 @@ void mmu_inicializar_dir_tarea (unsigned int tarea)
   //Obtengo las dos páginas físicas de código de la tarea usando un randomizador
   //
   // Obtengo el time stamp counter
-  int seed = time();
+  //int seed = time();
   // Dirección base del mapa
   unsigned long base_addr = GAME_MAP_FIRST_ADDRESS;
   // 
@@ -169,12 +170,22 @@ void mmu_inicializar_dir_tarea (unsigned int tarea)
   //y luego multiplico ese número por el tamaño del mapa en bytes, obteniendo
   //así un offset para mi tarea
   //
+
+  /*
   unsigned long offset_1 = (unsigned long)(frand(&seed)*(GAME_MAP_LAST_ADDRESS - GAME_MAP_FIRST_ADDRESS));
   unsigned long offset_2 = (unsigned long)(frand(&seed)*(GAME_MAP_LAST_ADDRESS - GAME_MAP_FIRST_ADDRESS));
+  */
+  
+  //primero pruebo con no randoms
+  unsigned long offset_1 = 0x1000;
+  unsigned long offset_2 = 0x2000;
+
   // Uso una máscara para quitar los últimos 12 bits de la dirección obtenida
   unsigned long bitmask = 0xFFFFF000;
-  unsigned long code_page_1_addr = (base_addr + offset_1) && bitmask;
-  unsigned long code_page_2_addr = (base_addr + offset_2) && bitmask;
+  unsigned long code_page_1_addr = (base_addr + offset_1) & bitmask;
+  unsigned long code_page_2_addr = (base_addr + offset_2) & bitmask;
+  //BD(" code_page_1_addr ") BDPOINTER(code_page_1_addr) BDENTER()
+  //BD(" code_page_2_addr ") BDPOINTER(code_page_2_addr) BDENTER()
   // Obtengo el puntero a la dirección física de la página
   void* code_page_1 = (void*) ( code_page_1_addr );
   void* code_page_2 = (void*) ( code_page_2_addr );
@@ -193,6 +204,9 @@ void mmu_inicializar_dir_tarea (unsigned int tarea)
 
 void mmu_mapear_pagina(unsigned long virtual_addr, page_dir* cr3, void* fisica, page_table_attributes atributos)
 {
+  //BD(" virtual_addr ") BDPOINTER(virtual_addr) BDENTER()
+  BD(" cr3 ") BDPOINTER(cr3) BDENTER()
+  //BD(" fisica ") BDPOINTER(fisica) BDENTER()
   // Obtengo el índice que voy a utilizar para acceder a la entrada correspondiente en el directorio de páginas
   unsigned long pde_index = (virtual_addr>>22);
   // Obtengo el índice que voy a utilizar para acceder a la entrada correspondiente en la tabla de páginas
@@ -208,17 +222,18 @@ void mmu_mapear_pagina(unsigned long virtual_addr, page_dir* cr3, void* fisica, 
     pde->present = PTE_PRESENT;
     // Obtengo un pedazo de memoria en el que guardar la nueva tabla de páginas
     pde->table_base = ((unsigned long)mmu_get_free_page()>>12);
+    BD(" creando tabla cuyo indice es: ") BDPOINTER((unsigned long)pde->table_base) BDENTER()
     // Reemplazo todas las entradas de la nueva tabla de páginas por un descriptor de página no presente
     long i;
     for(i=0;i<PAGE_TABLE_ENTRY_COUNT;i++)
     {
-      *(page_table_entry*)(((unsigned long)pde->table_base)<<12) = NOT_PRESENT_TABLE_ENTRY;
+      *(page_table_entry*)((((unsigned long)pde->table_base)<<12) + i * PAGE_DIR_ENTRY_SIZE) = NOT_PRESENT_TABLE_ENTRY;
     }
   } 
   // En este punto, ya sea porque ya existía o porque la acabo de crear, la tabla de páginas ya existe.
 
   // Obtengo la dirección de la entrada de la tabla de página que se corresponde con el pte_index
-  page_table_entry* pte = (page_table_entry*) (((unsigned long)pde->table_base<<12) + pte_index);
+  page_table_entry* pte = (page_table_entry*) ((((unsigned long)pde->table_base<<12) + pte_index * PAGE_DIR_ENTRY_SIZE));
   // Asigno el valor base de la página los 20 bits más significativos de la dirección física
   pte->page_base = (((unsigned long)fisica)>>12);
   PTE_LOAD_ATTRIBUTES((*pte), atributos);

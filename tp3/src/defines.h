@@ -55,7 +55,7 @@
 
 /* MMU */
 /* -------------------------------------------------------------------------- */
-#define MMU_ADDRESS 0x100000
+#define MMU_ADDRESS 0x100000 // como se que está aca?
 
 
 //CCASSERT - 強制編譯時斷言
