@@ -128,7 +128,7 @@ ISR 31
 ;; -------------------------------------------------------------------------- ;;
 global _isr32
 _isr32:
-    xchg bx, bx
+    ;xchg bx, bx
     pushad
     call proximo_reloj
     call fin_intr_pic1
@@ -136,11 +136,11 @@ _isr32:
     cmp ax, 1
     je .jmp_tss_1
     
-    jmp 0x83:0 ; Selector tss_next_2
+    jmp 0x80:0 ; Selector tss_next_2
     jmp .fin
 
     .jmp_tss_1:
-    jmp 0x7B:0 ; selector tss_next_1
+    jmp 0x78:0 ; selector tss_next_1
     
     .fin:
     popad
@@ -234,7 +234,7 @@ _isr33:
 
 global _isr60
 _isr60:
-    xchg bx, bx
+    ;xchg bx, bx
     cli
     pushad
     imprimir_debug eax, ebx, 0x07, 0, 0
