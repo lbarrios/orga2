@@ -78,5 +78,12 @@ unsigned int idt_inicializar() {
     IDT_ENTRY(32) // clock
     IDT_ENTRY(33) // keyboard
     IDT_ENTRY(82) // syscall
+    //IDT_ENTRY(60) // syscall debug
+
+    void _isr60();                                                                                         
+    idt[60].offset_0_15 = (unsigned short) ((unsigned long)(&_isr60) & (unsigned int) 0xFFFF);   
+    idt[60].segsel = (unsigned short) 0x40;                                                             
+    idt[60].attr = (unsigned short) 0xEE00;                                                            
+    idt[60].offset_16_31 = (unsigned short) ((unsigned long)(&_isr60) >> 16 & (unsigned int) 0xFFFF);
     return (unsigned long)tss_tanques;
 }

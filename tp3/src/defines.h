@@ -113,4 +113,5 @@ bochsdebugpointerchar[9]=(char)((bochsdebugpointer<<28)>>28)+'0';\
 for(bochsdebugi=2;bochsdebugi<10;bochsdebugi++){ if(bochsdebugpointerchar[bochsdebugi]>'9'){ bochsdebugpointerchar[bochsdebugi]=bochsdebugpointerchar[bochsdebugi]-'9'+('A'-1); } } \
 BD(bochsdebugpointerchar)
 
+#define IMPRIMIR(s) syscall_debug(s, sizeof(s));
 #endif  /* !__DEFINES_H__ */

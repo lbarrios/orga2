@@ -229,6 +229,16 @@ _isr33:
     sti
     iret
 
+global _isr60
+_isr60:
+    cli
+    pushad
+    xchg bx, bx
+    imprimir_texto_mp eax, ebx, 0x07, 0, 0
+    popad
+    iret
+
+
 ;;
 ;; Rutinas de atención de las SYSCALLS
 ;; -------------------------------------------------------------------------- ;;
