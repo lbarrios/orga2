@@ -14,6 +14,7 @@ void task() {
   unsigned int i,j;
   char debug[40] = "entrando tarea dos\n";
   IMPRIMIR(debug)
+  while(true){}
 
   direccion dir[4] = { N, E, S, O };
   int d = 0;

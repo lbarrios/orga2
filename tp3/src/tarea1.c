@@ -15,6 +15,7 @@ void task() {
     /* Tarea 1 */
   char debug[40] = "entrando tarea uno\n";
   IMPRIMIR(debug)
+  while(true){}
 
   char aa[512];
 
