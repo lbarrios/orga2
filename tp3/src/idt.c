@@ -15,7 +15,7 @@ idt_entry idt[255] = { };
 
 idt_descriptor IDT_DESC = {
     sizeof(idt) - 1,
-    (unsigned long) &idt
+    (unsigned int)(unsigned long) &idt
 };
 
 /*

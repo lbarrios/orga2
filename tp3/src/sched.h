@@ -13,4 +13,7 @@
 
 unsigned long sched_proximo_indice();
 
+#define TASK1_NEXT 1
+#define TASK2_NEXT 2
+
 #endif	/* !__SCHED_H__ */

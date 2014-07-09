@@ -16,6 +16,17 @@ unsigned char tareas_muertas[8] = {0,0,0,0,0,0,0,0};
 
 unsigned long sched_proximo_indice()
 {
+  if(tss_actual == GDT_TASK1_DESCRIPTOR)
+  {
+    tss_actual = GDT_TASK2_DESCRIPTOR;
+    return TASK2_NEXT;
+  }
+  else
+  {
+    tss_actual = GDT_TASK1_DESCRIPTOR;
+    return TASK1_NEXT;
+  }
+
   int i = 0;
   if( flag_pause != 1 )
   {

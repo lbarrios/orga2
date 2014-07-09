@@ -132,7 +132,7 @@ _isr32:
     pushad
     call proximo_reloj
     call fin_intr_pic1
-    ;call sched_proximo_indice
+    call sched_proximo_indice
     cmp ax, 1
     je .jmp_tss_1
     
