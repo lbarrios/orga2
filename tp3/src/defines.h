@@ -92,24 +92,25 @@ static inline float frand( int *seed )
 int bochsdebugi;
 char* bochsdebug;
 unsigned long bochsdebugpointer;
-char bochsdebugpointerchar[10];
+char bochsdebugpointerchar[430];
 //#define BOCHSDEBUGCHAR(c) outportb(0xe9, c)
 //#define BOCHSDEBUG(string) for(bochsdebugi=0;bochsdebugi<sizeof(string);bochsdebugi++){ bochsdebug = &(string); BOCHSDEBUGCHAR(string[]); }
 
 #define BOCHSDEBUG(string) for(bochsdebugi=0;bochsdebugi<sizeof(string);bochsdebugi++) { bochsdebug = (char*)&(string); oute9( bochsdebug[bochsdebugi] ); } 
+#define BDT(string) for(bdi=0;bdi<sizeof(string);bdi++) { bdp = (char*)&(string); oute9( bdp[bdi] ); }
 #define BD(s) BOCHSDEBUG(s)
 #define BDENTER() oute9(10);
 #define BDPOINTER(var) bochsdebugpointer = (long)(void*)var;\
 bochsdebugpointerchar[0]='0';\
 bochsdebugpointerchar[1]='x';\
-bochsdebugpointerchar[2]=(char)((bochsdebugpointer    )>>28)+'0';\
-bochsdebugpointerchar[3]=(char)((bochsdebugpointer<< 4)>>28)+'0';\
-bochsdebugpointerchar[4]=(char)((bochsdebugpointer<< 8)>>28)+'0';\
-bochsdebugpointerchar[5]=(char)((bochsdebugpointer<<12)>>28)+'0';\
-bochsdebugpointerchar[6]=(char)((bochsdebugpointer<<16)>>28)+'0';\
-bochsdebugpointerchar[7]=(char)((bochsdebugpointer<<20)>>28)+'0';\
-bochsdebugpointerchar[8]=(char)((bochsdebugpointer<<24)>>28)+'0';\
-bochsdebugpointerchar[9]=(char)((bochsdebugpointer<<28)>>28)+'0';\
+bochsdebugpointerchar[2]=(char)((bochsdebugpointer     ) >>28)+'0';\
+bochsdebugpointerchar[3]=(char)((bochsdebugpointer<<  4) >>28)+'0';\
+bochsdebugpointerchar[4]=(char)((bochsdebugpointer<<  8) >>28)+'0';\
+bochsdebugpointerchar[5]=(char)((bochsdebugpointer<< 12) >>28)+'0';\
+bochsdebugpointerchar[6]=(char)((bochsdebugpointer<< 16) >>28)+'0';\
+bochsdebugpointerchar[7]=(char)((bochsdebugpointer<< 20) >>28)+'0';\
+bochsdebugpointerchar[8]=(char)((bochsdebugpointer<< 24) >>28)+'0';\
+bochsdebugpointerchar[9]=(char)((bochsdebugpointer<< 28) >>28)+'0';\
 for(bochsdebugi=2;bochsdebugi<10;bochsdebugi++){ if(bochsdebugpointerchar[bochsdebugi]>'9'){ bochsdebugpointerchar[bochsdebugi]=bochsdebugpointerchar[bochsdebugi]-'9'+('A'-1); } } \
 BD(bochsdebugpointerchar)
 

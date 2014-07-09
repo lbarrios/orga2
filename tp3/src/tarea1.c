@@ -13,9 +13,8 @@ void pisar(unsigned int m);
 
 void task() {
     /* Tarea 1 */
-    
-    IMPRIMIR("entrando tarea uno (1)")
-
+  char aab[40] = "entrando tarea uno (1)";
+   IMPRIMIR(aab)
   char aa[512];
 
   syscall_misil(2, 2, (unsigned long)aa, 512);
