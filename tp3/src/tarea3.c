@@ -11,6 +11,8 @@
 
 void task() {
     /* Tarea 3 */
+  char debug[40] = "entrando tarea tres\n";
+  IMPRIMIR(debug)
   unsigned int i,j;
   while(1) {
       syscall_minar(N);
