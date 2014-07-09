@@ -11,7 +11,6 @@
 
 void task() {
     /* Tarea 2 */
-  breakpoint();
   unsigned int i,j;
   direccion dir[4] = { N, E, S, O };
   int d = 0;

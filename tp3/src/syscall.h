@@ -72,4 +72,20 @@ LS_INLINE unsigned int syscall_minar(direccion d) {
     return ret;
 }
 
+LS_INLINE unsigned int syscall_debug(char *msg, unsigned int size) {
+    int ret;
+
+    __asm __volatile(
+        "mov %0, %%eax \n"
+        "mov %1, %%ebx \n"
+        "int $0x60     \n"
+        : /* no output*/
+        : "m" (msg), "m" (size)
+        : "eax", "ebx"
+    );
+
+    __asm __volatile("mov %%eax, %0" : "=r" (ret));
+
+    return ret;
+}
 #endif  /* !__SYSCALL_H__ */

@@ -12,14 +12,11 @@
 void pisar(unsigned int m);
 
 void task() {
-    BD("entrando a tarea 1 (uno) " )
-  breakpoint();
-  int a = 0;
-  int b = 1000;
-  int c = b/a;
     /* Tarea 1 */
+    
+    IMPRIMIR("entrando tarea uno (1)")
+
   char aa[512];
-  aa[0] = c;
 
   syscall_misil(2, 2, (unsigned long)aa, 512);
   syscall_misil(3, 3, (unsigned long)aa, 512);

@@ -162,7 +162,7 @@ void mmu_inicializar_dir_tarea (unsigned int tarea)
   //Obtengo las dos páginas físicas de código de la tarea usando un randomizador
   //
   // Obtengo el time stamp counter
-  //int seed = time();
+  int seed = time();
   // Dirección base del mapa
   unsigned long base_addr = GAME_MAP_FIRST_ADDRESS;
   // 
@@ -171,12 +171,12 @@ void mmu_inicializar_dir_tarea (unsigned int tarea)
   //así un offset para mi tarea
   //
 
-  //unsigned long offset_1 = (unsigned long)(frand(&seed)*(GAME_MAP_LAST_ADDRESS - GAME_MAP_FIRST_ADDRESS));
-  //unsigned long offset_2 = (unsigned long)(frand(&seed)*(GAME_MAP_LAST_ADDRESS - GAME_MAP_FIRST_ADDRESS));
+  unsigned long offset_1 = (unsigned long)(frand(&seed)*(GAME_MAP_LAST_ADDRESS - GAME_MAP_FIRST_ADDRESS));
+  unsigned long offset_2 = (unsigned long)(frand(&seed)*(GAME_MAP_LAST_ADDRESS - GAME_MAP_FIRST_ADDRESS));
   
   //primero pruebo con no randoms
-  unsigned long offset_1 = 0x1000;
-  unsigned long offset_2 = 0x2000;
+  //unsigned long offset_1 = 0x1000;
+  //unsigned long offset_2 = 0x2000;
 
   // Uso una máscara para quitar los últimos 12 bits de la dirección obtenida
   unsigned long bitmask = 0xFFFFF000;
