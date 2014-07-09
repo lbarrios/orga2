@@ -153,18 +153,10 @@ modo_protegido:
     ;sti
     cli
 
-    ;Habilito paginación con el directorio de la 1er tarea
-    ;mov eax, 0x100000
-    ;mov cr3, eax
-    ;xchg bx, bx
-    ;inc edi
-
-    ;luego ya no
-    ; Saltar a la primera tarea: Idle
-    ;mov ax, 0x70; Cargo en ax el offset_gdt de la tarea init
-    ;ltr ax; Pongo en el TR la tarea init
+    mov ax, 0x70; Cargo en ax el offset_gdt de la tarea init
+    ltr ax; Pongo en el TR la tarea init
     xchg bx, bx
-    jmp 0x83:0
+    jmp 0x78:0 ; salto a la primer tarea: idle
 
     ; Ciclar infinitamente (por si algo sale mal...)
     mov eax, 0xFFFF
