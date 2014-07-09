@@ -9,13 +9,59 @@
 #define TAREA_ACTUAL_IDLE 200
 
 unsigned char flag_pause = 0;
-unsigned char tarea_actual[2] = {TAREA_ACTUAL_IDLE, TAREA_ACTUAL_IDLE};
-unsigned char indice_actual = 8;
+unsigned char tarea_actual[2] = {TAREA_ACTUAL_IDLE, 0};
+unsigned char indice_actual = 7;
 unsigned char tss_actual = GDT_TASK1_DESCRIPTOR;
 unsigned char tareas_muertas[8] = {0,0,0,0,0,0,0,0};
 
 unsigned long sched_proximo_indice()
 {
+  int i = 0;
+  do
+  {
+    indice_actual = (indice_actual+1)%8;
+    i++;
+  } while (tareas_muertas[indice_actual] && i<8);
+
+  BD("indice actual = ")
+  BDPOINTER((long)indice_actual)
+  BDENTER()
+
+  if(tss_actual == GDT_TASK1_DESCRIPTOR)
+  {
+    // Resguardo el contexto de la tarea de la tss_next_1
+    unsigned char tarea_a_resguardar;
+    tarea_a_resguardar = tarea_actual[1];
+    if(tarea_a_resguardar==TAREA_ACTUAL_IDLE)
+    {
+      tss_idle = tss_next_2;
+    }
+    else
+    {
+      tss_tanques[tarea_a_resguardar] = tss_next_2;
+    }
+    // Pongo la nueva tarea
+    tss_next_2 = tss_tanques[indice_actual];
+    tarea_actual[1] = indice_actual;
+  }
+  else
+  {
+    // Resguardo el contexto de la tarea de la tss_next_2
+    unsigned char tarea_a_resguardar;
+    tarea_a_resguardar = tarea_actual[0];
+    if(tarea_a_resguardar==TAREA_ACTUAL_IDLE)
+    {
+      tss_idle = tss_next_1;
+    }
+    else
+    {
+      tss_tanques[tarea_a_resguardar] = tss_next_1;
+    }
+    // Pongo la nueva tarea
+    tss_next_1 = tss_tanques[indice_actual];
+    tarea_actual[0] = indice_actual;
+  }
+
   if(tss_actual == GDT_TASK1_DESCRIPTOR)
   {
     tss_actual = GDT_TASK2_DESCRIPTOR;
@@ -26,6 +72,9 @@ unsigned long sched_proximo_indice()
     tss_actual = GDT_TASK1_DESCRIPTOR;
     return TASK1_NEXT;
   }
+
+// Viejo
+/*
 
   int i = 0;
   if( flag_pause != 1 )
@@ -101,4 +150,5 @@ unsigned long sched_proximo_indice()
       return 1;
     }
   }
+*/
 }

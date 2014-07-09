@@ -128,7 +128,6 @@ ISR 31
 ;; -------------------------------------------------------------------------- ;;
 global _isr32
 _isr32:
-    ;xchg bx, bx
     pushad
     call proximo_reloj
     call fin_intr_pic1
