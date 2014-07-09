@@ -123,7 +123,7 @@ void tss_inicializar_idle()
   /* ACTIVAR INTERRUPCIONES ABAJO */
   tss_next_1.eflags = 0x202;
   // INTERRUPCIONES DESHABILITADAS
-  tss_next_1.eflags = 0x2;
+  //tss_next_1.eflags = 0x2;
 }
 
 void tss_inicializar_tanques()
@@ -154,7 +154,7 @@ void tss_inicializar_tanques()
     // EFLAGS con interrupciones activas
     tss_tanques[i].eflags = 0x202;
     // TEMP sin interrupciones
-    tss_tanques[i].eflags = 0x2;
+    //tss_tanques[i].eflags = 0x2;
   }
   //tss_next_1 = tss;//tss_tanques[0];
   tss_next_2 = tss_tanques[0];

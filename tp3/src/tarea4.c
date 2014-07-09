@@ -13,7 +13,7 @@ void task() {
     /* Tarea 4 */
   char debug[40] = "entrando tarea cuatro\n";
   IMPRIMIR(debug)
-  while(true){}
+  while(1){}
 
   unsigned int i,j;
   char aa[512];

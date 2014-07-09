@@ -234,7 +234,7 @@ _isr60:
     cli
     pushad
     xchg bx, bx
-    imprimir_texto_mp eax, ebx, 0x07, 0, 0
+    imprimir_debug eax, ebx, 0x07, 0, 0
     popad
     iret
 
