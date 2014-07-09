@@ -13,7 +13,7 @@ void pisar(unsigned int m);
 
 void task() {
     /* Tarea 1 */
-  char debug[40] = "entrando tarea uno\n";
+  char debug[40] = "entrando tarea uno";
   IMPRIMIR(debug)
   while(1){}
 
