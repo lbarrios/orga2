@@ -233,6 +233,7 @@ global _isr60
 _isr60:
     cli
     pushad
+    mov bx, ax
     xchg bx, bx
     imprimir_texto_mp eax, ebx, 0x07, 0, 0
     popad

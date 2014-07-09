@@ -78,7 +78,7 @@ LS_INLINE unsigned int syscall_debug(char *msg, unsigned int size) {
     __asm __volatile(
         "mov %0, %%eax \n"
         "mov %1, %%ebx \n"
-        "int $0x60     \n"
+        "int $0x3C     \n"
         : /* no output*/
         : "m" (msg), "m" (size)
         : "eax", "ebx"
