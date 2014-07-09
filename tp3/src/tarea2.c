@@ -12,6 +12,9 @@
 void task() {
     /* Tarea 2 */
   unsigned int i,j;
+  char debug[40] = "entrando tarea dos\n";
+  IMPRIMIR(debug)
+
   direccion dir[4] = { N, E, S, O };
   int d = 0;
   int counter = 3;

@@ -11,6 +11,8 @@
 
 void task() {
     /* Tarea 5 */
+  char debug[40] = "entrando tarea cinco\n";
+  IMPRIMIR(debug)
   unsigned int i,j;
   direccion dir[4] = { N, E, S, O };
   int d = 0;
