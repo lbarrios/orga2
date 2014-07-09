@@ -73,7 +73,9 @@ extern print_tank_context
 global _isr%1
 
 _isr%1:
-  imprimir_texto_mp exc_msg_%1, exc_msg_len_%1, 0x07, 0, 0
+  xchg bx, bx
+  mov eax, %1
+  imprimir_debug exc_msg_%1, exc_msg_len_%1, 0x07, 0, 0
   iret
 %endmacro
 
@@ -126,11 +128,11 @@ ISR 31
 ;; -------------------------------------------------------------------------- ;;
 global _isr32
 _isr32:
+    xchg bx, bx
     pushad
     call proximo_reloj
     call fin_intr_pic1
-    call sched_proximo_indice
-    xchg bx, bx
+    ;call sched_proximo_indice
     cmp ax, 1
     je .jmp_tss_1
     
@@ -163,8 +165,9 @@ _isr32:
 
 global _isr33
 _isr33:
+    xchg bx, bx
     cli
-    pusha
+    pushad
     ;fin_intr_pic1
     in al, 0x60 ; leo scan code
     cmp al, BREAK_1
@@ -225,15 +228,15 @@ _isr33:
         jmp .fin
 
     .fin:
-    popa
+    popad
     sti
     iret
 
 global _isr60
 _isr60:
+    xchg bx, bx
     cli
     pushad
-    xchg bx, bx
     imprimir_debug eax, ebx, 0x07, 0, 0
     popad
     iret
