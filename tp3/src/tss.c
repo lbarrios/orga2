@@ -156,6 +156,5 @@ void tss_inicializar_tanques()
     // TEMP sin interrupciones
     //tss_tanques[i].eflags = 0x2;
   }
-  //tss_next_1 = tss;//tss_tanques[0];
   tss_next_2 = tss_tanques[0];
 }
