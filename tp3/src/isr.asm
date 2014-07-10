@@ -79,6 +79,7 @@ _isr%1:
   xchg bx, bx
   mov eax, %1
   imprimir_debug exc_msg_%1, exc_msg_len_%1, 0x07, 0, 0
+  xchg bx, bx
   iret
 %endmacro
 
@@ -134,6 +135,7 @@ clock_len EQU $ - clock_msg
 global _isr32
 _isr32:
     pushad
+    xchg bx, bx
     call print_map
     imprimir_debug clock_msg, clock_len, 0, 0, 0
     call proximo_reloj

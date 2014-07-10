@@ -28,8 +28,30 @@ typedef struct EstadoCasilla_s
 {            
     Estado current_state;
     Tank tank_number;
-    unsigned char mapeado_por_tarea[CANT_TANQUES];
-} EstadoCasilla;
+    struct mapeado_por_tarea_t {
+	    unsigned char mapeado_por_tarea0;
+	    unsigned char mapeado_por_tarea1;
+	    unsigned char mapeado_por_tarea2;
+	    unsigned char mapeado_por_tarea3;
+	    unsigned char mapeado_por_tarea4;
+	    unsigned char mapeado_por_tarea5;
+	    unsigned char mapeado_por_tarea6;
+	    unsigned char mapeado_por_tarea7;
+		/*
+	    unsigned char operator[](int i)
+	    {
+
+
+
+	    	return 0;
+	    };
+	    */
+    } __attribute__((__packed__)) mapeado_por_tarea;
+} __attribute__((__packed__)) EstadoCasilla;
+
+unsigned char mapeado_por_tarea(EstadoCasilla, int);
+void unmapear_a_tarea(EstadoCasilla, int);
+void mapear_a_tarea(EstadoCasilla, int);
 
 extern unsigned int siguiente_a_mapear[];
 extern EstadoCasilla map_state[];
