@@ -21,6 +21,8 @@ typedef enum direccion_e { NE = 12, N  = 11, NO = 14,
 
 void game_inicializar();
 
+void marcar_pos_inicial();
+
 unsigned int game_mover(unsigned int id, direccion d);
 
 unsigned int game_misil(unsigned int id, int val_x, int val_y, unsigned int misil, unsigned int size);

@@ -183,6 +183,9 @@ void mmu_inicializar_dir_tarea (unsigned int tarea)
   unsigned long code_page_1_addr = (base_addr + offset_1) & bitmask;
   unsigned long code_page_2_addr = (base_addr + offset_2) & bitmask;
 
+  marcar_pos_inicial(code_page_2_addr, tarea);
+  marcar_pos_inicial(code_page_1_addr, tarea);
+
   // tengo que copiar el codigo de la tarea a tal direccion fisica
   int *base_codigo1 = (int*)(long)(0x10000 + tarea*2*0x1000);
   int *base_codigo2 = (int*)(long)(0x10000 + tarea*2*0x1000+0x1000);

@@ -17,6 +17,8 @@ extern resetear_pic
 extern deshabilitar_pic
 extern print_map
 extern screen_inicializar
+extern game_inicializar
+extern marcar_pos_inicial
 
 global start
 
@@ -115,6 +117,9 @@ modo_protegido:
     ; Imprimo un mensaje de paginación habilitada.
     imprimir_texto_mp paginacion_habilitada_msg, paginacion_habilitada_len, 0x07, 2, 0
 
+    ; Inicializar Game
+    call game_inicializar
+
     ; Inicializar el manejador de memoria
     call mmu_inicializar
 
@@ -135,7 +140,6 @@ modo_protegido:
 
     ; Inicializar el scheduler
 
-    ; Inicializar Game
     
     ; Cargar IDT
     
@@ -147,8 +151,8 @@ modo_protegido:
     
     ; Cargar tarea inicial
 
-    ;call print_map
-    ;xchg bx, bx
+    call print_map
+    xchg bx, bx
     ; Habilitar interrupciones
     ;sti
     cli
