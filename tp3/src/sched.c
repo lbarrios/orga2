@@ -52,6 +52,7 @@ unsigned long sched_proximo_indice()
     {
       tss_next_2 = tss_idle;
       tarea_actual[1] = TAREA_ACTUAL_IDLE;
+      flag_idle=0;
     }
     else
     {
@@ -80,6 +81,7 @@ unsigned long sched_proximo_indice()
     {
       tss_next_1 = tss_idle;
       tarea_actual[0] = TAREA_ACTUAL_IDLE;
+      flag_idle=0;
     }
     else
     {
