@@ -171,12 +171,10 @@ _isr32:
 
 global _isr33
 _isr33:
-    xchg bx, bx
     cli
     pushad
     call fin_intr_pic1
     in al, 0x60 ; leo scan code
-    xchg bx, bx
     cmp al, BREAK_1
     je .key_1
     cmp al, BREAK_2
@@ -241,7 +239,6 @@ _isr33:
 
 global _isr60
 _isr60:
-    ;xchg bx, bx
     cli
     pushad
     imprimir_debug eax, ebx, 0x07, 0, 0

@@ -152,14 +152,12 @@ modo_protegido:
     ; Cargar tarea inicial
 
     call print_map
-    xchg bx, bx
     ; Habilitar interrupciones
     ;sti
     cli
 
     mov ax, 0x70; Cargo en ax el offset_gdt de la tarea init
     ltr ax; Pongo en el TR la tarea init
-    ;xchg bx, bx
     jmp 0x78:0 ; salto a la primer tarea: idle
 
     ; Ciclar infinitamente (por si algo sale mal...)
