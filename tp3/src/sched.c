@@ -19,7 +19,7 @@ unsigned long sched_proximo_indice()
 {
   if(flag_pause==1 || flag_idle==1)
   {
-    indice_actual = TAREA_ACTUAL_IDLE;
+    BD("entrando en tarea idle")BDENTER()
   }
   else
   {

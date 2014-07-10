@@ -75,7 +75,7 @@ unsigned int game_mover(unsigned int id, direccion d) {
 }
 
 unsigned int game_misil(unsigned int id, int val_x, int val_y, unsigned int misil, unsigned int size) {
-    BD("game_misil ")VAR(id)VAR(val_x)VAR(val_y)VAR(misil)VAR(size)BDENTER()
+    BD("game_misil")VAR(id)VAR(val_x)VAR(val_y)VAR(misil)VAR(size)BDENTER()
     return TRUE;
     
     /*

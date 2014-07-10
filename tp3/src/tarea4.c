@@ -13,14 +13,13 @@ void task() {
     /* Tarea 4 */
   char debug[40] = "entrando tarea cuatro\n";
   IMPRIMIR(debug)
-
   unsigned int i,j;
   char aa[512];
   while(1) {
-      syscall_misil(-1, -1, (unsigned int)aa, 512);
-      syscall_misil( 1,  1, (unsigned int)aa, 512);
-      syscall_misil(-1,  1, (unsigned int)aa, 512);
-      syscall_misil( 1, -1, (unsigned int)aa, 512);
+    syscall_misil(-1, -1, (unsigned int)(long)aa, 512);
+    syscall_misil( 1,  1, (unsigned int)(long)aa, 512);
+    syscall_misil(-1,  1, (unsigned int)(long)aa, 512);
+    syscall_misil( 1, -1, (unsigned int)(long)aa, 512);
   }
   direccion dir[4] = { N, E, S, O };
   int d = 0;
