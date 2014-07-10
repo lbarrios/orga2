@@ -17,7 +17,6 @@ void task() {
   IMPRIMIR(debug)
 
   char aa[512];
-
   syscall_misil(2, 2, (unsigned long)aa, 512);
   syscall_misil(3, 3, (unsigned long)aa, 512);
   syscall_misil(4, 4, (unsigned long)aa, 512);

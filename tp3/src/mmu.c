@@ -7,6 +7,7 @@
 
 #include "mmu.h"
 
+
 void mmu_inicializar()
 {
 	BOCHSDEBUG("Iniciando MMU...")
