@@ -128,9 +128,12 @@ ISR 31
 ;;
 ;; Rutina de atención del RELOJ
 ;; -------------------------------------------------------------------------- ;;
+clock_msg DB  "TIC DE CLOCK"
+clock_len EQU $ - clock_msg
 global _isr32
 _isr32:
     pushad
+    imprimir_debug clock_msg, clock_len, 0, 0, 0
     call proximo_reloj
     call fin_intr_pic1
     call sched_proximo_indice
@@ -171,6 +174,7 @@ _isr33:
     pushad
     call fin_intr_pic1
     in al, 0x60 ; leo scan code
+    xchg bx, bx
     cmp al, BREAK_1
     je .key_1
     cmp al, BREAK_2
