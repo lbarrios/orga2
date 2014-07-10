@@ -167,7 +167,7 @@ _isr33:
     xchg bx, bx
     cli
     pushad
-    ;fin_intr_pic1
+    fin_intr_pic1
     in al, 0x60 ; leo scan code
     cmp al, BREAK_1
     je .key_1
