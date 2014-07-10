@@ -17,11 +17,14 @@ void game_inicializar() {
     EstadoCasilla pasto;
     pasto.current_state = PASTO;
     pasto.tank_number = 0;
-    //pasto.mapeado_por_tarea = {0,0,0,0,0,0,0,0};
-
     int i;
+    for(i = 0; i < CANT_TANQUES; i++) {
+        unmapear_a_tarea(&pasto, i);
+    }
+
     for (i = 0; i < SIZE_MAP; i++)
     {
+        BD(" map_state[i] ") BDPOINTER(&map_state[i]) BDENTER()
         map_state[i] = pasto;
     }
 }
@@ -47,9 +50,27 @@ void marcar_pos_inicial(unsigned int fisica, unsigned int tanque)
 }
 
 
+void esta_casilla_es_mia(unsigned int nueva_pos, Tank id)
+{
+    unsigned int *virtual = &siguiente_a_mapear[id];
+    mmu_t* mmu = (mmu_t*) MMU_ADDRESS;
+    page_dir *cr3 = &(mmu->task_page_dir[id]);
+    void *fisica = (void*)casillero_a_fisica(nueva_pos);
+    // Casteo una estructura de atributos con todos los valores en 0
+    page_table_attributes attr = NOT_PRESENT_PAGE_TABLE_ATTRIBUTES;
+    // Marco la página presente
+    attr.present = PTE_PRESENT;
+    // Marco la página como de escritura
+    attr.read_write = PTE_WRITE;
+    // Marco la página como "de usuario"
+    attr.user_supervisor = PTE_USER;
+    mmu_mapear_pagina(*virtual, cr3, fisica, attr);
+    *virtual += PAGE_SIZE;
+}
+
+
 unsigned int game_mover(unsigned int id, direccion d) {
     BD("game_mover id=")BDPOINTER((unsigned long)id)BD(" d=")BDPOINTER((unsigned long)d)BDENTER()
-    return 0;
     if (d == C) return TRUE;
     
     int nueva_pos = posiciones[id] + SIZE_MAP;
@@ -100,20 +121,8 @@ unsigned int game_mover(unsigned int id, direccion d) {
         case PASTO:
             estado_nueva_pos->current_state = PISADO;
             estado_nueva_pos->tank_number = id;
-            unsigned int *virtual = &siguiente_a_mapear[id];
-            mmu_t* mmu = (mmu_t*) MMU_ADDRESS;
-            page_dir *cr3 = &(mmu->task_page_dir[id]);
-            void *fisica = (void*)casillero_a_fisica(nueva_pos);
-            // Casteo una estructura de atributos con todos los valores en 0
-            page_table_attributes attr = NOT_PRESENT_PAGE_TABLE_ATTRIBUTES;
-            // Marco la página presente
-            attr.present = PTE_PRESENT;
-            // Marco la página como de escritura
-            attr.read_write = PTE_WRITE;
-            // Marco la página como "de usuario"
-            attr.user_supervisor = PTE_USER;
-            mmu_mapear_pagina(*virtual, cr3, fisica, attr);
-            *virtual += 1;
+            mapear_a_tarea(estado_nueva_pos, id);
+            esta_casilla_es_mia(nueva_pos, id);
             break;
 
         case INICIAL:
@@ -121,7 +130,8 @@ unsigned int game_mover(unsigned int id, direccion d) {
             {
                 estado_nueva_pos->current_state = SUPERPUESTO;
                 estado_nueva_pos->tank_number = 0;
-                //mmu_mapear_pagina(args); // aunque ya sea de otro?
+                mapear_a_tarea(estado_nueva_pos, id);
+                esta_casilla_es_mia(nueva_pos, id);
             }
             break;
 
@@ -188,37 +198,37 @@ unsigned int game_minar(unsigned int id, direccion d) {
 
 
 
-unsigned char mapeado_por_tarea(EstadoCasilla ec, int i)
+unsigned char mapeado_a_tarea(EstadoCasilla *ec, int i)
 {
-    if(i==0) {return ec.mapeado_por_tarea.mapeado_por_tarea0;}
-    if(i==1) {return ec.mapeado_por_tarea.mapeado_por_tarea1;}
-    if(i==2) {return ec.mapeado_por_tarea.mapeado_por_tarea2;}
-    if(i==3) {return ec.mapeado_por_tarea.mapeado_por_tarea3;}
-    if(i==4) {return ec.mapeado_por_tarea.mapeado_por_tarea4;}
-    if(i==5) {return ec.mapeado_por_tarea.mapeado_por_tarea5;}
-    if(i==6) {return ec.mapeado_por_tarea.mapeado_por_tarea6;}
-    if(i==7) {return ec.mapeado_por_tarea.mapeado_por_tarea7;}
+    if(i==0) {return ec->mapeado_a_tarea.mapeado_a_tarea0;}
+    if(i==1) {return ec->mapeado_a_tarea.mapeado_a_tarea1;}
+    if(i==2) {return ec->mapeado_a_tarea.mapeado_a_tarea2;}
+    if(i==3) {return ec->mapeado_a_tarea.mapeado_a_tarea3;}
+    if(i==4) {return ec->mapeado_a_tarea.mapeado_a_tarea4;}
+    if(i==5) {return ec->mapeado_a_tarea.mapeado_a_tarea5;}
+    if(i==6) {return ec->mapeado_a_tarea.mapeado_a_tarea6;}
+    if(i==7) {return ec->mapeado_a_tarea.mapeado_a_tarea7;}
     return -1;
 }
-void unmapear_a_tarea(EstadoCasilla ec, int i)
+void unmapear_a_tarea(EstadoCasilla *ec, int i)
 {
-    if(i==0) {ec.mapeado_por_tarea.mapeado_por_tarea0 = 0;}
-    if(i==1) {ec.mapeado_por_tarea.mapeado_por_tarea1 = 0;}
-    if(i==2) {ec.mapeado_por_tarea.mapeado_por_tarea2 = 0;}
-    if(i==3) {ec.mapeado_por_tarea.mapeado_por_tarea3 = 0;}
-    if(i==4) {ec.mapeado_por_tarea.mapeado_por_tarea4 = 0;}
-    if(i==5) {ec.mapeado_por_tarea.mapeado_por_tarea5 = 0;}
-    if(i==6) {ec.mapeado_por_tarea.mapeado_por_tarea6 = 0;}
-    if(i==7) {ec.mapeado_por_tarea.mapeado_por_tarea7 = 0;}
+    if(i==0) {ec->mapeado_a_tarea.mapeado_a_tarea0 = 0;}
+    if(i==1) {ec->mapeado_a_tarea.mapeado_a_tarea1 = 0;}
+    if(i==2) {ec->mapeado_a_tarea.mapeado_a_tarea2 = 0;}
+    if(i==3) {ec->mapeado_a_tarea.mapeado_a_tarea3 = 0;}
+    if(i==4) {ec->mapeado_a_tarea.mapeado_a_tarea4 = 0;}
+    if(i==5) {ec->mapeado_a_tarea.mapeado_a_tarea5 = 0;}
+    if(i==6) {ec->mapeado_a_tarea.mapeado_a_tarea6 = 0;}
+    if(i==7) {ec->mapeado_a_tarea.mapeado_a_tarea7 = 0;}
 }
-void mapear_tarea(EstadoCasilla ec, int i)
+void mapear_a_tarea(EstadoCasilla *ec, int i)
 {
-    if(i==0) {ec.mapeado_por_tarea.mapeado_por_tarea0 = 1;}
-    if(i==1) {ec.mapeado_por_tarea.mapeado_por_tarea1 = 1;}
-    if(i==2) {ec.mapeado_por_tarea.mapeado_por_tarea2 = 1;}
-    if(i==3) {ec.mapeado_por_tarea.mapeado_por_tarea3 = 1;}
-    if(i==4) {ec.mapeado_por_tarea.mapeado_por_tarea4 = 1;}
-    if(i==5) {ec.mapeado_por_tarea.mapeado_por_tarea5 = 1;}
-    if(i==6) {ec.mapeado_por_tarea.mapeado_por_tarea6 = 1;}
-    if(i==7) {ec.mapeado_por_tarea.mapeado_por_tarea7 = 1;}
+    if(i==0) {ec->mapeado_a_tarea.mapeado_a_tarea0 = 1;}
+    if(i==1) {ec->mapeado_a_tarea.mapeado_a_tarea1 = 1;}
+    if(i==2) {ec->mapeado_a_tarea.mapeado_a_tarea2 = 1;}
+    if(i==3) {ec->mapeado_a_tarea.mapeado_a_tarea3 = 1;}
+    if(i==4) {ec->mapeado_a_tarea.mapeado_a_tarea4 = 1;}
+    if(i==5) {ec->mapeado_a_tarea.mapeado_a_tarea5 = 1;}
+    if(i==6) {ec->mapeado_a_tarea.mapeado_a_tarea6 = 1;}
+    if(i==7) {ec->mapeado_a_tarea.mapeado_a_tarea7 = 1;}
 }
