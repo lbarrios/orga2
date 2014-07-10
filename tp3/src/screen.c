@@ -4,7 +4,6 @@
 ================================================================================
   definicion de funciones del scheduler
 */
-
 void print_tank_context( int tank )
 {
     //int t = (tank<1 || tank>8) ? (1) : (tank);
@@ -16,26 +15,8 @@ void print_tank_context( int tank )
 }
 
 #include "screen.h"
-#define SIZE_MAP 2500 // esto es el size en pixeles
 #define SIZE_PIXEL 2 // size en bytes
 #define MAP_FIRST_PIXEL 0xB8000 // esperemos que asi sea
-
-typedef enum {PASTO, INICIAL, PISADO, SUPERPUESTO, MINA, MISIL, MUERTO} Estado;
-
-typedef struct pixel_s {
-    unsigned char ascii;
-    unsigned char color;
-} __attribute__((__packed__)) pixel;
-
-typedef unsigned char Tank;
-
-typedef struct EstadoCasilla_s
-{            
-    Estado current_state;
-    Tank tank_number;
-} EstadoCasilla;
-
-EstadoCasilla map_state[SIZE_MAP];
 
 pixel colorea_pixel(EstadoCasilla s)
 {
