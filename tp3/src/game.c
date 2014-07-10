@@ -200,35 +200,35 @@ unsigned int game_minar(unsigned int id, direccion d) {
 
 unsigned char mapeado_a_tarea(EstadoCasilla *ec, int i)
 {
-    if(i==0) {return ec->mapeado_a_tarea.mapeado_a_tarea0;}
-    if(i==1) {return ec->mapeado_a_tarea.mapeado_a_tarea1;}
-    if(i==2) {return ec->mapeado_a_tarea.mapeado_a_tarea2;}
-    if(i==3) {return ec->mapeado_a_tarea.mapeado_a_tarea3;}
-    if(i==4) {return ec->mapeado_a_tarea.mapeado_a_tarea4;}
-    if(i==5) {return ec->mapeado_a_tarea.mapeado_a_tarea5;}
-    if(i==6) {return ec->mapeado_a_tarea.mapeado_a_tarea6;}
-    if(i==7) {return ec->mapeado_a_tarea.mapeado_a_tarea7;}
+    if(i==0) {return ec->mapeado_a_tarea0;}
+    if(i==1) {return ec->mapeado_a_tarea1;}
+    if(i==2) {return ec->mapeado_a_tarea2;}
+    if(i==3) {return ec->mapeado_a_tarea3;}
+    if(i==4) {return ec->mapeado_a_tarea4;}
+    if(i==5) {return ec->mapeado_a_tarea5;}
+    if(i==6) {return ec->mapeado_a_tarea6;}
+    if(i==7) {return ec->mapeado_a_tarea7;}
     return -1;
 }
 void unmapear_a_tarea(EstadoCasilla *ec, int i)
 {
-    if(i==0) {ec->mapeado_a_tarea.mapeado_a_tarea0 = 0;}
-    if(i==1) {ec->mapeado_a_tarea.mapeado_a_tarea1 = 0;}
-    if(i==2) {ec->mapeado_a_tarea.mapeado_a_tarea2 = 0;}
-    if(i==3) {ec->mapeado_a_tarea.mapeado_a_tarea3 = 0;}
-    if(i==4) {ec->mapeado_a_tarea.mapeado_a_tarea4 = 0;}
-    if(i==5) {ec->mapeado_a_tarea.mapeado_a_tarea5 = 0;}
-    if(i==6) {ec->mapeado_a_tarea.mapeado_a_tarea6 = 0;}
-    if(i==7) {ec->mapeado_a_tarea.mapeado_a_tarea7 = 0;}
+    if(i==0) {ec->mapeado_a_tarea0 = 0;}
+    if(i==1) {ec->mapeado_a_tarea1 = 0;}
+    if(i==2) {ec->mapeado_a_tarea2 = 0;}
+    if(i==3) {ec->mapeado_a_tarea3 = 0;}
+    if(i==4) {ec->mapeado_a_tarea4 = 0;}
+    if(i==5) {ec->mapeado_a_tarea5 = 0;}
+    if(i==6) {ec->mapeado_a_tarea6 = 0;}
+    if(i==7) {ec->mapeado_a_tarea7 = 0;}
 }
 void mapear_a_tarea(EstadoCasilla *ec, int i)
 {
-    if(i==0) {ec->mapeado_a_tarea.mapeado_a_tarea0 = 1;}
-    if(i==1) {ec->mapeado_a_tarea.mapeado_a_tarea1 = 1;}
-    if(i==2) {ec->mapeado_a_tarea.mapeado_a_tarea2 = 1;}
-    if(i==3) {ec->mapeado_a_tarea.mapeado_a_tarea3 = 1;}
-    if(i==4) {ec->mapeado_a_tarea.mapeado_a_tarea4 = 1;}
-    if(i==5) {ec->mapeado_a_tarea.mapeado_a_tarea5 = 1;}
-    if(i==6) {ec->mapeado_a_tarea.mapeado_a_tarea6 = 1;}
-    if(i==7) {ec->mapeado_a_tarea.mapeado_a_tarea7 = 1;}
+    if(i==0) {ec->mapeado_a_tarea0 = 1;}
+    if(i==1) {ec->mapeado_a_tarea1 = 1;}
+    if(i==2) {ec->mapeado_a_tarea2 = 1;}
+    if(i==3) {ec->mapeado_a_tarea3 = 1;}
+    if(i==4) {ec->mapeado_a_tarea4 = 1;}
+    if(i==5) {ec->mapeado_a_tarea5 = 1;}
+    if(i==6) {ec->mapeado_a_tarea6 = 1;}
+    if(i==7) {ec->mapeado_a_tarea7 = 1;}
 }
