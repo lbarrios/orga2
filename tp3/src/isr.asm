@@ -265,7 +265,7 @@ _isr82:
     je .llamaMisil
     cmp eax, SYS_MINAR
     je .llamaMinar
-    je .fin ;;;;por las dudas;;;;;
+    jmp .fin ;;;;por las dudas;;;;;
 
 .llamaMover:
     push ebx
