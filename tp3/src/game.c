@@ -8,23 +8,9 @@
 #include "screen.h"
 #include "mmu.h"
 
-#define SIZE_MAP 2500 // esto es el size en pixeles
-
-unsigned long siguiente_a_mapear[CANT_TANQUES] = {0x8003000, 0x8003000, 0x8003000, 0x8003000, 0x8003000, 0x8003000, 0x8003000};
-
-typedef enum {PASTO, INICIAL, PISADO, SUPERPUESTO, MINA, MISIL, MUERTO} Estado;
-
-typedef unsigned char Tank;
-
-typedef struct EstadoCasilla_s
-{            
-    Estado current_state;
-    Tank tank_number;
-    unsigned char mapeado_por_tarea[CANT_TANQUES];
-} EstadoCasilla;
-
+unsigned int siguiente_a_mapear[CANT_TANQUES] = {0x8003000, 0x8003000, 0x8003000, 0x8003000, 0x8003000, 0x8003000, 0x8003000};
 EstadoCasilla map_state[SIZE_MAP];
-int posiciones[CANT_TANQUES]; // notar que es con signo, a proposito
+unsigned int posiciones[CANT_TANQUES];
 
 void game_inicializar() {
     EstadoCasilla pasto;
@@ -52,6 +38,7 @@ unsigned int casillero_a_fisica(unsigned int casillero)
 void marcar_pos_inicial(unsigned int fisica, unsigned int tanque)
 {
     unsigned int casilla = fisica_a_casillero(fisica);
+    VAR(casilla)VAR(tanque)
     EstadoCasilla *estado = &map_state[casilla];
     estado->current_state = INICIAL;
     estado->tank_number = tanque;
@@ -63,7 +50,7 @@ unsigned int game_mover(unsigned int id, direccion d) {
     BD("game_mover id=")BDPOINTER((unsigned long)id)BD(" d=")BDPOINTER((unsigned long)d)BDENTER()
     if (d == C) return TRUE;
     
-    int nueva_pos = posiciones[id];
+    int nueva_pos = posiciones[id] + SIZE_MAP;
     switch (d) {
         case NO:
             nueva_pos -= 1;
@@ -104,14 +91,14 @@ unsigned int game_mover(unsigned int id, direccion d) {
             nueva_pos += 50;
             break;
     }
-    nueva_pos = nueva_pos % 250;
+    nueva_pos = nueva_pos % SIZE_MAP;
 
     EstadoCasilla *estado_nueva_pos = &map_state[nueva_pos];
     switch (estado_nueva_pos->current_state) {
         case PASTO:
             estado_nueva_pos->current_state = PISADO;
             estado_nueva_pos->tank_number = id;
-            unsigned long *virtual = &siguiente_a_mapear[id];
+            unsigned int *virtual = &siguiente_a_mapear[id];
             mmu_t* mmu = (mmu_t*) MMU_ADDRESS;
             page_dir *cr3 = &(mmu->task_page_dir[id]);
             void *fisica = (void*)casillero_a_fisica(nueva_pos);
