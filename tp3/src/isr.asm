@@ -6,6 +6,7 @@
 
 %include "imprimir.mac"
 extern flag_pause
+extern flag_idle
 extern indice_actual
 
 BITS 32
@@ -298,7 +299,20 @@ _isr82:
     jmp .fin
 
 .fin:
-    ;;;;;;;;;;;;;;;;no te olvides de saltar a la idle;;;;;;;;;;;;;;;;;;;;;;;;;;
+    ;;;;;;;;;;;;;;;; saltar a la idle ;;;;;;;;;;;;;;;;;;;;;;;;;;
+    mov byte [flag_idle], 0x1
+
+    call sched_proximo_indice
+    cmp ax, 1
+    je .jmp_tss_1
+    
+    jmp 0x80:0 ; Selector tss_next_2
+    jmp .fin_final
+
+    .jmp_tss_1:
+    jmp 0x78:0 ; selector tss_next_1
+    ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+.fin_final:
     popad
     iret
 
