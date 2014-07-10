@@ -8,6 +8,7 @@
 #include "screen.h"
 #include "mmu.h"
 
+
 unsigned int siguiente_a_mapear[CANT_TANQUES] = {0x8003000, 0x8003000, 0x8003000, 0x8003000, 0x8003000, 0x8003000, 0x8003000};
 EstadoCasilla map_state[SIZE_MAP];
 unsigned int posiciones[CANT_TANQUES];
@@ -48,6 +49,7 @@ void marcar_pos_inicial(unsigned int fisica, unsigned int tanque)
 
 unsigned int game_mover(unsigned int id, direccion d) {
     BD("game_mover id=")BDPOINTER((unsigned long)id)BD(" d=")BDPOINTER((unsigned long)d)BDENTER()
+    return 0;
     if (d == C) return TRUE;
     
     int nueva_pos = posiciones[id] + SIZE_MAP;
@@ -182,4 +184,41 @@ unsigned int game_minar(unsigned int id, direccion d) {
 
     return TRUE;
     */
+}
+
+
+
+unsigned char mapeado_por_tarea(EstadoCasilla ec, int i)
+{
+    if(i==0) {return ec.mapeado_por_tarea.mapeado_por_tarea0;}
+    if(i==1) {return ec.mapeado_por_tarea.mapeado_por_tarea1;}
+    if(i==2) {return ec.mapeado_por_tarea.mapeado_por_tarea2;}
+    if(i==3) {return ec.mapeado_por_tarea.mapeado_por_tarea3;}
+    if(i==4) {return ec.mapeado_por_tarea.mapeado_por_tarea4;}
+    if(i==5) {return ec.mapeado_por_tarea.mapeado_por_tarea5;}
+    if(i==6) {return ec.mapeado_por_tarea.mapeado_por_tarea6;}
+    if(i==7) {return ec.mapeado_por_tarea.mapeado_por_tarea7;}
+    return -1;
+}
+void unmapear_a_tarea(EstadoCasilla ec, int i)
+{
+    if(i==0) {ec.mapeado_por_tarea.mapeado_por_tarea0 = 0;}
+    if(i==1) {ec.mapeado_por_tarea.mapeado_por_tarea1 = 0;}
+    if(i==2) {ec.mapeado_por_tarea.mapeado_por_tarea2 = 0;}
+    if(i==3) {ec.mapeado_por_tarea.mapeado_por_tarea3 = 0;}
+    if(i==4) {ec.mapeado_por_tarea.mapeado_por_tarea4 = 0;}
+    if(i==5) {ec.mapeado_por_tarea.mapeado_por_tarea5 = 0;}
+    if(i==6) {ec.mapeado_por_tarea.mapeado_por_tarea6 = 0;}
+    if(i==7) {ec.mapeado_por_tarea.mapeado_por_tarea7 = 0;}
+}
+void mapear_tarea(EstadoCasilla ec, int i)
+{
+    if(i==0) {ec.mapeado_por_tarea.mapeado_por_tarea0 = 1;}
+    if(i==1) {ec.mapeado_por_tarea.mapeado_por_tarea1 = 1;}
+    if(i==2) {ec.mapeado_por_tarea.mapeado_por_tarea2 = 1;}
+    if(i==3) {ec.mapeado_por_tarea.mapeado_por_tarea3 = 1;}
+    if(i==4) {ec.mapeado_por_tarea.mapeado_por_tarea4 = 1;}
+    if(i==5) {ec.mapeado_por_tarea.mapeado_por_tarea5 = 1;}
+    if(i==6) {ec.mapeado_por_tarea.mapeado_por_tarea6 = 1;}
+    if(i==7) {ec.mapeado_por_tarea.mapeado_por_tarea7 = 1;}
 }
