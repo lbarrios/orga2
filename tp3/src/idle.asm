@@ -9,7 +9,6 @@ BITS 32
 %include "imprimir.mac"
 
 idle:
-     ;xchg bx, bx
      inc edi
      imprimir_debug idle_msg, idle_len, 0x07, 2, 0
      .loopear:
