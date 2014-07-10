@@ -5,12 +5,50 @@
 */
 
 #include "game.h"
+#include "screen.h"
 
-char campo_minado[CAMPO_SIZE][CAMPO_SIZE];
+#define SIZE_MAP 2500 // esto es el size en pixeles
 
+typedef enum {PASTO, INICIAL, PISADO, SUPERPUESTO, MINA, MISIL, MUERTO} Estado;
+
+typedef unsigned char Tank;
+
+typedef struct EstadoCasilla_s
+{            
+    Estado current_state;
+    Tank tank_number;
+} EstadoCasilla;
+
+EstadoCasilla map_state[SIZE_MAP];
+unsigned int posiciones[CANT_TANQUES];
 
 void game_inicializar() {
+    EstadoCasilla pasto;
+    pasto.current_state = PASTO;
+    pasto.tank_number = 0;
+
+    int i;
+    for (i = 0; i < SIZE_MAP; i++)
+    {
+        map_state[i] = pasto;
+    }
 }
+
+unsigned int fisica_a_casillero(unsigned int fisica)
+{
+    return (fisica - GAME_MAP_FIRST_ADDRESS)>>12;
+}
+
+
+void marcar_pos_inicial(unsigned int fisica, unsigned int tanque)
+{
+    unsigned int casilla = fisica_a_casillero(fisica);
+    EstadoCasilla *estado = &map_state[casilla];
+    estado->current_state = INICIAL;
+    estado->tank_number = tanque;
+    posiciones[tanque] = casilla;
+}
+
 
 unsigned int game_mover(unsigned int id, direccion d) {
     BD("game_mover id=")BDPOINTER((unsigned long)id)BD(" d=")BDPOINTER((unsigned long)d)BDENTER()

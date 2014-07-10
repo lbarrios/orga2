@@ -87,18 +87,6 @@ void print_map ()
 
 void screen_inicializar ()
 {
-    EstadoCasilla pasto;
-    pasto.current_state = PASTO;
-    pasto.tank_number = 0;
-
-    int i;
-    for (i = 0; i < SIZE_MAP; i++)
-    {
-        map_state[i] = pasto;
-    }
-
-    //importante: marcar las casillas INICIAL
-
     print_map();
 }
 /*
