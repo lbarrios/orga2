@@ -6,6 +6,7 @@
 
 %include "imprimir.mac"
 extern flag_pause
+extern indice_actual
 
 BITS 32
 
@@ -250,10 +251,55 @@ _isr60:
 global _isr82
 _isr82:
     cli
-    pusha
-    mov eax, 0x42 ; ej 5.d
-    popa
-    sti
+    pushad
+
+    cmp eax, SYS_MOVER
+    je .llamaMover
+    cmp eax, SYS_MISIL
+    je .llamaMisil
+    cmp eax, SYS_MINAR
+    je .llamaMinar
+    je .fin ;;;;por las dudas;;;;;
+
+.llamaMover:
+    push ebx
+    xor eax, eax
+    mov eax, [indice_actual]
+    push eax
+    call game_mover
+    pop eax
+    pop ebx
+    jmp .fin
+
+.llamaMisil:
+    push esi
+    push edx
+    push ecx
+    push ebx
+    xor eax, eax
+    mov eax, [indice_actual]
+    push eax
+    call game_misil
+    pop eax
+    pop ebx
+    pop ecx
+    pop edx
+    pop esi
+    jmp .fin
+
+.llamaMinar:
+    push ebx
+    xor eax, eax
+    mov eax, [indice_actual]
+    push eax
+    call game_minar
+    pop eax
+    pop ebx
+    jmp .fin
+
+.fin:
+    ;;;;;;;;;;;;;;;;no te olvides de saltar a la idle;;;;;;;;;;;;;;;;;;;;;;;;;;
+    popad
     iret
 
 

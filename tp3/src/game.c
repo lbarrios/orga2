@@ -12,9 +12,12 @@ char campo_minado[CAMPO_SIZE][CAMPO_SIZE];
 void game_inicializar() {
 }
 
-/*
 unsigned int game_mover(unsigned int id, direccion d) {
+    BD("game_mover id=") BDPOINTER((long)id)BD(" d=")BDPOINTER((long)d)BDENTER()
+    return TRUE;
 
+
+    /*
     int nueva_pos;
     EstadoCasilla estado_nueva_pos;
     switch (estado_nueva_pos->current_state) {
@@ -68,20 +71,30 @@ unsigned int game_mover(unsigned int id, direccion d) {
     };
  
     return TRUE;
+    */
 }
 
 unsigned int game_misil(unsigned int id, int val_x, int val_y, unsigned int misil, unsigned int size) {
+    BD("game_misil id=") BDPOINTER((long)id)BD(" val_x=")BDPOINTER((long)val_x)BDENTER()
+    return TRUE;
+    
+    /*
     int posicion;
     
     //usar un buffer?
     return TRUE;
+    */
 }
 
 unsigned int game_minar(unsigned int id, direccion d) {
+    BD("game_minar id=") BDPOINTER((long)id)BD(" d=")BDPOINTER((long)d)BDENTER()
+    return TRUE;
+
+    /*
     int posicion;
     map_state[posicion].current_state = MINA;
     map_state[posicion].tank_number = NUMERODETANQUE;
 
     return TRUE;
+    */
 }
-*/
