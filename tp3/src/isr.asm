@@ -135,7 +135,7 @@ clock_len EQU $ - clock_msg
 global _isr32
 _isr32:
     pushad
-    xchg bx, bx
+    ;xchg bx, bx
     call print_map
     imprimir_debug clock_msg, clock_len, 0, 0, 0
     call proximo_reloj
