@@ -29,14 +29,14 @@ typedef struct EstadoCasilla_s
     Estado current_state;
     Tank tank_number;
     struct mapeado_a_tarea_t {
-	    unsigned char mapeado_a_tarea0;
-	    unsigned char mapeado_a_tarea1;
-	    unsigned char mapeado_a_tarea2;
-	    unsigned char mapeado_a_tarea3;
-	    unsigned char mapeado_a_tarea4;
-	    unsigned char mapeado_a_tarea5;
-	    unsigned char mapeado_a_tarea6;
-	    unsigned char mapeado_a_tarea7;
+	    unsigned char mapeado_a_tarea0:1;
+	    unsigned char mapeado_a_tarea1:1;
+	    unsigned char mapeado_a_tarea2:1;
+	    unsigned char mapeado_a_tarea3:1;
+	    unsigned char mapeado_a_tarea4:1;
+	    unsigned char mapeado_a_tarea5:1;
+	    unsigned char mapeado_a_tarea6:1;
+	    unsigned char mapeado_a_tarea7:1;
 		/*
 	    unsigned char operator[](int i)
 	    {
