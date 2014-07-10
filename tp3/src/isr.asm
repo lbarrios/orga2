@@ -8,6 +8,7 @@
 extern flag_pause
 extern flag_idle
 extern indice_actual
+extern print_map
 
 BITS 32
 
@@ -133,6 +134,7 @@ clock_len EQU $ - clock_msg
 global _isr32
 _isr32:
     pushad
+    call print_map
     imprimir_debug clock_msg, clock_len, 0, 0, 0
     call proximo_reloj
     call fin_intr_pic1
