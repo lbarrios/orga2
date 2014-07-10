@@ -100,7 +100,7 @@ char bochsdebugpointerchar[430];
 #define BDT(string) for(bdi=0;bdi<sizeof(string);bdi++) { bdp = (char*)&(string); oute9( bdp[bdi] ); }
 #define BD(s) BOCHSDEBUG(s)
 #define BDENTER() oute9(10);
-#define BDPOINTER(var) bochsdebugpointer = (long)(void*)var;\
+#define BDPOINTER(var) bochsdebugpointer = (long)(void*)(long)var;\
 bochsdebugpointerchar[0]='0';\
 bochsdebugpointerchar[1]='x';\
 bochsdebugpointerchar[2]=(char)((bochsdebugpointer     ) >>28)+'0';\
@@ -113,6 +113,9 @@ bochsdebugpointerchar[8]=(char)((bochsdebugpointer<< 24) >>28)+'0';\
 bochsdebugpointerchar[9]=(char)((bochsdebugpointer<< 28) >>28)+'0';\
 for(bochsdebugi=2;bochsdebugi<10;bochsdebugi++){ if(bochsdebugpointerchar[bochsdebugi]>'9'){ bochsdebugpointerchar[bochsdebugi]=bochsdebugpointerchar[bochsdebugi]-'9'+('A'-1); } } \
 BD(bochsdebugpointerchar)
+#define BDP(var) BDPOINTER(var)
+
+#define VAR(var) BD(" ")BD(#var)BD("=")BDP(var)BD(" ")
 
 #define IMPRIMIR(s) syscall_debug(s, sizeof(s));
 #endif  /* !__DEFINES_H__ */

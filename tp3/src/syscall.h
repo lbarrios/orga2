@@ -8,6 +8,7 @@
 #ifndef __SYSCALL_H__
 #define __SYSCALL_H__
 
+#include "game.h"
 #define LS_INLINE static __inline __attribute__((always_inline))
 
 #define SYS_MOVER     0x83D
