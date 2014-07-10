@@ -168,7 +168,7 @@ _isr33:
     xchg bx, bx
     cli
     pushad
-    fin_intr_pic1
+    call fin_intr_pic1
     in al, 0x60 ; leo scan code
     cmp al, BREAK_1
     je .key_1
@@ -264,7 +264,7 @@ _isr82:
 .llamaMover:
     push ebx
     xor eax, eax
-    mov eax, [indice_actual]
+    mov al, [indice_actual]
     push eax
     call game_mover
     pop eax
@@ -277,7 +277,7 @@ _isr82:
     push ecx
     push ebx
     xor eax, eax
-    mov eax, [indice_actual]
+    mov al, [indice_actual]
     push eax
     call game_misil
     pop eax
@@ -290,7 +290,7 @@ _isr82:
 .llamaMinar:
     push ebx
     xor eax, eax
-    mov eax, [indice_actual]
+    mov al, [indice_actual]
     push eax
     call game_minar
     pop eax

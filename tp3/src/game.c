@@ -13,7 +13,7 @@ void game_inicializar() {
 }
 
 unsigned int game_mover(unsigned int id, direccion d) {
-    BD("game_mover id=") BDPOINTER((long)id)BD(" d=")BDPOINTER((long)d)BDENTER()
+    BD("game_mover id=") BDPOINTER(id)BD(" d=")BDPOINTER((unsigned long)d)BDENTER()
     return TRUE;
 
 
@@ -75,7 +75,7 @@ unsigned int game_mover(unsigned int id, direccion d) {
 }
 
 unsigned int game_misil(unsigned int id, int val_x, int val_y, unsigned int misil, unsigned int size) {
-    BD("game_misil id=") BDPOINTER((long)id)BD(" val_x=")BDPOINTER((long)val_x)BDENTER()
+    BD("game_misil id=") BDPOINTER(id)BD(" val_x=")BDPOINTER(val_x)BDENTER()
     return TRUE;
     
     /*
@@ -87,7 +87,7 @@ unsigned int game_misil(unsigned int id, int val_x, int val_y, unsigned int misi
 }
 
 unsigned int game_minar(unsigned int id, direccion d) {
-    BD("game_minar id=") BDPOINTER((long)id)BD(" d=")BDPOINTER((long)d)BDENTER()
+    BD("game_minar id=") BDPOINTER(id)BD(" d=")BDPOINTER((unsigned long)d)BDENTER()
     return TRUE;
 
     /*
