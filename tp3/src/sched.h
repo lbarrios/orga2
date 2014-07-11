@@ -12,6 +12,7 @@
 #include "tss.h"
 
 unsigned long sched_proximo_indice();
+void matar_tarea_actual();
 
 #define TASK1_NEXT 1
 #define TASK2_NEXT 2

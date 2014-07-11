@@ -152,7 +152,6 @@ modo_protegido:
     ; Cargar tarea inicial
 
     call print_map
-    xchg bx, bx
     ; Habilitar interrupciones
     ;sti
     cli

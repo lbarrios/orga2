@@ -15,6 +15,12 @@ unsigned char indice_actual = 7;
 unsigned char tss_actual = GDT_TASK1_DESCRIPTOR;
 unsigned char tareas_muertas[8] = {0,0,0,0,0,0,0,0};
 
+void matar_tarea_actual()
+{
+    tareas_muertas[indice_actual] = 1;
+}
+
+
 unsigned long sched_proximo_indice()
 {
   // Si la activa es la idle, no cambio de tarea
