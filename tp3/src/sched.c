@@ -32,7 +32,6 @@ unsigned long sched_proximo_indice()
   {
     return NO_TASK_SWITCH;
   }
-
   if(flag_pause==1 || flag_idle==1)
   {
     BD("entrando en tarea idle")BDENTER()

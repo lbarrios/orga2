@@ -13,6 +13,8 @@ void task() {
     /* Tarea 6 */
   char debug[40] = "entrando tarea seis\n";
   IMPRIMIR(debug)
+  //while(1) syscall_mover(SO);
+ while(1) { __asm __volatile("mov $1, %%eax":::"eax"); }
 
 #ifdef NOCORRE6
 while(1) { __asm __volatile("mov $1, %%eax":::"eax"); }
