@@ -12,6 +12,10 @@
 unsigned int siguiente_a_mapear[CANT_TANQUES] = {0x8003000, 0x8003000, 0x8003000, 0x8003000, 0x8003000, 0x8003000, 0x8003000};
 EstadoCasilla map_state[SIZE_MAP];
 unsigned int posiciones[CANT_TANQUES];
+// la idea de causa de muerte es:
+// va a tener el numero de la excepcion
+// o 100 que significa muerte por mina
+// o 101 que significa todavia vivo (igual no hace falta mostrarlo, si sigue vivo)
 unsigned char causa_de_muerte[CANT_TANQUES];
 
 void game_inicializar() {
