@@ -67,6 +67,8 @@ void esta_casilla_es_mia(unsigned int nueva_pos, Tank id)
     attr.user_supervisor = PTE_USER;
     mmu_mapear_pagina(*virtual, cr3, fisica, attr);
     *virtual += PAGE_SIZE;
+    //unsigned int v = *virtual;
+    //VAR(v)
 }
 
 

@@ -15,6 +15,7 @@ void task() {
     /* Tarea 1 */
   char debug[40] = "entrando tarea uno";
   IMPRIMIR(debug)
+// while(1) { __asm __volatile("mov $1, %%eax":::"eax"); }
 
 #ifdef NOCORRE1
 while(1) { __asm __volatile("mov $1, %%eax":::"eax"); }

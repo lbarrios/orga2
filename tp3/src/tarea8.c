@@ -13,10 +13,13 @@ void task() {
     /* Tarea 8 */
   char debug[40] = "entrando tarea ocho\n";
   IMPRIMIR(debug)
+  //while(1) syscall_mover(SE);
 
 #ifdef NOCORRE8
 while(1) { __asm __volatile("mov $1, %%eax":::"eax"); }
 #endif
+
+
 
   unsigned int i,j;
   direccion dir[4] = { N, E, S, O };

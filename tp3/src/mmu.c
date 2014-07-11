@@ -98,7 +98,7 @@ void mmu_inicializar_dir_kernel()
 
 void mmu_inicializar_dir_tarea (unsigned int tarea)
 {
-  BD("Iniciando mmu tarea ") char debugtarea = '1'; debugtarea += tarea; BD(debugtarea) BD(".....") BDENTER()
+  //BD("Iniciando mmu tarea ") char debugtarea = '1'; debugtarea += tarea; BD(debugtarea) BD(".....") BDENTER()
   unsigned long i,j;
   void* pagina_libre;
   // Obtengo la dirección de la estructura mmu
@@ -200,8 +200,8 @@ void mmu_inicializar_dir_tarea (unsigned int tarea)
   }
 
 
-  BD(" code_page_1_addr ") BDPOINTER(code_page_1_addr) BDENTER()
-  BD(" code_page_2_addr ") BDPOINTER(code_page_2_addr) BDENTER()
+  //BD(" code_page_1_addr ") BDPOINTER(code_page_1_addr) BDENTER()
+  //BD(" code_page_2_addr ") BDPOINTER(code_page_2_addr) BDENTER()
   // Obtengo el puntero a la dirección física de la página
   void* code_page_1 = (void*) ( code_page_1_addr );
   void* code_page_2 = (void*) ( code_page_2_addr );
@@ -226,20 +226,21 @@ void mmu_inicializar_dir_tarea (unsigned int tarea)
 
 void mmu_mapear_pagina(unsigned long virtual_addr, page_dir* cr3, void* fisica, page_table_attributes atributos)
 {
+    BD(" entre a mmu_mapear ")
   //BD(" virtual_addr ") BDPOINTER(virtual_addr) BDENTER()
-  BD(" cr3 ") BDPOINTER(cr3) BDENTER()
+  //BD(" cr3 ") BDPOINTER(cr3) BDENTER()
   //BD(" fisica ") BDPOINTER(fisica) BDENTER()
   // Obtengo el índice que voy a utilizar para acceder a la entrada correspondiente en el directorio de páginas
   unsigned long pde_index = (virtual_addr>>22);
   // Obtengo el índice que voy a utilizar para acceder a la entrada correspondiente en la tabla de páginas
   unsigned long pte_index = ((virtual_addr<<10)>>22);
   // Obtengo un puntero al directorio de páginas de la tarea
-  BD("pde_index: ") BDPOINTER(pde_index) BDENTER()
-  BD("pte_index: ") BDPOINTER(pte_index) BDENTER()
+  //BD("pde_index: ") BDPOINTER(pde_index) BDENTER()
+  //BD("pte_index: ") BDPOINTER(pte_index) BDENTER()
   page_dir* pd = cr3;
   // Obtengo un puntero a la entrada correspondiente al índice pde_index
   page_dir_entry* pde = &(pd->pde[pde_index]);
-  BD("pde: ") BDPOINTER(pde) BDENTER()
+  //BD("pde: ") BDPOINTER(pde) BDENTER()
   // Me fijo si el bit de presente está marcado
   if ( !(pde->present == (unsigned char)1) )
   {
@@ -249,7 +250,7 @@ void mmu_mapear_pagina(unsigned long virtual_addr, page_dir* cr3, void* fisica, 
     pde->read_write = PTE_WRITE;
     // Obtengo un pedazo de memoria en el que guardar la nueva tabla de páginas
     pde->table_base = ((unsigned long)mmu_get_free_page()>>12);
-    BD(" creando tabla cuyo indice es: ") BDPOINTER((unsigned long)pde->table_base) BDENTER()
+    //BD(" creando tabla cuyo indice es: ") BDPOINTER((unsigned long)pde->table_base) BDENTER()
     // Reemplazo todas las entradas de la nueva tabla de páginas por un descriptor de página no presente
     long i;
     for(i=0;i<PAGE_TABLE_ENTRY_COUNT;i++)
