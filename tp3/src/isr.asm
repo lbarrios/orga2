@@ -135,7 +135,6 @@ clock_len EQU $ - clock_msg
 global _isr32
 _isr32:
     pushad
-    ;xchg bx, bx
     call print_map
     imprimir_debug clock_msg, clock_len, 0, 0, 0
     call proximo_reloj
@@ -161,15 +160,19 @@ _isr32:
 ;;
 ;; Defines para rutina de atención del teclado
 ;;
-%define BREAK_1 0
-%define BREAK_2 0
-%define BREAK_3 0
-%define BREAK_4 0
-%define BREAK_5 0
-%define BREAK_6 0
-%define BREAK_7 0
-%define BREAK_8 0
-%define BREAK_P 0
+%define BREAK_1 0x02
+%define BREAK_2 0x03
+%define BREAK_3 0x04
+%define BREAK_4 0x05
+%define BREAK_5 0x06
+%define BREAK_6 0x07
+%define BREAK_7 0x08
+%define BREAK_8 0x09
+%define BREAK_P 0x19
+
+
+teclado_msg DB  "Se presiono la tecla: 0"
+teclado_len EQU $ - teclado_msg
 
 global _isr33
 _isr33:
@@ -195,40 +198,59 @@ _isr33:
     je .key_8
     cmp al, BREAK_P
     je .key_P
+    jmp .fin
 
     .key_1:
+        mov BYTE [teclado_msg + teclado_len - 1], '1'
+        imprimir_debug teclado_msg, teclado_len, 0, 0, 0
         mov edi, 1
         call print_tank_context
         jmp .fin
     .key_2:
+        mov BYTE [teclado_msg + teclado_len - 1], '2'
+        imprimir_debug teclado_msg, teclado_len, 0, 0, 0
         mov edi, 2
         call print_tank_context
         jmp .fin
     .key_3:
+        mov BYTE [teclado_msg + teclado_len - 1], '3'
+        imprimir_debug teclado_msg, teclado_len, 0, 0, 0
         mov edi, 3
         call print_tank_context
         jmp .fin
     .key_4:
+        mov BYTE [teclado_msg + teclado_len - 1], '4'
+        imprimir_debug teclado_msg, teclado_len, 0, 0, 0
         mov edi, 4
         call print_tank_context
         jmp .fin
     .key_5:
+        mov BYTE [teclado_msg + teclado_len - 1], '5'
+        imprimir_debug teclado_msg, teclado_len, 0, 0, 0
         mov edi, 5
         call print_tank_context
         jmp .fin
     .key_6:
+        mov BYTE [teclado_msg + teclado_len - 1], '6'
+        imprimir_debug teclado_msg, teclado_len, 0, 0, 0
         mov edi, 6
         call print_tank_context
         jmp .fin
     .key_7:
+        mov BYTE [teclado_msg + teclado_len - 1], '7'
+        imprimir_debug teclado_msg, teclado_len, 0, 0, 0
         mov edi, 7
         call print_tank_context
         jmp .fin
     .key_8:
+        mov BYTE [teclado_msg + teclado_len - 1], '8'
+        imprimir_debug teclado_msg, teclado_len, 0, 0, 0
         mov edi, 8
         call print_tank_context
         jmp .fin
     .key_P:
+        mov BYTE [teclado_msg + teclado_len - 1], 'P'
+        imprimir_debug teclado_msg, teclado_len, 0, 0, 0
         mov dl, [flag_pause]
         xor dl, dl
         mov [flag_pause], dl
