@@ -115,6 +115,7 @@ unsigned int game_mover(unsigned int id, direccion d) {
             break;
     }
     nueva_pos = nueva_pos % SIZE_MAP;
+    posiciones[id] = nueva_pos;
 
     EstadoCasilla *estado_nueva_pos = &map_state[nueva_pos];
     switch (estado_nueva_pos->current_state) {
