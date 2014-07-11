@@ -16,8 +16,18 @@ void task() {
   DEBUG("la tarea 2 está congelada!!")
   while(1) { __asm __volatile("mov $1, %%eax":::"eax"); }
   #endif
-  /* Tarea 2 */
 
+  syscall_mover(E);
+  syscall_mover(E);
+  syscall_mover(E);
+  syscall_mover(E);
+  syscall_mover(E);
+  int a = 0;
+  int b = 1000;
+  int c = b/a;
+  c++;
+
+  /* Tarea 2 */
   direccion dir[4] = { N, E, S, O };
   int d = 0,i,j;
   int counter = 3;

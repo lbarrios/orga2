@@ -330,18 +330,19 @@ _isr82:
 
 .llamaMover:
     push ebx
-    xor edi, edi
+    xor edx, edx
     mov dl, [indice_actual]
-    push edi
+    push edx
     call game_mover
     
     ;;;;;;;;;;;;;;;;;;;; aca hay un valor de retorno, no te olvides ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
     pop edi
 
-    mov [retorno_mover_array + edi * SIZEOF_INT], eax
+    ;mov [retorno_mover_array + edi * SIZEOF_INT], eax
 
     pop ebx
+    push eax
     jmp .fin
 
 .llamaMisil:
@@ -358,6 +359,7 @@ _isr82:
     pop ecx
     pop edx
     pop esi
+    push eax
     jmp .fin
 
 .llamaMinar:
@@ -368,6 +370,7 @@ _isr82:
     call game_minar
     pop eax
     pop ebx
+    push eax
     jmp .fin
 
 .fin:
@@ -385,10 +388,11 @@ _isr82:
     jmp 0x78:0 ; selector tss_next_1
     ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 .fin_final:
-    xor edi, edi
-    mov dl, [indice_actual]
+    ;xor edi, edi
+    ;mov dl, [indice_actual]
 
-    mov eax, [retorno_mover_array + edi*SIZEOF_INT]
+    ;mov eax, [retorno_mover_array + edi*SIZEOF_INT]
+    pop eax
     mov [retorno_mover_final], eax
     popad
     mov eax, [retorno_mover_final]
