@@ -84,8 +84,6 @@ extern print_tank_context
 global _isr%1
 
 _isr%1:
-    ;xchg bx, bx
-    ;xchg bx, bx
     cli
     pushad
     imprimir_debug exc_msg_%1, exc_msg_len_%1, 0x07, 0, 0
@@ -163,9 +161,6 @@ clock_msg DB  "TIC DE CLOCK"
 clock_len EQU $ - clock_msg
 global _isr32
 _isr32:
-    ;xchg bx, bx
-    ;xchg bx, bx
-    ;xchg bx, bx
     cli
     pushad
     call print_map
@@ -322,7 +317,6 @@ _isr60:
 %define SYS_MINAR     0x355
 global _isr82
 _isr82:
-    ;xchg bx, bx
     cli
     pushad
 

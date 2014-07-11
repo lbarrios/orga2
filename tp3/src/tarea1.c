@@ -12,10 +12,13 @@
 void pisar(unsigned int m);
 
 void task() {
-    /* Tarea 1 */
-  char debug[40] = "entrando tarea uno";
-  IMPRIMIR(debug)
- //while(1) { __asm __volatile("mov $1, %%eax":::"eax"); }
+  /* No tocar */
+  DEBUG("entrando en tarea uno")
+  #ifdef NOCORRE1
+  DEBUG("la tarea 1 está congelada!!")
+  while(1) { __asm __volatile("mov $1, %%eax":::"eax"); }
+  #endif
+  /* Tarea 6 */
 
   //unsigned int ultima_mapeada = syscall_mover(N);
   //BD(" lo que devuelve syscall_mover: ") BDPOINTER(ultima_mapeada) BDENTER()

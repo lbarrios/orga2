@@ -10,19 +10,16 @@
 #include "syscall.h"
 
 void task() {
-    /* Tarea 2 */
-  unsigned int i,j;
-  char debug[40] = "entrando tarea dos\n";
-  IMPRIMIR(debug)
-  //while(1) syscall_mover(N);
- while(1) { __asm __volatile("mov $1, %%eax":::"eax"); }
-
-#ifdef NOCORRE2
-while(1) { __asm __volatile("mov $1, %%eax":::"eax"); }
-#endif
+  /* No tocar */
+  DEBUG("entrando en tarea dos")
+  #ifdef NOCORRE2
+  DEBUG("la tarea 2 está congelada!!")
+  while(1) { __asm __volatile("mov $1, %%eax":::"eax"); }
+  #endif
+  /* Tarea 2 */
 
   direccion dir[4] = { N, E, S, O };
-  int d = 0;
+  int d = 0,i,j;
   int counter = 3;
   for(i=0;i<100;i++) {
       for(j=0;j<counter;j++)
