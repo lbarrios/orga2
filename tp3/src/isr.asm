@@ -10,6 +10,9 @@ extern flag_idle
 extern indice_actual
 extern print_map
 extern matar_tarea_actual
+extern anota_causa_de_muerte
+
+%define SIZEOF_INT 4
 
 BITS 32
 
@@ -21,6 +24,10 @@ sched_tarea_selector:   dw 0x00
 exc_msg_ %+ %1 DB %2
 exc_msg_len_%1 equ $ - exc_msg_ %+ %1
 %endmacro
+
+; valor de retorno de syscall_mover
+retorno_mover_array: DD 0, 0, 0, 0, 0, 0, 0, 0
+retorno_mover_final: DD 0
 
 ;; mensajes de las excepciones del procesador
 exc_msg 0, "Divide Error - Fault (#DE)"
@@ -83,6 +90,10 @@ _isr%1:
     pushad
     imprimir_debug exc_msg_%1, exc_msg_len_%1, 0x07, 0, 0
     call matar_tarea_actual
+    mov eax, %1
+    push eax
+    call anota_causa_de_muerte
+    pop eax
     mov byte [flag_idle], 0x1
 
     call sched_proximo_indice
@@ -325,11 +336,17 @@ _isr82:
 
 .llamaMover:
     push ebx
-    xor eax, eax
-    mov al, [indice_actual]
-    push eax
+    xor edi, edi
+    mov dl, [indice_actual]
+    push edi
     call game_mover
-    pop eax
+    
+    ;;;;;;;;;;;;;;;;;;;; aca hay un valor de retorno, no te olvides ;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+    pop edi
+
+    mov [retorno_mover_array + edi * SIZEOF_INT], eax
+
     pop ebx
     jmp .fin
 
@@ -374,7 +391,13 @@ _isr82:
     jmp 0x78:0 ; selector tss_next_1
     ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 .fin_final:
+    xor edi, edi
+    mov dl, [indice_actual]
+
+    mov eax, [retorno_mover_array + edi*SIZEOF_INT]
+    mov [retorno_mover_final], eax
     popad
+    mov eax, [retorno_mover_final]
     iret
 
 

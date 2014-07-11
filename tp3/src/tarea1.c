@@ -15,39 +15,10 @@ void task() {
     /* Tarea 1 */
   char debug[40] = "entrando tarea uno";
   IMPRIMIR(debug)
-// while(1) { __asm __volatile("mov $1, %%eax":::"eax"); }
+ //while(1) { __asm __volatile("mov $1, %%eax":::"eax"); }
 
-#ifdef NOCORRE1
-while(1) { __asm __volatile("mov $1, %%eax":::"eax"); }
-#endif
-
-  syscall_mover(N);
-  syscall_mover(N);
-  syscall_mover(N);
-  syscall_mover(N);
-  syscall_mover(N);
-  syscall_mover(N);
-  syscall_mover(N);
-  syscall_mover(N);
-  syscall_mover(N);
-  syscall_mover(N);
-  syscall_mover(N);
-  syscall_mover(N);
-  syscall_mover(N);
-  syscall_mover(N);
-  syscall_mover(N);
-  syscall_mover(N);
-  syscall_mover(N);
-  syscall_mover(N);
-  syscall_mover(N);
-  syscall_mover(N);
-  syscall_mover(N);
-  syscall_mover(N);
-  syscall_mover(N);
-  syscall_mover(N);
-  syscall_mover(N);
-  syscall_mover(N);
-  syscall_mover(N);
+  //unsigned int ultima_mapeada = syscall_mover(N);
+  //BD(" lo que devuelve syscall_mover: ") BDPOINTER(ultima_mapeada) BDENTER()
 
   char aa[512];
   syscall_misil(2, 2, (unsigned long)aa, 512);

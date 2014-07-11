@@ -23,6 +23,13 @@ void matar_tarea_actual()
 
 unsigned long sched_proximo_indice()
 {
+    //int y = 0;
+    //while (y < 8) {
+    //    unsigned char causa = causa_de_muerte[y];
+    //    BD(" causa ") BDPOINTER(causa) BDENTER()
+    //    y++;
+    //}
+
   // Si la activa es la idle, no cambio de tarea
   if(flag_pause==1 && tss_actual == GDT_TASK1_DESCRIPTOR && tarea_actual[0] == TAREA_ACTUAL_IDLE)
   {

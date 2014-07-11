@@ -10,9 +10,12 @@
 #include "defines.h"
 #include "screen.h"
 #include "mmu.h"
+#include "sched.h"
 
 #define GAME_MAP_FIRST_ADDRESS 0x400000
 #define GAME_MAP_LAST_ADDRESS 0xDC3FFF
+#define MUERTE_POR_MINA 100
+#define VIVITO_Y_COLEANDO 101
 
 typedef enum direccion_e { NE = 12, N  = 11, NO = 14,
                            E  = 22, C  = 0,  O  = 44,
@@ -45,10 +48,13 @@ void mapear_a_tarea(EstadoCasilla*, int);
 extern unsigned int siguiente_a_mapear[];
 extern EstadoCasilla map_state[];
 extern unsigned int posiciones[];
+extern unsigned char causa_de_muerte[];
 
 void game_inicializar();
 
 void marcar_pos_inicial();
+
+void anota_causa_de_muerte(unsigned int);
 
 unsigned int game_mover(unsigned int id, direccion d);
 
