@@ -17,6 +17,16 @@ unsigned char tareas_muertas[8] = {0,0,0,0,0,0,0,0};
 
 unsigned long sched_proximo_indice()
 {
+  // Si la activa es la idle, no cambio de tarea
+  if(flag_pause==1 && tss_actual == GDT_TASK1_DESCRIPTOR && tarea_actual[0] == TAREA_ACTUAL_IDLE)
+  {
+    return NO_TASK_SWITCH;
+  }
+  if(flag_pause==1 && tss_actual == GDT_TASK2_DESCRIPTOR && tarea_actual[1] == TAREA_ACTUAL_IDLE)
+  {
+    return NO_TASK_SWITCH;
+  }
+
   if(flag_pause==1 || flag_idle==1)
   {
     BD("entrando en tarea idle")BDENTER()

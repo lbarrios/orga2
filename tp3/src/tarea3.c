@@ -14,6 +14,8 @@ void task() {
   char debug[40] = "entrando tarea tres\n";
   IMPRIMIR(debug)
 
+while(1) { __asm __volatile("mov $1, %%eax":::"eax"); }
+
   unsigned int i,j;
   while(1) {
       syscall_minar(N);

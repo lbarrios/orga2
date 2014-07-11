@@ -4,19 +4,30 @@
 ================================================================================
   definicion de funciones del scheduler
 */
-void print_tank_context( int tank )
-{
-    //int t = (tank<1 || tank>8) ? (1) : (tank);
-    
-    //tss contexto;
-    
-
-
-}
-
 #include "screen.h"
+
 #define SIZE_PIXEL 2 // size en bytes
 #define MAP_FIRST_PIXEL 0xB8000 // esperemos que asi sea
+
+#define GUARDA_CONTEXTO(reg) \
+  p = (pixel*) ((long)MAP_FIRST_PIXEL + (long)(i*80) + 51); \
+  p->ascii = i; \
+  p->color = i; \
+  i++;
+
+void print_tank_context( int tank )
+{
+    /*
+    int i = 0;
+    pixel* p;
+    //int t = (tank<0 || tank>8) ? (1) : (tank);
+    //tss& contexto = tss_tanques[t];
+    GUARDA_CONTEXTO(eax)
+    GUARDA_CONTEXTO(ebx)
+    GUARDA_CONTEXTO(ecx)
+    GUARDA_CONTEXTO(edx)
+    */
+}
 
 pixel colorea_pixel(EstadoCasilla s)
 {
