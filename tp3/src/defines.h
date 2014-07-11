@@ -132,7 +132,7 @@ BD(bochsdebugpointerchar)
  * TODAS las tareas
  */
 /** --------------------------------------------- **/
-//#define NO_CORREN_LAS_TAREAS 1
+// #define NO_CORREN_LAS_TAREAS
 /** --------------------------------------------- **/
 
 
@@ -152,7 +152,7 @@ BD(bochsdebugpointerchar)
 //#define NOCORRE5 1
 //#define NOCORRE6 1
 //#define NOCORRE7 1
-//#define NOCORRE8 1
+#define NOCORRE8 1
 /** --------------------------------------------- **/
 
 
@@ -161,17 +161,38 @@ BD(bochsdebugpointerchar)
  * NO TOCAR LO SIGUIENTE
  */
 #ifdef NO_CORREN_LAS_TAREAS
-#define NOCORRE1 1
-#define NOCORRE2 1
-#define NOCORRE3 1
-#define NOCORRE4 1
-#define NOCORRE5 1
-#define NOCORRE6 1
-#define NOCORRE7 1
-#define NOCORRE8 1
+    #ifndef NOCORRE1
+        #define NOCORRE1 1
+    #endif
+    #ifndef NOCORRE2
+        #define NOCORRE2 1
+    #endif
+    #ifndef NOCORRE3
+        #define NOCORRE3 1
+    #endif
+    #ifndef NOCORRE4
+        #define NOCORRE4 1
+    #endif
+    #ifndef NOCORRE5
+        #define NOCORRE5 1
+    #endif
+    #ifndef NOCORRE6
+        #define NOCORRE6 1
+    #endif
+    #ifndef NOCORRE7
+        #define NOCORRE7 1
+    #endif
+    #ifndef NOCORRE8
+        #define NOCORRE8 1
+    #endif
 #endif
 /** --------------------------------------------- **/
 
+#define TOKEN_CONCATENATE(a,b) a ## b
+#define TOKEN_CONCATENATE2(a,b) TOKEN_CONCATENATE(a, b)
+#define DEBUG(string) \
+char TOKEN_CONCATENATE2(debug, __LINE__ ) [sizeof(string)] = string; \
+IMPRIMIR( TOKEN_CONCATENATE2(debug, __LINE__ ) );
 
 #endif  /* !__DEFINES_H__ */
 

@@ -10,16 +10,13 @@
 #include "syscall.h"
 
 void task() {
-    /* Tarea 4 */
-  char debug[40] = "entrando tarea cuatro\n";
-  IMPRIMIR(debug)
-  //while(1) syscall_mover(O);
- while(1) { __asm __volatile("mov $1, %%eax":::"eax"); }
-
-#ifdef NOCORRE4
-while(1) { __asm __volatile("mov $1, %%eax":::"eax"); }
-#endif
-
+  /* No tocar */
+  DEBUG("entrando en tarea cuatro")
+  #ifdef NOCORRE4
+  DEBUG("la tarea 4 está congelada!!")
+  while(1) { __asm __volatile("mov $1, %%eax":::"eax"); }
+  #endif
+  /* Tarea 4 */
   unsigned int i,j;
   char aa[512];
   while(1) {
