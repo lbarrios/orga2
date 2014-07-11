@@ -118,4 +118,60 @@ BD(bochsdebugpointerchar)
 #define VAR(var) BD(" ")BD(#var)BD("=")BDP(var)BD(" ")
 
 #define IMPRIMIR(s) syscall_debug(s, sizeof(s));
+
+
+/*** MACROS PARA BLOQUEAR TAREAS ***/
+
+
+
+/** --------------------------------------------- **/
+/**
+ * Comentar / Descomentar
+ * la siguiente línea para
+ * permitir o bloquear
+ * TODAS las tareas
+ */
+/** --------------------------------------------- **/
+//#define NO_CORREN_LAS_TAREAS 1
+/** --------------------------------------------- **/
+
+
+
+/** --------------------------------------------- **/
+/**
+ * Comentar / Descomentar
+ * cada línea para
+ * permitir o bloquear
+ * individualmente
+ */
+/** --------------------------------------------- **/
+//#define NOCORRE1 1
+//#define NOCORRE2 1
+//#define NOCORRE3 1
+//#define NOCORRE4 1
+//#define NOCORRE5 1
+//#define NOCORRE6 1
+//#define NOCORRE7 1
+//#define NOCORRE8 1
+/** --------------------------------------------- **/
+
+
+/** --------------------------------------------- **/
+/**
+ * NO TOCAR LO SIGUIENTE
+ */
+#ifdef NO_CORREN_LAS_TAREAS
+#define NOCORRE1 1
+#define NOCORRE2 1
+#define NOCORRE3 1
+#define NOCORRE4 1
+#define NOCORRE5 1
+#define NOCORRE6 1
+#define NOCORRE7 1
+#define NOCORRE8 1
+#endif
+/** --------------------------------------------- **/
+
+
 #endif  /* !__DEFINES_H__ */
+

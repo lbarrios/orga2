@@ -16,6 +16,10 @@ void task() {
   char debug[40] = "entrando tarea uno";
   IMPRIMIR(debug)
 
+#ifdef NOCORRE1
+while(1) { __asm __volatile("mov $1, %%eax":::"eax"); }
+#endif
+
   syscall_mover(N);
   syscall_mover(N);
   syscall_mover(N);
