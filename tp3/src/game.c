@@ -24,9 +24,9 @@ void game_inicializar() {
 
     for (i = 0; i < SIZE_MAP; i++)
     {
-        BD(" map_state[i] ") BDPOINTER(&map_state[i]) BDENTER()
         map_state[i] = pasto;
     }
+    BD(" map_state[i] ") BDPOINTER(&map_state[i]) BDENTER()
 }
 
 unsigned int fisica_a_casillero(unsigned int fisica)

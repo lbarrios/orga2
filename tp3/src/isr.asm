@@ -142,7 +142,11 @@ _isr32:
     call sched_proximo_indice
     cmp ax, 1
     je .jmp_tss_1
-    
+    cmp ax, 2
+    je .jmp_tss_2
+    jmp .fin
+
+    .jmp_tss_2:
     jmp 0x80:0 ; Selector tss_next_2
     jmp .fin
 
@@ -173,6 +177,10 @@ _isr32:
 
 teclado_msg DB  "Se presiono la tecla: 0"
 teclado_len EQU $ - teclado_msg
+
+pause_msg DB  "La pausa está en: 0"
+pause_len EQU $ - pause_msg
+
 
 global _isr33
 _isr33:
@@ -252,8 +260,11 @@ _isr33:
         mov BYTE [teclado_msg + teclado_len - 1], 'P'
         imprimir_debug teclado_msg, teclado_len, 0, 0, 0
         mov dl, [flag_pause]
-        xor dl, dl
+        xor dl, 1
         mov [flag_pause], dl
+        MOV BYTE [pause_msg + pause_len -1], '0'
+        ADD BYTE [pause_msg + pause_len -1], dl
+        imprimir_debug pause_msg, pause_len, 0, 0, 0
         jmp .fin
 
     .fin:

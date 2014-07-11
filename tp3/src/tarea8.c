@@ -14,6 +14,8 @@ void task() {
   char debug[40] = "entrando tarea ocho\n";
   IMPRIMIR(debug)
 
+while(1) { __asm __volatile("mov $1, %%eax":::"eax"); }
+
   unsigned int i,j;
   direccion dir[4] = { N, E, S, O };
   int d = 0;
