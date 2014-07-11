@@ -9,6 +9,7 @@ extern flag_pause
 extern flag_idle
 extern indice_actual
 extern print_map
+extern matar_tarea_actual
 
 BITS 32
 
@@ -76,11 +77,27 @@ extern print_tank_context
 global _isr%1
 
 _isr%1:
-  xchg bx, bx
-  mov eax, %1
-  imprimir_debug exc_msg_%1, exc_msg_len_%1, 0x07, 0, 0
-  xchg bx, bx
-  iret
+    xchg bx, bx
+    cli
+    pushad
+    imprimir_debug exc_msg_%1, exc_msg_len_%1, 0x07, 0, 0
+    call matar_tarea_actual
+    mov byte [flag_idle], 0x1
+
+    call sched_proximo_indice
+    cmp ax, 1
+    je .jmp_tss_1
+    
+    jmp 0x80:0 ; Selector tss_next_2
+    jmp .fin_final
+
+    .jmp_tss_1:
+    jmp 0x78:0 ; selector tss_next_1
+    ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+.fin_final:
+    ;;;;;;;;;;;;este codigo no se deberia ejecutar jamas;;;;;;;;;;
+    popad
+    iret
 %endmacro
 
 ;;

@@ -24,6 +24,7 @@ void game_inicializar() {
 
     for (i = 0; i < SIZE_MAP; i++)
     {
+        //BD(" map_state[i] ") BDPOINTER(&map_state[i]) BDENTER()
         map_state[i] = pasto;
     }
     BD(" map_state[i] ") BDPOINTER(&map_state[i]) BDENTER()
@@ -141,7 +142,10 @@ unsigned int game_mover(unsigned int id, direccion d) {
             {
                 estado_nueva_pos->current_state = SUPERPUESTO;
                 estado_nueva_pos->tank_number = 0;
-                //mmu_mapear_pagina(args); // aunque ya sea de otro?
+                if (mapeado_a_tarea(estado_nueva_pos, id) == 0) {
+                    esta_casilla_es_mia(nueva_pos, id);
+                    mapear_a_tarea(estado_nueva_pos, id);
+                }
             }
             break;
 

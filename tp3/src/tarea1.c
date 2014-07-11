@@ -16,7 +16,33 @@ void task() {
   char debug[40] = "entrando tarea uno";
   IMPRIMIR(debug)
 
-while(1) { __asm __volatile("mov $1, %%eax":::"eax"); }
+  syscall_mover(N);
+  syscall_mover(N);
+  syscall_mover(N);
+  syscall_mover(N);
+  syscall_mover(N);
+  syscall_mover(N);
+  syscall_mover(N);
+  syscall_mover(N);
+  syscall_mover(N);
+  syscall_mover(N);
+  syscall_mover(N);
+  syscall_mover(N);
+  syscall_mover(N);
+  syscall_mover(N);
+  syscall_mover(N);
+  syscall_mover(N);
+  syscall_mover(N);
+  syscall_mover(N);
+  syscall_mover(N);
+  syscall_mover(N);
+  syscall_mover(N);
+  syscall_mover(N);
+  syscall_mover(N);
+  syscall_mover(N);
+  syscall_mover(N);
+  syscall_mover(N);
+  syscall_mover(N);
 
   char aa[512];
   syscall_misil(2, 2, (unsigned long)aa, 512);
