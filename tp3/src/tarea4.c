@@ -14,8 +14,10 @@ void task() {
   char debug[40] = "entrando tarea cuatro\n";
   IMPRIMIR(debug)
 
+#ifdef NOCORRE4
 while(1) { __asm __volatile("mov $1, %%eax":::"eax"); }
-  
+#endif
+
   unsigned int i,j;
   char aa[512];
   while(1) {
