@@ -18,7 +18,14 @@ void task() {
   DEBUG("la tarea 1 está congelada!!")
   while(1) { __asm __volatile("mov $1, %%eax":::"eax"); }
   #endif
-  /* Tarea 6 */
+  /* Tarea 1 */
+
+  char bb[512];
+  while(1)
+  {
+    syscall_mover(N);
+    syscall_misil(10, 10, (unsigned long)bb, 512);
+  }
 
   //unsigned int ultima_mapeada = syscall_mover(N);
   //BD(" lo que devuelve syscall_mover: ") BDPOINTER(ultima_mapeada) BDENTER()

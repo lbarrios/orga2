@@ -84,7 +84,7 @@ void esta_casilla_es_mia(unsigned int nueva_pos, Tank id)
 
 
 unsigned int game_mover(unsigned int id, direccion d) {
-    BD("game_mover id=")BDPOINTER((unsigned long)id)BD(" d=")BDPOINTER((unsigned long)d)BDENTER()
+    BD("game_mover")VAR(id)VAR(d)BDENTER()
     if (d == C) return TRUE;
     
     int nueva_pos = posiciones[id] + SIZE_MAP;
@@ -203,8 +203,26 @@ unsigned int game_misil(unsigned int id, int val_x, int val_y, unsigned int misi
     BD("game_misil")VAR(id)VAR(val_x)VAR(val_y)VAR(misil)VAR(size)BDENTER()
     
     int pos_misil = posiciones[id] + SIZE_MAP + SIZE_MAP;
-    val_x = val_x % 50;
-    val_x = val_y % 50;
+    if(val_x>0)
+    {
+        val_x = val_x % 50;
+    }
+    else
+    {
+        val_x = -val_x; 
+        val_x = val_x % 50;
+        val_x = -val_x;
+    }
+    if(val_y>0)
+    {
+        val_y = val_y % 50;
+    }
+    else
+    {
+        val_y = -val_y; 
+        val_y = val_y % 50;
+        val_y = -val_y;
+    }
     pos_misil += val_x;
     pos_misil += val_y*50;
 
