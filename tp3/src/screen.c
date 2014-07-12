@@ -9,14 +9,40 @@
 #define SIZE_PIXEL 2 // size en bytes
 #define MAP_FIRST_PIXEL 0xB8000 // esperemos que asi sea
 #define BASE_CLOCKS_TAREAS (MAP_FIRST_PIXEL + 48*160 + 54*2)
+#define BASE_CONTEXTO (MAP_FIRST_PIXEL+(2*(5*80))+(50*2)+(2*2))
 
-#define GUARDA_CONTEXTO(reg) \
-  p = (pixel*) ((long)MAP_FIRST_PIXEL + (long)(i*80) + 51); \
-  p->ascii = i; \
-  p->color = i; \
-  i++;
+//p->color = COLOR_PISADO;
+//buffer[j]=(reg_txt)[j];
+#define GUARDA_CONTEXTO2(reg,reg_txt) \
+BD("Escribiendo contexto: ")BD(reg_txt)BDENTER() \
+for(j=0;j<sizeof(reg_txt);j++){ \
+  p = ((pixel*)BASE_CONTEXTO) + (i*80) + j; \
+  p->ascii = (reg_txt)[j]; \
+  p->color = COLOR_PISADO; \
+  BD("Escribiendo en pantalla: ")VAR(i)VAR(j)VAR(p)VAR(p->ascii)BDENTER() \
+} \
+i++;
+
+#define GUARDA_CONTEXTO(reg) GUARDA_CONTEXTO2( reg, #reg )
+
 
 unsigned char clocks_tanques[CANT_TANQUES];
+
+void print_tank_context( int tank )
+{
+    //int t = (tank<0 || tank>8) ? (1) : (tank);
+    //tss& contexto = tss_tanques[t];
+    //char buffer[50];
+    int i=0, j;
+    pixel* p;
+
+    GUARDA_CONTEXTO(eax)
+    GUARDA_CONTEXTO(ebx)
+    GUARDA_CONTEXTO(ecx)
+    GUARDA_CONTEXTO(edx)
+    /*
+    */
+}
 
 void avanzar_clock_tarea(unsigned char t)
 {
@@ -26,21 +52,6 @@ void avanzar_clock_tarea(unsigned char t)
     else if (c == '|') c = '/';
     else c = '-';
     clocks_tanques[t] = c;
-}
-
-void print_tank_context( int tank )
-{
-
-    /*
-    int i = 0;
-    pixel* p;
-    //int t = (tank<0 || tank>8) ? (1) : (tank);
-    //tss& contexto = tss_tanques[t];
-    GUARDA_CONTEXTO(eax)
-    GUARDA_CONTEXTO(ebx)
-    GUARDA_CONTEXTO(ecx)
-    GUARDA_CONTEXTO(edx)
-    */
 }
 
 pixel colorea_pixel(EstadoCasilla s)

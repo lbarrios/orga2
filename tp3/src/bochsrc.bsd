@@ -407,6 +407,7 @@ log: bochs.log
 #   logprefix: %i%e%d
 #=======================================================================
 #logprefix: %t%e%d
+logprefix: %e-@%i-%d
 
 #=======================================================================
 # LOG CONTROLS
@@ -445,8 +446,8 @@ debug: action=ignore
 #   debugger_log: ./debugger.out
 #=======================================================================
 #debugger_log: /dev/null
-#debugger_log: debugger.out
-debugger_log: -
+debugger_log: debugger.out
+#debugger_log: -
 
 #=======================================================================
 # COM1, COM2, COM3, COM4:
