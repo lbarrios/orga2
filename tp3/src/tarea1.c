@@ -9,8 +9,6 @@
 #include "game.h"
 #include "syscall.h" 
 
-void pisar(unsigned int m);
-
 void task() {
   /* No tocar */
   DEBUG("entrando en tarea uno")
@@ -19,60 +17,64 @@ void task() {
   while(1) { __asm __volatile("mov $1, %%eax":::"eax"); }
   #endif
   /* Tarea 1 */
+  // este es el codigo que vamos a mandar para la batalla
+  // vamos a hacer una doble muralla de minas y luego tirar misiles
+  // notar que la muralla se hace en forma de espiral, cubriendose a si misma
+  // llenamos espacio al principio para que no nos puedan matar con misiles de tamaño menor o igual a 1024
+  char defensa[1024]; // este numero hay que tunearlo bien
+  defensa[0] = defensa[0]; // para que no tire warning
 
-  // esta es buena tactica
-  //while(1)
-  //{
-  //  syscall_mover(NE);
-  //  syscall_minar(E);
-  //}
+  syscall_mover(N);
+  syscall_mover(O);
+  syscall_mover(O);
 
-  //unsigned int ultima_mapeada = syscall_mover(N);
-  //BD(" lo que devuelve syscall_mover: ") BDPOINTER(ultima_mapeada) BDENTER()
+  syscall_minar(N);
+  syscall_mover(E);
+  syscall_minar(N);
+  syscall_mover(E);
+  syscall_minar(N);
+  syscall_mover(E);
+  syscall_minar(N);
+  syscall_minar(NE);
 
-  char aa[512];
-  syscall_misil(2, 2, (unsigned long)aa, 512);
-  syscall_misil(3, 3, (unsigned long)aa, 512);
-  syscall_misil(4, 4, (unsigned long)aa, 512);
-  syscall_misil(5, 5, (unsigned long)aa, 512);
-  syscall_misil(6, 6, (unsigned long)aa, 512);
-  syscall_misil(7, 7, (unsigned long)aa, 512);
-  syscall_misil(8, 8, (unsigned long)aa, 512);
-  syscall_misil(9, 9, (unsigned long)aa, 512);
+  syscall_minar(E);
+  syscall_mover(S);
+  syscall_minar(E);
+  syscall_mover(S);
+  syscall_minar(E);
+  syscall_minar(SE);
 
-  syscall_misil( -1,  -1, (unsigned long)aa, 512);
-  syscall_misil(-10, -10, (unsigned long)aa, 512);
-  syscall_misil( 10, -10, (unsigned long)aa, 512);
-  syscall_misil(-10,  10, (unsigned long)aa, 512);
-  syscall_misil( -8,  -8, (unsigned long)aa, 512);
-  syscall_misil(  8,   8, (unsigned long)aa, 512);
-  syscall_misil(  8,  -8, (unsigned long)aa, 512);
-  syscall_misil( -8,   8, (unsigned long)aa, 512);
+  syscall_minar(S);
+  syscall_mover(O);
+  syscall_minar(S);
+  syscall_mover(O);
+  syscall_minar(S);
+  syscall_minar(SO);
 
-  unsigned int i;
-  for(i=0;i<10;i++) {
-    unsigned int mapn = syscall_mover(N);
-    pisar(mapn-0x1000+1);
-    unsigned int mapo = syscall_mover(O);
-    pisar(mapo-0x1000+1);
-  }
+  syscall_minar(O);
+  syscall_mover(N);
+  syscall_minar(O);
+  syscall_minar(NO);
 
-  unsigned int maps = syscall_mover(S);
-  pisar(maps-0x1000+1);
+  syscall_mover(E);
+  
+  syscall_minar(NO);
+  syscall_minar(N);
+  syscall_minar(NE);
+  syscall_minar(O);
+  syscall_minar(E);
+  syscall_minar(SO);
+  syscall_minar(S);
+  syscall_minar(SE);
 
-  for(i=0;i<100;i++) {
-    unsigned int mapno = syscall_mover(NO);
-    pisar(mapno-0x1000+1);
-  }
-
-  while(1) { __asm __volatile("mov $1, %%eax":::"eax"); }
-}
-
-
-void pisar(unsigned int m) {
-  unsigned int i;
-  char* p = (char*)(long)m;
-  for(i=0;i<PAGE_SIZE;i++) {
-    p[i]=0xcd;
+  int x;
+  int y;
+  for (x = -25; x < 25; x++)
+  {
+      for (y = -25; y < 25; y++)
+      {
+         if (x >= -2 && x <= 2 && y >= -2 && y <= 2) continue;
+         syscall_misil(x, y, (unsigned long)0x8001000, 0x1000); // todo mi stack
+      }
   }
 }
