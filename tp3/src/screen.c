@@ -18,7 +18,17 @@ BD("Escribiendo contexto: ")BD(reg_txt)BDENTER() \
 for(j=0;j<sizeof(reg_txt);j++){ \
   p = ((pixel*)BASE_CONTEXTO) + (i*80) + j; \
   p->ascii = (reg_txt)[j]; \
-  p->color = COLOR_PISADO; \
+  BD("Escribiendo en pantalla: ")VAR(i)VAR(j)VAR(p)VAR(p->ascii)BDENTER() \
+} \
+p = ((pixel*)BASE_CONTEXTO) + (i*80) + j; \
+p->ascii = '0'; \
+j++; \
+p = ((pixel*)BASE_CONTEXTO) + (i*80) + j; \
+p->ascii = 'x'; \
+j++; \
+for(k=j;k<j+8;k++){ \
+  p = ((pixel*)BASE_CONTEXTO) + (i*80) + k; \
+  p->ascii = '0' + ( ( ( contexto -> reg ) << (4*(k-j)) ) >> 28 ); \
   BD("Escribiendo en pantalla: ")VAR(i)VAR(j)VAR(p)VAR(p->ascii)BDENTER() \
 } \
 i++;
@@ -28,18 +38,21 @@ i++;
 
 unsigned char clocks_tanques[CANT_TANQUES];
 
-void print_tank_context( int tank )
+void print_tank_context( char tank )
 {
-    //int t = (tank<0 || tank>8) ? (1) : (tank);
-    //tss& contexto = tss_tanques[t];
+		BD("Escribiendo contexto de: ")VAR(tank)BDENTER()
+    int t = (tank<0 || tank>7) ? (0) : (tank);
+    tss *contexto = &(tss_tanques[t]);
     //char buffer[50];
-    int i=0, j;
+    int i=0, j, k;
     pixel* p;
 
     GUARDA_CONTEXTO(eax)
     GUARDA_CONTEXTO(ebx)
-    GUARDA_CONTEXTO(ecx)
-    GUARDA_CONTEXTO(edx)
+    //GUARDA_CONTEXTO(ecx)
+    //GUARDA_CONTEXTO(edx)
+    //GUARDA_CONTEXTO(eip)
+    GUARDA_CONTEXTO(cr3)
     /*
     */
 }
@@ -146,7 +159,8 @@ void pintar_fondos()
         for (j = 52; j < 80; j++)
         {
             pixel *pixel_actual = ((pixel*)MAP_FIRST_PIXEL) + 80*i + j;
-            pixel_actual->color = COLOR_FONDO_GRIS;
+            //pixel_actual->color = COLOR_FONDO_GRIS;
+            pixel_actual->color = COLOR_PISADO;
             pixel_actual->ascii = 0;
         }
     }

@@ -240,49 +240,65 @@ _isr33:
         mov BYTE [teclado_msg + teclado_len - 1], '1'
         imprimir_debug teclado_msg, teclado_len, 0, 0, 0
         mov edi, 1
+        push edi
         call print_tank_context
+        pop edi
         jmp .fin
     .key_2:
         mov BYTE [teclado_msg + teclado_len - 1], '2'
         imprimir_debug teclado_msg, teclado_len, 0, 0, 0
         mov edi, 2
+        push edi
         call print_tank_context
+        pop edi
         jmp .fin
     .key_3:
         mov BYTE [teclado_msg + teclado_len - 1], '3'
         imprimir_debug teclado_msg, teclado_len, 0, 0, 0
         mov edi, 3
+        push edi
         call print_tank_context
+        pop edi
         jmp .fin
     .key_4:
         mov BYTE [teclado_msg + teclado_len - 1], '4'
         imprimir_debug teclado_msg, teclado_len, 0, 0, 0
         mov edi, 4
+        push edi
         call print_tank_context
+        pop edi
         jmp .fin
     .key_5:
         mov BYTE [teclado_msg + teclado_len - 1], '5'
         imprimir_debug teclado_msg, teclado_len, 0, 0, 0
         mov edi, 5
+        push edi
         call print_tank_context
+        pop edi
         jmp .fin
     .key_6:
         mov BYTE [teclado_msg + teclado_len - 1], '6'
         imprimir_debug teclado_msg, teclado_len, 0, 0, 0
         mov edi, 6
+        push edi
         call print_tank_context
+        pop edi
         jmp .fin
     .key_7:
         mov BYTE [teclado_msg + teclado_len - 1], '7'
         imprimir_debug teclado_msg, teclado_len, 0, 0, 0
         mov edi, 7
+        push edi
         call print_tank_context
+        pop edi
         jmp .fin
     .key_8:
         mov BYTE [teclado_msg + teclado_len - 1], '8'
         imprimir_debug teclado_msg, teclado_len, 0, 0, 0
         mov edi, 8
+        push edi
         call print_tank_context
+        pop edi
         jmp .fin
     .key_P:
         mov BYTE [teclado_msg + teclado_len - 1], 'P'
