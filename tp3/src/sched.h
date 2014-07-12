@@ -15,6 +15,8 @@ unsigned long sched_proximo_indice();
 void matar_tarea_actual();
 unsigned char indice_actual;
 
+extern unsigned char tareas_muertas[];
+
 #define TASK1_NEXT 1
 #define TASK2_NEXT 2
 #define NO_TASK_SWITCH 0

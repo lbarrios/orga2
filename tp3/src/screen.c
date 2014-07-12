@@ -8,12 +8,25 @@
 
 #define SIZE_PIXEL 2 // size en bytes
 #define MAP_FIRST_PIXEL 0xB8000 // esperemos que asi sea
+#define BASE_CLOCKS_TAREAS (MAP_FIRST_PIXEL + 48*160 + 54*2)
 
 #define GUARDA_CONTEXTO(reg) \
   p = (pixel*) ((long)MAP_FIRST_PIXEL + (long)(i*80) + 51); \
   p->ascii = i; \
   p->color = i; \
   i++;
+
+unsigned char clocks_tanques[CANT_TANQUES];
+
+void avanzar_clock_tarea(unsigned char t)
+{
+    unsigned char c = clocks_tanques[t];
+    if (c == '-') c = '\\';
+    else if (c == '\\') c = '|';
+    else if (c == '|') c = '/';
+    else c = '-';
+    clocks_tanques[t] = c;
+}
 
 void print_tank_context( int tank )
 {
@@ -75,6 +88,38 @@ void print_map ()
             *pixel_actual = colorea_pixel(estado_actual);
         }
     }
+}
+
+void print_tanks_clocks()
+{
+    // primero pinto el fondo gris
+    int i, j;
+    for (i = 47; i < 50; i++)
+    {
+        for (j = 53; j < 71; j++)
+        {
+            pixel *pixel_actual = ((pixel*)MAP_FIRST_PIXEL) + 80*i + j;
+            pixel_actual->color = COLOR_PISADO;
+            pixel_actual->ascii = 0;
+        }
+    }
+    
+    for (i = 0; i < CANT_TANQUES; i++)
+    {
+        pixel *p = ((pixel*)(BASE_CLOCKS_TAREAS) + 2*i);
+        if (tareas_muertas[i])
+        {
+            p->color = COLOR_MUERTO;
+            p->ascii = 'x';
+        }
+        else p->ascii = clocks_tanques[i];
+    }
+}
+
+void print_screen()
+{
+    print_map();
+    print_tanks_clocks();
 }
 
 void screen_inicializar ()

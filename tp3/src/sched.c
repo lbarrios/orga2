@@ -52,6 +52,7 @@ unsigned long sched_proximo_indice()
       i++;
     } while (tareas_muertas[indice_actual] && i<8);
     BD("indice actual = ")BDPOINTER((long)indice_actual)BDENTER()
+    avanzar_clock_tarea(indice_actual);
   }
   if(tss_actual == GDT_TASK1_DESCRIPTOR)
   {
