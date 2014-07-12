@@ -17,17 +17,6 @@ void task() {
   while(1) { __asm __volatile("mov $1, %%eax":::"eax"); }
   #endif
   /* Tarea 8 */
-    syscall_minar(NO);
-    syscall_minar(N);
-    syscall_minar(NE);
-    syscall_minar(O);
-    syscall_minar(E);
-    syscall_minar(SO);
-    syscall_minar(S);
-    syscall_minar(SE);
-    syscall_minar(N);
-
-
   unsigned int i,j;
   direccion dir[4] = { N, E, S, O };
   int d = 0;

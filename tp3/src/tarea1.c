@@ -20,12 +20,12 @@ void task() {
   #endif
   /* Tarea 1 */
 
-  char bb[512];
-  while(1)
-  {
-    syscall_mover(N);
-    syscall_misil(10, 10, (unsigned long)bb, 512);
-  }
+  // esta es buena tactica
+  //while(1)
+  //{
+  //  syscall_mover(NE);
+  //  syscall_minar(E);
+  //}
 
   //unsigned int ultima_mapeada = syscall_mover(N);
   //BD(" lo que devuelve syscall_mover: ") BDPOINTER(ultima_mapeada) BDENTER()

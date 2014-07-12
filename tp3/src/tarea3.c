@@ -17,17 +17,6 @@ void task() {
   while(1) { __asm __volatile("mov $1, %%eax":::"eax"); }
   #endif
   /* Tarea 3 */
-
-    int z = 0;
-  while(z < 15)
-  {
-      syscall_mover(NE);
-      z++;
-  }
-  z = 0;
-  int b = 5;
-  z = b / z;
-
   unsigned int i,j;
   while(1) {
       syscall_minar(N);
