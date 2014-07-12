@@ -30,6 +30,7 @@ void avanzar_clock_tarea(unsigned char t)
 
 void print_tank_context( int tank )
 {
+
     /*
     int i = 0;
     pixel* p;
@@ -92,18 +93,7 @@ void print_map ()
 
 void print_tanks_clocks()
 {
-    // primero pinto el fondo gris
-    int i, j;
-    for (i = 47; i < 50; i++)
-    {
-        for (j = 53; j < 71; j++)
-        {
-            pixel *pixel_actual = ((pixel*)MAP_FIRST_PIXEL) + 80*i + j;
-            pixel_actual->color = COLOR_PISADO;
-            pixel_actual->ascii = 0;
-        }
-    }
-    
+    int i;
     for (i = 0; i < CANT_TANQUES; i++)
     {
         pixel *p = ((pixel*)(BASE_CLOCKS_TAREAS) + 2*i);
@@ -116,6 +106,53 @@ void print_tanks_clocks()
     }
 }
 
+void pintar_fondos()
+{
+    //pinto el fondo de los relojes de las tareas
+    int i, j;
+    for (i = 47; i < 50; i++)
+    {
+        for (j = 53; j < 70; j++)
+        {
+            pixel *pixel_actual = ((pixel*)MAP_FIRST_PIXEL) + 80*i + j;
+            pixel_actual->color = COLOR_PISADO;
+            pixel_actual->ascii = 0;
+        }
+    }
+    
+    // pinto el fondo del titulo
+    i = 4;
+    for (j = 52; j < 80; j++)
+    {
+        pixel *pixel_actual = ((pixel*)MAP_FIRST_PIXEL) + 80*i + j;
+        pixel_actual->color = COLOR_MUERTO;
+        pixel_actual->ascii = 0;
+    }
+
+    // pinto el fondo gris
+    for (i = 5; i < 38; i++)
+    {
+        for (j = 52; j < 80; j++)
+        {
+            pixel *pixel_actual = ((pixel*)MAP_FIRST_PIXEL) + 80*i + j;
+            pixel_actual->color = COLOR_FONDO_GRIS;
+            pixel_actual->ascii = 0;
+        }
+    }
+    
+    // pinto el fondo de la causa de muerte
+    for (i = 39; i < 42; i++)
+    {
+        for (j = 52; j < 80; j++)
+        {
+            pixel *pixel_actual = ((pixel*)MAP_FIRST_PIXEL) + 80*i + j;
+            pixel_actual->color = COLOR_MUERTO;
+            pixel_actual->ascii = 0;
+        }
+    }
+    
+}
+
 void print_screen()
 {
     print_map();
@@ -125,6 +162,7 @@ void print_screen()
 void screen_inicializar ()
 {
     print_map();
+    pintar_fondos();
 }
 /*
 void screen_proximo_reloj ()
