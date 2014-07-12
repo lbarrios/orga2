@@ -17,15 +17,15 @@ void task() {
   while(1) { __asm __volatile("mov $1, %%eax":::"eax"); }
   #endif
   /* Tarea 8 */
-    syscall_mover(N);
-    syscall_mover(E);
-    syscall_mover(S);
-    syscall_mover(SO);
-    syscall_mover(E);
-    syscall_mover(N);
-    syscall_mover(E);
-    syscall_mover(N);
-    syscall_mover(N);
+    syscall_minar(NO);
+    syscall_minar(N);
+    syscall_minar(NE);
+    syscall_minar(O);
+    syscall_minar(E);
+    syscall_minar(SO);
+    syscall_minar(S);
+    syscall_minar(SE);
+    syscall_minar(N);
 
 
   unsigned int i,j;
