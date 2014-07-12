@@ -7,7 +7,6 @@ pantalla qué problema se produjo e interrumpir la ejecución. Posteriormente se
 modificarán estas rutinas para que se continúe la ejecución, resolviendo el
 problema y desalojando a la tarea que lo produjo.
 \hruler
-\fixme{Respuesta}
 
 La IDT - $Interrupt$ $Descriptor$ $Table$ - es una tabla de descriptores de manejadores de interrupción. Cada entrada describe la atención de
 un tipo de interrupción en particular. Tiene la siguiente forma:
@@ -18,18 +17,20 @@ un tipo de interrupción en particular. Tiene la siguiente forma:
 \end{center}
 \end{figure}
 
-\fixme{decidir si lo que queremos es int, trap, gate}
+Nosotros vamos a usar descriptores del tipo $Interrupt gate$.
 
 En éste ejercicio vamos a ocuparnos de las excepciones del procesador, cuyo tipo va entre 0 y 19.
-Para cada una nuestra rutina de atención será imprimir los detalles de la excepción, según el manual de Intel. \fixme{y autodestruirse?}
+Para cada una nuestra rutina de atención será imprimir los detalles de la excepción, según el manual de Intel. Más adelante vamos a tener que
+desalojar a la tarea donde se produce la excepción, y además guardar los detalles de la excepción para poder mostrarla en pantalla cuando
+el usuario presiona las teclas de 1 a 8.
 Con tal propósito llenamos las entradas de la IDT de la siguiente forma.
 
 \begin{itemize}
     \item segment-selector = 0x40 (de código de nivel 0)
     \item offset = la dirección donde escribimos la rutina de tal excepción
     \item p = 1 (presente)
-    \item dpl = 0 (nivel administrador)
-    \item d = \fixme{?}
+    \item dpl = 0 (nivel administrador) \fixme{solo puede llamarlas m?, o es que las llama el procesador}
+    \item d = 1 (32 bits)
 \end{itemize}
 
 % Ejercicio 2 - b)
@@ -41,4 +42,6 @@ Nota: La IDT es un arreglo de idt entry declarado solo una vez como idt. El
 descriptor de la IDT en el código se llama IDT DESC. Para inicializar la IDT se
 debe invocar la función idt inicializar.
 \hruler
-\fixme{la que hiciste vos Eze}
+Debemos cargar el descriptor de nuestra IDT, llamado IDT\_DESC, con la instrucción especial $lidt$. 
+
+Una excepción interesante que utilizamos fue dividir por cero, que hizo saltar la excepción número 0.
