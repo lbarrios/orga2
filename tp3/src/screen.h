@@ -11,13 +11,12 @@
 #include "colors.h"
 #include "game.h"
 
-
+void avanzar_clock_tarea(unsigned char);
 
 typedef struct pixel_s {
     unsigned char ascii;
     unsigned char color;
 } __attribute__((__packed__)) pixel;
-
 
 /* Definicion de la pantalla */
 #define VIDEO_FILS 50

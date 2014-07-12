@@ -39,4 +39,5 @@
 #define COLOR_MISIL (C_FG_RED + C_BG_CYAN)
 #define COLOR_MUERTO (C_FG_WHITE + C_BG_RED)
 
+#define COLOR_FONDO_GRIS (C_FG_LIGHT_GREY + C_BG_LIGHT_GREY)
 #endif /* !__COLORS_H__ */
