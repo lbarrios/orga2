@@ -138,7 +138,6 @@ void mmu_inicializar_dir_tarea (unsigned int tarea)
   unsigned long page_offset = 0;
   unsigned long dir_entry_offset = 0;
   unsigned long table_entry_offset = 0;
-  // adonde ponemos que es de nivel 0 este mapeo? como dice el enunciado, no lo entiendo...
   while ( page_offset < IDENTITY_MAPPING_LAST_BYTE)// 0xDC3FFF
   {
     dir_entry_offset = (page_offset>>22);
