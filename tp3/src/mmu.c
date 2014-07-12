@@ -8,10 +8,14 @@
 #include "mmu.h"
 
 
+int seed;
 void mmu_inicializar()
 {
 	BOCHSDEBUG("Iniciando MMU...")
+  // Obtengo el time stamp counter
+  seed = time();
   unsigned int tanque;
+  tanque = frand(&seed);
   // Apunto la struct mmu a la dirección de la constante MMU_ADDR
   mmu_t* mmu = (mmu_t*) MMU_ADDRESS;
   // Seteo la base de páginas libres a la constante FREE_PAGES_BASE
@@ -161,8 +165,6 @@ void mmu_inicializar_dir_tarea (unsigned int tarea)
   // 
   //Obtengo las dos páginas físicas de código de la tarea usando un randomizador
   //
-  // Obtengo el time stamp counter
-  int seed = time();
   // Dirección base del mapa
   unsigned long base_addr = GAME_MAP_FIRST_ADDRESS;
   // 

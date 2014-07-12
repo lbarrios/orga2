@@ -13,12 +13,18 @@
 
 //p->color = COLOR_PISADO;
 //buffer[j]=(reg_txt)[j];
+//BD("Escribiendo en pantalla: ")VAR(i)VAR(j)VAR(p)VAR(p->ascii)BDENTER()
+//BD("Escribiendo en pantalla: ")VAR(i)VAR(j)VAR(p)VAR(p->ascii)BDENTER()
+//BD("Escribiendo contexto: ")BD(reg_txt)BDENTER()
+
+#define ADDLINE2(a,b) a ## b
+#define ADDLINE(a) TOKEN_CONCATENATE2(a, __LINE__)
+
 #define GUARDA_CONTEXTO2(reg,reg_txt) \
-BD("Escribiendo contexto: ")BD(reg_txt)BDENTER() \
+char ADDLINE(buffer) [] = reg_txt; \
 for(j=0;j<sizeof(reg_txt);j++){ \
   p = ((pixel*)BASE_CONTEXTO) + (i*80) + j; \
-  p->ascii = (reg_txt)[j]; \
-  BD("Escribiendo en pantalla: ")VAR(i)VAR(j)VAR(p)VAR(p->ascii)BDENTER() \
+  p->ascii = ADDLINE(buffer) [j]; \
 } \
 p = ((pixel*)BASE_CONTEXTO) + (i*80) + j; \
 p->ascii = '0'; \
@@ -29,7 +35,7 @@ j++; \
 for(k=j;k<j+8;k++){ \
   p = ((pixel*)BASE_CONTEXTO) + (i*80) + k; \
   p->ascii = '0' + ( ( ( contexto -> reg ) << (4*(k-j)) ) >> 28 ); \
-  BD("Escribiendo en pantalla: ")VAR(i)VAR(j)VAR(p)VAR(p->ascii)BDENTER() \
+  if(p->ascii>'9'){ p->ascii = p->ascii + 'A' - ('0' + 10); } \
 } \
 i++;
 
@@ -43,15 +49,15 @@ void print_tank_context( char tank )
 		BD("Escribiendo contexto de: ")VAR(tank)BDENTER()
     int t = (tank<0 || tank>7) ? (0) : (tank);
     tss *contexto = &(tss_tanques[t]);
-    //char buffer[50];
+//    unsigned char* buffer;
     int i=0, j, k;
     pixel* p;
 
     GUARDA_CONTEXTO(eax)
     GUARDA_CONTEXTO(ebx)
-    //GUARDA_CONTEXTO(ecx)
-    //GUARDA_CONTEXTO(edx)
-    //GUARDA_CONTEXTO(eip)
+    GUARDA_CONTEXTO(ecx)
+    GUARDA_CONTEXTO(edx)
+    GUARDA_CONTEXTO(eip)
     GUARDA_CONTEXTO(cr3)
     /*
     */
