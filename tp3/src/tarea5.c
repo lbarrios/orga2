@@ -17,7 +17,6 @@ void task() {
   while(1) { __asm __volatile("mov $1, %%eax":::"eax"); }
   #endif
   /* Tarea 5 */
-
   unsigned int i,j;
   direccion dir[4] = { N, E, S, O };
   int d = 0;

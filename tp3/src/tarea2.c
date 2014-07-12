@@ -17,15 +17,9 @@ void task() {
   while(1) { __asm __volatile("mov $1, %%eax":::"eax"); }
   #endif
 
-  syscall_mover(E);
-  syscall_mover(E);
-  syscall_mover(E);
-  syscall_mover(E);
-  syscall_mover(E);
-  int a = 0;
-  int b = 1000;
-  int c = b/a;
-  c++;
+  //unsigned int tope = syscall_mover(E);
+  //if (tope == 0x8004000)
+  //  breakpoint();
 
   /* Tarea 2 */
   direccion dir[4] = { N, E, S, O };

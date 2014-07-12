@@ -145,13 +145,13 @@ BD(bochsdebugpointerchar)
  * individualmente
  */
 /** --------------------------------------------- **/
-#define NOCORRE1 1
-#define NOCORRE2 1
-#define NOCORRE3 1
-#define NOCORRE4 1
-#define NOCORRE5 1
-#define NOCORRE6 1
-#define NOCORRE7 1
+//#define NOCORRE1 1
+//#define NOCORRE2 1
+//#define NOCORRE3 1
+//#define NOCORRE4 1
+//#define NOCORRE5 1
+//#define NOCORRE6 1
+//#define NOCORRE7 1
 //#define NOCORRE8 1
 /** --------------------------------------------- **/
 
