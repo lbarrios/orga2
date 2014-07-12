@@ -9,7 +9,7 @@
 #include "mmu.h"
 
 
-unsigned int siguiente_a_mapear[CANT_TANQUES] = {0x8003000, 0x8003000, 0x8003000, 0x8003000, 0x8003000, 0x8003000, 0x8003000};
+unsigned int siguiente_a_mapear[CANT_TANQUES] = {0x8003000, 0x8003000, 0x8003000, 0x8003000, 0x8003000, 0x8003000, 0x8003000, 0x8003000};
 EstadoCasilla map_state[SIZE_MAP];
 unsigned int posiciones[CANT_TANQUES];
 // la idea de causa de muerte es:
