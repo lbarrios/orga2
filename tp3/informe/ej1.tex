@@ -41,7 +41,7 @@ Será un segmento de código $Execute-Only$.
         
     \item .s  = 1
         
-Código/Datos \fixme{explicar que significa esto}
+Sera un segmento de Código/Datos.
         
     \item .dpl = 0
         
@@ -49,7 +49,7 @@ Este segmento tendrá nivel de privilegio 0.
 
     \item .p = 1
         
-Este segmento estará presente en memoria.  \fixme{asi se expresa?}
+Este segmento estará presente en memoria.
     
     \item .avl = 0
         
@@ -58,11 +58,11 @@ A disposición del programador.
 
     \item .l = 0
         
-Sólo va en 1 cuando estás en modo IA-32e \fixme{no esta en nuestro dibujo}
+Este campo, que figura como 0 en el diagrama, sólo va en 1 cuando se trabaja en modo IA-32e.
 
     \item .db = 1
         
-Siginifica que vamos a trabajar en 32 bits. \fixme{especificamente?}
+Siginifica que el tamaño de las operaciones va a ser de 32 bits.
 
     \item .g = 1
 
@@ -92,7 +92,7 @@ kernel en la dirección 0x27000.
 \hruler
 
 Primero cargamos la GDT, pasandole su descriptor como parámetro a la instrucción LGDT. Deshabilitamos las interrupciones y seteamos el bit PE del
-registro $CR0$ en 1. \fixme{para que?}
+registro $CR0$ en 1, pasando finalmente a modo protegido.
 Habilitamos el el pin A20 para poder acceder a direcciones de memoria superiores al MB.
 En éste momento se hace un $FAR$ $JUMP$ hacia la siguiente instrucción, utilizando como selector de segmento el offset en la GDT de la primer 
 entrada definida más arriba (de código de nivel de administrador).
