@@ -93,7 +93,7 @@ modo_protegido:
 
     ; Imprimir mensaje de bienvenida
     ;pintar_campo_verde ; reemplazar luego por un inicializador "de verdad"
-
+    
     imprimir_texto_mp iniciando_mp_msg, iniciando_mp_len, 0x07, 2, 0
 
     ; Cargar interrupciones del procesador

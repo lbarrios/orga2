@@ -66,7 +66,7 @@ config_interface: textconfig
 #display_library: wx
 #display_library: x, options="hideIPS" # disable IPS output in status bar
 display_library: x, options="gui_debug" # use GTK debugger gui
-#display_library: x # use GTK debugger gui
+#display_library: x
 
 #=======================================================================
 # ROMIMAGE:
@@ -143,7 +143,7 @@ romimage: file=$BXSHARE/BIOS-bochs-latest
 #  2.2.6 2.1Ghz Athlon XP with Linux 2.6/g++ 3.4         12 to 15 Mips
 #  2.0.1 1.6Ghz Intel P4 with Win2000/g++ 3.3             5 to  7 Mips
 #=======================================================================
-cpu: count=1, ips=50000000, reset_on_triple_fault=0,  msrs="msrs.def"
+cpu: count=1, ips=1000000, reset_on_triple_fault=0,  msrs="msrs.def"
 
 #=======================================================================
 # MEGS
@@ -359,7 +359,7 @@ boot: floppy
 #   clock: sync=slowdown, time0=315529200   # Tue Jan  1 00:00:00 1980
 #   clock: sync=none,     time0=631148400   # Mon Jan  1 00:00:00 1990
 #   clock: sync=realtime, time0=938581955   # Wed Sep 29 07:12:35 1999
-   clock: sync=realtime, time0=946681200   # Sat Jan  1 00:00:00 2000
+#   clock: sync=realtime, time0=946681200   # Sat Jan  1 00:00:00 2000
 #   clock: sync=none,     time0=1           # Now (localtime)
 #   clock: sync=none,     time0=utc         # Now (utc/gmt)
 #
@@ -389,8 +389,8 @@ floppy_bootsig_check: disabled=0
 #   log: ./bochs.out
 #   log: /dev/tty
 #=======================================================================
-log: bochs.log
-#log: /dev/null
+#log: bochs.log
+log: /dev/null
 
 #=======================================================================
 # LOGPREFIX:
@@ -482,7 +482,7 @@ debugger_log: -
 #   com4: enabled=1, mode=pipe-client, dev=\\.\pipe\mypipe
 #   com4: enabled=1, mode=pipe-server, dev=\\.\pipe\mypipe
 #=======================================================================
-com1: enabled=1, mode=file, dev=com1.out
+#com1: enabled=1, mode=file, dev=com1.out
 
 
 #=======================================================================
@@ -549,7 +549,7 @@ com1: enabled=1, mode=file, dev=com1.out
 # Examples:
 #   vga_update_interval: 250000
 #=======================================================================
-#vga_update_interval: 40000
+#vga_update_interval: 100000
 
 # using for Winstone '98 tests
 #vga_update_interval:  100000

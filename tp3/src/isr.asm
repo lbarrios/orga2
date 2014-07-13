@@ -231,6 +231,7 @@ _isr32:
     call proximo_reloj
     call fin_intr_pic1
     call sched_proximo_indice
+
     cmp ax, 1
     je .jmp_tss_1
     cmp ax, 2
@@ -243,7 +244,7 @@ _isr32:
 
     .jmp_tss_1:
     jmp 0x78:0 ; selector tss_next_1
-    
+
     .fin:
     popad
     iret
@@ -302,6 +303,7 @@ _isr33:
     .key_1:
         mov BYTE [teclado_msg + teclado_len - 1], '1'
         imprimir_debug teclado_msg, teclado_len, 0, 0, 0
+        mov eax, 1000
         mov edi, 1
         push edi
         call print_tank_context
@@ -464,6 +466,7 @@ _isr82:
     jmp .fin_final
 
     .jmp_tss_1:
+    
     jmp 0x78:0 ; selector tss_next_1
     ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 .fin_final:

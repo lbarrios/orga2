@@ -9,7 +9,8 @@
 #define SIZE_PIXEL 2 // size en bytes
 #define MAP_FIRST_PIXEL 0xB8000 // esperemos que asi sea
 #define BASE_CLOCKS_TAREAS (MAP_FIRST_PIXEL + 48*160 + 54*2)
-#define BASE_CONTEXTO (MAP_FIRST_PIXEL+(2*(5*80))+(50*2)+(2*2))
+#define BASE_TITULO_CONTEXTO (MAP_FIRST_PIXEL+(2*4*80)+(50*2)+(2*2))
+#define BASE_CONTEXTO (MAP_FIRST_PIXEL+(2*(6*80))+(50*2)+(2*2)+(2*2))
 
 //p->color = COLOR_PISADO;
 //buffer[j]=(reg_txt)[j];
@@ -42,7 +43,6 @@ for(k=j;k<j+ ( sizeof(contexto -> reg)*2 ) ;k++){ \
 i++;
 #define GUARDA_CONTEXTO(reg) GUARDA_CONTEXTO2( reg, #reg )
 
-
 unsigned char clocks_tanques[CANT_TANQUES];
 
 void llama_a_print_causa_de_muerte(char t)
@@ -71,6 +71,15 @@ void print_tank_context( char tank )
     int i=0, j, k, l;
     pixel* p;
 
+    unsigned char tanque_titulo[] = "Tanque N. 0";
+    for(i=0; i<sizeof(tanque_titulo)-1;i++)
+    {
+        p = (pixel*) BASE_TITULO_CONTEXTO + i;
+        p->ascii = tanque_titulo[i];
+    }
+    p->ascii += t;
+    i = 0;
+
     GUARDA_CONTEXTO(eax)
     GUARDA_CONTEXTO(ebx)
     GUARDA_CONTEXTO(ecx)
@@ -86,12 +95,41 @@ void print_tank_context( char tank )
     GUARDA_CONTEXTO(fs)
     GUARDA_CONTEXTO(gs)
     GUARDA_CONTEXTO(ss)
+    GUARDA_CONTEXTO(ss2)
+    GUARDA_CONTEXTO(ss1)
+    GUARDA_CONTEXTO(ss0)
     GUARDA_CONTEXTO(eflags)
     //GUARDA_CONTEXTO(cr0)
     //GUARDA_CONTEXTO(cr1)
     //GUARDA_CONTEXTO(cr2)
     GUARDA_CONTEXTO(cr3)
     
+    /* Guardo contexto stack */
+    char stack_msg[] = "stack";
+    char stack_msg2[] = "+0 0x";
+    unsigned long* stack = (unsigned long*)(unsigned long) (contexto->esp);
+    int i_old=i;
+    for(;i<i_old+7;i++)
+    {
+        for(k=0;k<sizeof(stack_msg);k++)
+        {
+            p = ((pixel*)BASE_CONTEXTO) + (i*80) + k;
+            p->ascii = stack_msg[k];
+        }
+        for(j=0;j<sizeof(stack_msg2)-1;j++)
+        {
+            p = ((pixel*)BASE_CONTEXTO) + (i*80) + k + j;
+            p->ascii=((i_old!=i||j>2)?stack_msg2[j]:' ');
+        }
+        stack_msg2[1]++;
+        unsigned int xxx;
+        for(xxx=0;xxx<8;xxx++)
+        {
+            p = ((pixel*)BASE_CONTEXTO) + (i*80) + k + j + xxx;
+            p->ascii = ((((*stack)<<(xxx*4))>>28)%16) + ((((((*stack)<<(xxx*4))>>28)%16)>=10)?('A'-10):('0'));
+        }
+        stack++;
+    }
     llama_a_print_causa_de_muerte(t);
 }
 
@@ -199,7 +237,7 @@ void pintar_fondos()
             pixel *pixel_actual = ((pixel*)MAP_FIRST_PIXEL) + 80*i + j;
             //pixel_actual->color = COLOR_FONDO_GRIS;
             pixel_actual->color = COLOR_PISADO;
-            pixel_actual->ascii = 0;
+            pixel_actual->ascii = '.';
         }
     }
     
