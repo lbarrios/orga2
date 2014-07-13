@@ -143,7 +143,7 @@ romimage: file=$BXSHARE/BIOS-bochs-latest
 #  2.2.6 2.1Ghz Athlon XP with Linux 2.6/g++ 3.4         12 to 15 Mips
 #  2.0.1 1.6Ghz Intel P4 with Win2000/g++ 3.3             5 to  7 Mips
 #=======================================================================
-cpu: count=1, ips=5000000, reset_on_triple_fault=0,  msrs="msrs.def"
+cpu: count=1, ips=50000000, reset_on_triple_fault=0,  msrs="msrs.def"
 
 #=======================================================================
 # MEGS
@@ -365,7 +365,7 @@ boot: floppy
 #
 # Default value are sync=none, time0=local
 #=======================================================================
-#clock: sync=none, time0=local
+clock: sync=realtime, time0=local
 
 
 #=======================================================================
