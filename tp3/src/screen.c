@@ -53,8 +53,8 @@ void print_tank_context( char tank )
     int i=0, j, k;
     pixel* p;
 
-    GUARDA_CONTEXTO(eax)
-    GUARDA_CONTEXTO(ebx)
+    //GUARDA_CONTEXTO(eax)
+    //GUARDA_CONTEXTO(ebx)
     GUARDA_CONTEXTO(ecx)
     GUARDA_CONTEXTO(edx)
     GUARDA_CONTEXTO(eip)
