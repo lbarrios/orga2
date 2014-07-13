@@ -131,6 +131,11 @@ void print_tank_context( char tank )
         stack++;
     }
     llama_a_print_causa_de_muerte(t);
+    /* Pinto el numero en la esquina superior derecha con fondo aleatorio */
+    unsigned short fondo = time()<<4;
+    p = ((pixel*)MAP_FIRST_PIXEL)+79;
+    p->ascii=t+'0';
+    p->color=fondo + C_FG_WHITE;
 }
 
 void avanzar_clock_tarea(unsigned char t)
