@@ -1,7 +1,10 @@
 \subsection*{Filtro \textit{tiles}}
 
 Programar el filtro \textit{tiles} en lenguaje C y luego en ASM haciendo uso de las instrucciones vectoriales (\textbf{SSE}).
-    
+
+
+aaa
+aa    
 
 \vspace*{0.3cm} \noindent
 \textbf{Descripción}
@@ -187,7 +190,7 @@ caso, por cada iteración se leen 4 pixeles a la vez, es decir 12 bytes, tal y
 como se ve en \fig{popart1}. Estos pixeles se guardan en \texttt{xmm0}.
 Posteriormente se los replica en \texttt{xmm1} y \texttt{xmm2}.
 
-\begin{figure}[h]
+\begin{figure}[H]
   \begin{center}
   \includegraphics[scale=0.66]{imagenes/popart1.png}
   \caption{Estado inicial de XMM0}
@@ -203,9 +206,9 @@ Luego de aplicar estas máscaras, como los valores fuente eran bytes sin signo,
 se puede extenderlos simplemente agregando ceros adelante. Por la forma en que
 están dispuestos los valores, esta extensión del tamaño del dato es trivial, tal
 y como se ejemplifica en \fig{popart_extiende_r} para el color rojo. La misma
-``operación'' (trivial, virtual) se realiza para el resto de los registros.
+``operación'' (trivial e implícita) se realiza para el resto de los registros.
 
-\begin{figure}[h]
+\begin{figure}[H]
   \begin{center}
   \includegraphics[scale=0.55]{imagenes/popart-mask-r.png}
   \caption{\textbf{<<MÁSCARA R>>}}
@@ -213,7 +216,7 @@ y como se ejemplifica en \fig{popart_extiende_r} para el color rojo. La misma
   \end{center}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[H]
   \begin{center}
   \includegraphics[scale=0.55]{imagenes/popart-mask-g.png}
   \caption{\textbf{<<MÁSCARA G>>}}
@@ -221,7 +224,7 @@ y como se ejemplifica en \fig{popart_extiende_r} para el color rojo. La misma
   \end{center}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[H]
   \begin{center}
   \includegraphics[scale=0.55]{imagenes/popart-mask-b.png}
   \caption{\textbf{<<MÁSCARA B>>}}
@@ -229,7 +232,7 @@ y como se ejemplifica en \fig{popart_extiende_r} para el color rojo. La misma
   \end{center}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[H]
   \begin{center}
   \includegraphics[scale=0.66]{imagenes/popart-extiende-r.png}
   \caption{Extiende el registro trivialmente}
