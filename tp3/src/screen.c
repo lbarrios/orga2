@@ -186,6 +186,7 @@ void print_map ()
         {
             pixel *pixel_actual = ((pixel*)MAP_FIRST_PIXEL) + 80*i + j;
             EstadoCasilla estado_actual = map_state[i*50+j];
+            estado_actual.tank_number++; // para corregir indexacion
             *pixel_actual = colorea_pixel(estado_actual);
         }
     }
