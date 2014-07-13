@@ -38,6 +38,8 @@ iniciando_mp_len equ    $ - iniciando_mp_msg
 paginacion_habilitada_msg db     'Paginacion Habilitada!!! :)'
 paginacion_habilitada_len equ    $ - paginacion_habilitada_msg
 
+nombre_grupo_msg db 'Nigeria - Acaraje'
+nombre_grupo_len equ $ - nombre_grupo_msg
 ;;
 ;; Seccion de código.
 ;; -------------------------------------------------------------------------- ;;
@@ -116,6 +118,9 @@ modo_protegido:
 
     ; Imprimo un mensaje de paginación habilitada.
     imprimir_texto_mp paginacion_habilitada_msg, paginacion_habilitada_len, 0x07, 2, 0
+
+    ; Escribimos el nombre de grupo
+    imprimir_texto_mp nombre_grupo_msg, nombre_grupo_len, 0x07, 0 , 63
 
     ; Inicializar Game
     call game_inicializar
