@@ -32,13 +32,18 @@ j++; \
 p = ((pixel*)BASE_CONTEXTO) + (i*80) + j; \
 p->ascii = 'x'; \
 j++; \
-for(k=j;k<j+8;k++){ \
-  p = ((pixel*)BASE_CONTEXTO) + (i*80) + k; \
-  p->ascii = '0' + ( ( ( contexto -> reg ) << (4*(k-j)) ) >> 28 ); \
-  if(p->ascii>'9'){ p->ascii = p->ascii + 'A' - ('0' + 10); } \
+l=0; \
+for(k=j;k<j+ ( sizeof(contexto -> reg)*2 ) ;k++){ \
+  p = ((pixel*)BASE_CONTEXTO) + (i*80) + k - l; \
+  p->ascii = '0' + ( ( contexto -> reg ) << ( 4*(k-j) ) >> ( ((sizeof( contexto -> reg )*2)*4) - 4) ); \
+  VAR(k)VAR(j)VAR(l)VAR(k-j)VAR(p->ascii)BDENTER() \
+  VAR(( ((sizeof( contexto -> reg )*2)*4) - 4))VAR(( 4*(k-j) ))BDENTER() \
+  VAR(( ( contexto -> reg ) << ( 4*(k-j) ) >> ( ((sizeof( contexto -> reg )*2)*4) - 4) )) BDENTER() \
+  if( p->ascii=='0' && (k-j)-l==0 ) { l++; } \
+  if( p->ascii>'9' ){ p->ascii = p->ascii + 'A' - ('0' + 10); } \
 } \
+VAR(contexto -> reg) \
 i++;
-
 #define GUARDA_CONTEXTO(reg) GUARDA_CONTEXTO2( reg, #reg )
 
 
@@ -46,21 +51,36 @@ unsigned char clocks_tanques[CANT_TANQUES];
 
 void print_tank_context( char tank )
 {
-		BD("Escribiendo contexto de: ")VAR(tank)BDENTER()
-    int t = (tank<0 || tank>7) ? (0) : (tank);
-    tss *contexto = &(tss_tanques[t]);
-//    unsigned char* buffer;
-    int i=0, j, k;
+	BD("Escribiendo contexto de: ")VAR(tank)BDENTER()
+    int t = (tank<1 || tank>8) ? (0) : (tank);
+    tss *contexto = &(tss_tanques[t-1]);
+    int i=0, j, k, l;
     pixel* p;
 
-    //GUARDA_CONTEXTO(eax)
-    //GUARDA_CONTEXTO(ebx)
+/*
+    GUARDA_CONTEXTO(eax)
+    GUARDA_CONTEXTO(ebx)
     GUARDA_CONTEXTO(ecx)
     GUARDA_CONTEXTO(edx)
+    GUARDA_CONTEXTO(esi)
+    GUARDA_CONTEXTO(edi)
+    GUARDA_CONTEXTO(ebp)
+    GUARDA_CONTEXTO(esp)
     GUARDA_CONTEXTO(eip)
+    GUARDA_CONTEXTO(cs)
+*/
+    GUARDA_CONTEXTO(ds)
+/*
+    GUARDA_CONTEXTO(es)
+    GUARDA_CONTEXTO(fs)
+    GUARDA_CONTEXTO(gs)
+    GUARDA_CONTEXTO(ss)
+    GUARDA_CONTEXTO(eflags)
+    //GUARDA_CONTEXTO(cr0)
+    //GUARDA_CONTEXTO(cr1)
+    //GUARDA_CONTEXTO(cr2)
     GUARDA_CONTEXTO(cr3)
-    /*
-    */
+*/
 }
 
 void avanzar_clock_tarea(unsigned char t)
