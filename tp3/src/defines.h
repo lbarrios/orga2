@@ -96,6 +96,10 @@ char bochsdebugpointerchar[430];
 //#define BOCHSDEBUGCHAR(c) outportb(0xe9, c)
 //#define BOCHSDEBUG(string) for(bochsdebugi=0;bochsdebugi<sizeof(string);bochsdebugi++){ bochsdebug = &(string); BOCHSDEBUGCHAR(string[]); }
 
+//#define DEBUG
+
+#ifdef DEBUG
+
 #define BOCHSDEBUG(string) for(bochsdebugi=0;bochsdebugi<sizeof(string);bochsdebugi++) { bochsdebug = (char*)&(string); oute9( bochsdebug[bochsdebugi] ); }
 #define BDT(string) for(bdi=0;bdi<sizeof(string);bdi++) { bdp = (char*)&(string); oute9( bdp[bdi] ); }
 #define BD(s) BOCHSDEBUG(s)
@@ -106,6 +110,19 @@ char bochsdebugpointerchar[430];
 #define IMPRIMIR(s) syscall_debug(s, sizeof(s));
 #define DEBUG(string)char TOKEN_CONCATENATE2(debug, __LINE__ ) [sizeof(string)] = string;IMPRIMIR( TOKEN_CONCATENATE2(debug, __LINE__ ) );
 
+#else
+
+#define BOCHSDEBUG(string)
+#define BDT(string)
+#define BD(s)
+#define BDENTER() 
+#define BDPOINTER(var)
+#define BDP(var)
+#define VAR(var)
+#define IMPRIMIR(s)
+#define DEBUG(string)
+
+#endif
 
 /*** MACROS PARA BLOQUEAR TAREAS ***/
 

@@ -35,14 +35,10 @@ j++; \
 l=0; \
 for(k=j;k<j+ ( sizeof(contexto -> reg)*2 ) ;k++){ \
   p = ((pixel*)BASE_CONTEXTO) + (i*80) + k - l; \
-  p->ascii = '0' + ( ( contexto -> reg ) << ( 4*(k-j) ) >> ( ((sizeof( contexto -> reg )*2)*4) - 4) ); \
-  VAR(k)VAR(j)VAR(l)VAR(k-j)VAR(p->ascii)BDENTER() \
-  VAR(( ((sizeof( contexto -> reg )*2)*4) - 4))VAR(( 4*(k-j) ))BDENTER() \
-  VAR(( ( contexto -> reg ) << ( 4*(k-j) ) >> ( ((sizeof( contexto -> reg )*2)*4) - 4) )) BDENTER() \
+  p->ascii = '0' + ( ((unsigned long)( contexto -> reg ) << ( 4*(k-j+2*(4-sizeof(contexto -> reg))) )) >> ( ((sizeof( contexto -> reg )*2 + 2*(4-sizeof(contexto -> reg)) )*4) - 4) ); \
   if( p->ascii=='0' && (k-j)-l==0 ) { l++; } \
   if( p->ascii>'9' ){ p->ascii = p->ascii + 'A' - ('0' + 10); } \
 } \
-VAR(contexto -> reg) \
 i++;
 #define GUARDA_CONTEXTO(reg) GUARDA_CONTEXTO2( reg, #reg )
 
@@ -57,7 +53,6 @@ void print_tank_context( char tank )
     int i=0, j, k, l;
     pixel* p;
 
-/*
     GUARDA_CONTEXTO(eax)
     GUARDA_CONTEXTO(ebx)
     GUARDA_CONTEXTO(ecx)
@@ -68,9 +63,7 @@ void print_tank_context( char tank )
     GUARDA_CONTEXTO(esp)
     GUARDA_CONTEXTO(eip)
     GUARDA_CONTEXTO(cs)
-*/
     GUARDA_CONTEXTO(ds)
-/*
     GUARDA_CONTEXTO(es)
     GUARDA_CONTEXTO(fs)
     GUARDA_CONTEXTO(gs)
@@ -80,7 +73,6 @@ void print_tank_context( char tank )
     //GUARDA_CONTEXTO(cr1)
     //GUARDA_CONTEXTO(cr2)
     GUARDA_CONTEXTO(cr3)
-*/
 }
 
 void avanzar_clock_tarea(unsigned char t)
