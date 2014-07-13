@@ -77,4 +77,5 @@ void task() {
          syscall_misil(x, y, (unsigned long)0x8001000, 0x1000); // todo mi stack
       }
   }
+  while(1){}
 }
