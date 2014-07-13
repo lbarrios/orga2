@@ -26,7 +26,6 @@ exc_msg_len_%1 equ $ - exc_msg_ %+ %1
 %endmacro
 
 ; valor de retorno de syscall_mover
-retorno_mover_array: DD 0, 0, 0, 0, 0, 0, 0, 0
 retorno_mover_final: DD 0
 
 ;; mensajes de las excepciones del procesador
@@ -63,6 +62,12 @@ exc_msg 29, "RESERVED (--)"
 exc_msg 30, "Security Exception (#SX)"
 exc_msg 31, "RESERVED (--)"
 
+causa_mina_msg db 'Muerte por Mina'
+causa_mina_len equ $ - causa_mina_msg
+
+viva_todavia_msg db 'Vivita y Coleando'
+viva_todavia_len equ $ - viva_todavia_msg
+
 ;; PIC
 extern fin_intr_pic1
 
@@ -79,6 +84,64 @@ extern print_tank_context
 ;;
 ;; Definición de MACROS
 ;; -------------------------------------------------------------------------- ;;
+
+%macro if_causa_de_muerte 1
+    cmp eax, %1
+    je .imprimi_%1
+    jmp .next%1
+.imprimi_%1:
+    imprimir_texto_mp exc_msg_%1, exc_msg_len_%1, 0x4f, 40, 52
+    jmp .fin
+.next%1:
+%endmacro
+
+global print_causa_de_muerte
+
+print_causa_de_muerte:
+    mov eax, [esp + 4] ; aca recibo el numero de causa de muerte
+    if_causa_de_muerte 0
+    if_causa_de_muerte 1
+    if_causa_de_muerte 2
+    if_causa_de_muerte 3
+    if_causa_de_muerte 4
+    if_causa_de_muerte 5
+    if_causa_de_muerte 6
+    if_causa_de_muerte 7
+    if_causa_de_muerte 8
+    if_causa_de_muerte 9
+    if_causa_de_muerte 10
+    if_causa_de_muerte 11
+    if_causa_de_muerte 12
+    if_causa_de_muerte 13
+    if_causa_de_muerte 14
+    if_causa_de_muerte 15
+    if_causa_de_muerte 16
+    if_causa_de_muerte 17
+    if_causa_de_muerte 18
+    if_causa_de_muerte 19
+    if_causa_de_muerte 20
+    if_causa_de_muerte 21
+    if_causa_de_muerte 22
+    if_causa_de_muerte 23
+    if_causa_de_muerte 24
+    if_causa_de_muerte 25
+    if_causa_de_muerte 26
+    if_causa_de_muerte 27
+    if_causa_de_muerte 28
+    if_causa_de_muerte 29
+    if_causa_de_muerte 30
+    if_causa_de_muerte 31
+
+    cmp eax, 100
+    je .porMina
+    jmp .vivaTodavia
+.porMina:
+    imprimir_texto_mp causa_mina_msg, causa_mina_len, 0x4f, 40, 52
+    jmp .fin
+.vivaTodavia:
+    imprimir_texto_mp viva_todavia_msg, viva_todavia_len, 0x4f, 40, 52
+.fin:
+    ret
 
 %macro ISR 1
 global _isr%1
@@ -164,8 +227,7 @@ _isr32:
     cli
     pushad
     call print_screen
-    ; El debug de abajo es un poco molesto.
-    ;imprimir_debug clock_msg, clock_len, 0, 0, 0
+    imprimir_debug clock_msg, clock_len, 0, 0, 0
     call proximo_reloj
     call fin_intr_pic1
     call sched_proximo_indice

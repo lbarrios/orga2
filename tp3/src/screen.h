@@ -13,6 +13,8 @@
 
 void avanzar_clock_tarea(unsigned char);
 
+void print_causa_de_muerte(int);
+
 typedef struct pixel_s {
     unsigned char ascii;
     unsigned char color;
