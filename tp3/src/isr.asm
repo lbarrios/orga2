@@ -227,7 +227,8 @@ _isr32:
     cli
     pushad
     call print_screen
-    imprimir_debug clock_msg, clock_len, 0, 0, 0
+    ; El macro de abajo es un poco molesto, activar solo en caso de ser necesario
+    ;imprimir_debug clock_msg, clock_len, 0, 0, 0
     call proximo_reloj
     call fin_intr_pic1
     call sched_proximo_indice
