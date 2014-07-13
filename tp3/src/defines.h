@@ -89,17 +89,14 @@ static inline float frand( int *seed )
     return r.fres - 1.0f;
 }
 
+#define OUTPUTDEBUG
+
+#ifdef OUTPUTDEBUG
+
 int bochsdebugi;
 char* bochsdebug;
 unsigned long bochsdebugpointer;
 char bochsdebugpointerchar[430];
-//#define BOCHSDEBUGCHAR(c) outportb(0xe9, c)
-//#define BOCHSDEBUG(string) for(bochsdebugi=0;bochsdebugi<sizeof(string);bochsdebugi++){ bochsdebug = &(string); BOCHSDEBUGCHAR(string[]); }
-
-//#define DEBUG
-
-#ifdef DEBUG
-
 #define BOCHSDEBUG(string) for(bochsdebugi=0;bochsdebugi<sizeof(string);bochsdebugi++) { bochsdebug = (char*)&(string); oute9( bochsdebug[bochsdebugi] ); }
 #define BDT(string) for(bdi=0;bdi<sizeof(string);bdi++) { bdp = (char*)&(string); oute9( bdp[bdi] ); }
 #define BD(s) BOCHSDEBUG(s)
