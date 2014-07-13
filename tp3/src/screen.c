@@ -45,6 +45,24 @@ i++;
 
 unsigned char clocks_tanques[CANT_TANQUES];
 
+void llama_a_print_causa_de_muerte(char t)
+{
+    int la_causa = (int)causa_de_muerte[t-1];
+
+    int x = 40;
+    int y;
+    {
+        for (y = 52; y < 80; y++)
+        {
+            pixel *pixel_actual = ((pixel*)MAP_FIRST_PIXEL) + 80*x + y;
+            pixel_actual->color = COLOR_MUERTO;
+            pixel_actual->ascii = 0;
+        }
+    }
+    
+    print_causa_de_muerte(la_causa);
+}
+
 void print_tank_context( char tank )
 {
 	BD("Escribiendo contexto de: ")VAR(tank)BDENTER()
@@ -73,21 +91,8 @@ void print_tank_context( char tank )
     //GUARDA_CONTEXTO(cr1)
     //GUARDA_CONTEXTO(cr2)
     GUARDA_CONTEXTO(cr3)
-
-    int la_causa = (int)causa_de_muerte[t-1];
-
-    int x = 40;
-    int y;
-    {
-        for (y = 52; y < 80; y++)
-        {
-            pixel *pixel_actual = ((pixel*)MAP_FIRST_PIXEL) + 80*x + y;
-            pixel_actual->color = COLOR_MUERTO;
-            pixel_actual->ascii = 0;
-        }
-    }
     
-    print_causa_de_muerte(la_causa);
+    llama_a_print_causa_de_muerte(t);
 }
 
 void avanzar_clock_tarea(unsigned char t)
