@@ -237,7 +237,7 @@ void pintar_fondos()
             pixel *pixel_actual = ((pixel*)MAP_FIRST_PIXEL) + 80*i + j;
             //pixel_actual->color = COLOR_FONDO_GRIS;
             pixel_actual->color = COLOR_PISADO;
-            pixel_actual->ascii = '.';
+            pixel_actual->ascii = 0;
         }
     }
     

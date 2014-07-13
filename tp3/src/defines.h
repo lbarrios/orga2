@@ -89,7 +89,7 @@ static inline float frand( int *seed )
     return r.fres - 1.0f;
 }
 
-#define OUTPUTDEBUG
+//#define OUTPUTDEBUG
 
 #ifdef OUTPUTDEBUG
 
