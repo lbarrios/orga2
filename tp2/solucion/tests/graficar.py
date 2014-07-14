@@ -73,7 +73,7 @@ for x in asm:
   y_asm.append(int(np.mean([y for y in asm[x] if y < np.percentile(asm[x],75) and y > np.percentile(asm[x],25)])))
   x_asm.append(x)
 for x in c:
-  y_c.append(int(np.mean([y for y in c[x] if y < np.percentile(c[x],75) and y > np.percentile(c[x],25)])))
+  y_c.append(int(np.mean([y for y in c[x] if y <= np.percentile(c[x],75) and y >= np.percentile(c[x],25)])))
   x_c.append(x)
 for x in c0:
   y_c0.append(int(np.mean([y for y in c0[x] if y < np.percentile(c0[x],75) and y > np.percentile(c0[x],25)])))
