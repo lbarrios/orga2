@@ -3,7 +3,7 @@ from glob import glob
 import os
 import sys
 
-comando = "tp2"
+comando = "tp2.O0"
 inputDir = "data/imagenes_a_testear"
 outputDir = "data/resultados_nuestros"
 
