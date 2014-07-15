@@ -141,7 +141,7 @@ if x_asm:
 	plt.plot(np.array( x_asm ), np.array( y_asm ), linestyle='-',  color='blue', linewidth=2, label='ASM', alpha=1) 
 plt.legend(loc=2)
 
-plt.show()
+#plt.show()
 
 import time
 
