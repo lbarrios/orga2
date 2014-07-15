@@ -1,9 +1,9 @@
-#!/usr/bin/env python3.2
+#!/usr/bin/env python3
 from glob import glob
 import os
 import sys
 
-comando = "tp2.O3"
+exe_tp = "tp2.O3"
 inputDir = "data/imagenes_a_testear"
 outputDir = "data/resultados_nuestros"
 
@@ -68,6 +68,9 @@ if len(inputFiles)==0:
 # Corro los tests
 for file in sorted(inputFiles):
   output = file.replace(".bmp",".txt")
-  comando = "../bin/{} {} -i {} -t {} -o {} {} {}".format(comando, filtro, version, int(iteraciones), outputDir, file, config)
+  comando = "../bin/{} {} -i {} -t {} -o {} {} {}".format(exe_tp, filtro, version, int(iteraciones), outputDir, file, config)
   print("corriendo: {}".format(comando))
   os.system(comando)
+
+if version == 'c':
+  os.system("./renombrar_O3.sh")
