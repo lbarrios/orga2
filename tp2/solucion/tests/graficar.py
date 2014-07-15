@@ -34,6 +34,7 @@ if len(inputFiles)==0:
 
 c = defaultdict(list)
 c0 = defaultdict(list)
+c1 = defaultdict(list)
 c2 = defaultdict(list)
 c3 = defaultdict(list)
 asm = defaultdict(list)
@@ -53,6 +54,8 @@ for f in sorted(inputFiles):
       c[area].append(value)
     if version=='C0':
       c0[area].append(value)
+    if version=='C1':
+      c1[area].append(value)
     if version=='C2':
       c2[area].append(value)
     if version=='C3':
@@ -64,26 +67,37 @@ y_c = list()
 x_c = list()
 y_c0 = list()
 x_c0 = list()
+y_c1 = list()
+x_c1 = list()
 y_c2 = list()
 x_c2 = list()
 y_c3 = list()
 x_c3 = list()
 
 for x in asm:
-  y_asm.append(int(np.mean([y for y in asm[x] if y < np.percentile(asm[x],75) and y > np.percentile(asm[x],25)])))
+  y_asm.append(int(np.mean([y for y in asm[x] if y <= np.percentile(asm[x],75) and y >= np.percentile(asm[x],25)])))
   x_asm.append(x)
+  y_asm, x_asm = (list(t) for t in zip(*sorted(zip(y_asm, x_asm))))
 for x in c:
   y_c.append(int(np.mean([y for y in c[x] if y <= np.percentile(c[x],75) and y >= np.percentile(c[x],25)])))
   x_c.append(x)
+  y_c, x_c = (list(t) for t in zip(*sorted(zip(y_c, x_c))))
 for x in c0:
-  y_c0.append(int(np.mean([y for y in c0[x] if y < np.percentile(c0[x],75) and y > np.percentile(c0[x],25)])))
+  y_c0.append(int(np.mean([y for y in c0[x] if y <= np.percentile(c0[x],75) and y >= np.percentile(c0[x],25)])))
   x_c0.append(x)
+  y_c0, x_c0 = (list(t) for t in zip(*sorted(zip(y_c0, x_c0))))
+for x in c1:
+  y_c1.append(int(np.mean([y for y in c1[x] if y <= np.percentile(c1[x],75) and y >= np.percentile(c1[x],25)])))
+  x_c1.append(x)
+  y_c1, x_c1 = (list(t) for t in zip(*sorted(zip(y_c1, x_c1))))
 for x in c2:
-  y_c2.append(int(np.mean([y for y in c2[x] if y < np.percentile(c2[x],75) and y > np.percentile(c2[x],25)])))
+  y_c2.append(int(np.mean([y for y in c2[x] if y <= np.percentile(c2[x],75) and y >= np.percentile(c2[x],25)])))
   x_c2.append(x)
+  y_c2, x_c2 = (list(t) for t in zip(*sorted(zip(y_c2, x_c2))))
 for x in c3:
-  y_c3.append(int(np.mean([y for y in c3[x] if y < np.percentile(c3[x],75) and y > np.percentile(c3[x],25)])))
+  y_c3.append(int(np.mean([y for y in c3[x] if y <= np.percentile(c3[x],75) and y >= np.percentile(c3[x],25)])))
   x_c3.append(x)
+  y_c3, x_c3 = (list(t) for t in zip(*sorted(zip(y_c3, x_c3))))
 
 
 import matplotlib.pyplot as plt
@@ -101,6 +115,12 @@ fig,subplot = plt.subplots()
 subplot.yaxis.set_major_formatter(formatter)
 subplot.xaxis.set_major_formatter(formatter_x)
 
+print "C0: ",x_c0,y_c0
+print "C1: ",x_c1,y_c1
+print "C2: ",x_c2,y_c2
+print "C3: ",x_c3,y_c3
+print "ASM: ",x_asm,y_asm
+
 # Aplico formato
 plt.grid(True)
 plt.title("{}".format(filtro))
@@ -111,14 +131,17 @@ if x_c:
   plt.plot(np.array( x_c ), np.array( y_c ), linestyle='-',  color='red', linewidth=2, label='C', alpha=1) 
 if x_c0:
   plt.plot(np.array( x_c0 ), np.array( y_c0 ), linestyle='-',  color='#ff8c00', linewidth=2, label='C0', alpha=1) 
+if x_c1:
+  plt.plot(np.array( x_c1 ), np.array( y_c1 ), linestyle='-',  color='#222200', linewidth=2, label='C1', alpha=1) 
 if x_c2:
   plt.plot(np.array( x_c2 ), np.array( y_c2 ), linestyle='-',  color='red', linewidth=2, label='C2', alpha=1) 
 if x_c3:
   plt.plot(np.array( x_c3 ), np.array( y_c3 ), linestyle='-',  color='magenta', linewidth=2, label='C3', alpha=1) 
-plt.plot(np.array( x_asm ), np.array( y_asm ), linestyle='-',  color='blue', linewidth=2, label='ASM', alpha=1) 
+if x_asm:
+	plt.plot(np.array( x_asm ), np.array( y_asm ), linestyle='-',  color='blue', linewidth=2, label='ASM', alpha=1) 
 plt.legend(loc=2)
 
-#plt.show()
+plt.show()
 
 import time
 

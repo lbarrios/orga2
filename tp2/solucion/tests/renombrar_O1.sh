@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 for file in data/resultados_nuestros/*.C.*
 do
 	echo mv "$file" "${file/C/C1}"
